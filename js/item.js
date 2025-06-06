@@ -516,7 +516,8 @@ function fallbackToLinks() {
 async function loadItemDetails() {
     const uri = getQueryParam('uri');
     const display = getQueryParam('display');
-    
+    const parent_frame = getQueryParam('parent_frame');
+
     // Hide navigation if display mode is set
     if (display) {
         document.getElementById('navigation').style.display = 'none';
@@ -554,6 +555,12 @@ async function loadItemDetails() {
             const repoData = await fetchGitHubRepo(owner, repo);
             
             if (repoData) {
+                let downloadURL
+                if (parent_frame) {
+                  downloadURL = `${parent_frame}?mode=download&uri=${repoData.html_url}`
+                } else {
+                  downloadURL = `pinokio://download?uri=${repoData.html_url}`
+                }
                 item = {
                     title: repoData.name,
                     description: repoData.description,
@@ -561,7 +568,7 @@ async function loadItemDetails() {
                     url: repoData.html_url,
                     path: repoData.full_name,
                     download: repoData.html_url,
-                    downloadURL: `pinokio://download?uri=${repoData.html_url}`,
+                    downloadURL,
                     id: repoData.full_name
                 };
                 
@@ -592,7 +599,11 @@ async function loadItemDetails() {
                 }
                 
                 // Update download URL
-                item.downloadURL = `pinokio://download?uri=${item.download}`;
+                if (parent_frame) {
+                  item.downloadURL = `${parent_frame}?mode=download&uri=${item.download}`
+                } else {
+                  item.downloadURL = `pinokio://download?uri=${item.download}`
+                }
                 if (item.branch) {
                     item.downloadURL += "&branch=" + item.branch;
                 }
@@ -605,7 +616,11 @@ async function loadItemDetails() {
             for (const featuredItem of featuredItems) {
                 if (featuredItem.url.toLowerCase() === uri.toLowerCase()) {
                     item = { ...featuredItem };
-                    item.downloadURL = `pinokio://download?uri=${item.download}`;
+                    if (parent_frame) {
+                      item.downloadURL = `${parent_frame}?mode=download&uri=${item.download}`
+                    } else {
+                      item.downloadURL = `pinokio://download?uri=${item.download}`
+                    }
                     if (item.branch) {
                         item.downloadURL += "&branch=" + item.branch;
                     }

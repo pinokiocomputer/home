@@ -8,7 +8,6 @@ const dynamicTextItems = [
   "ANYTHING."
 ];
 
-console.log("document.referrer", document.referrer)
 
 let currentIndex = 0;
 const dynamicTextElement = document.getElementById('dynamicText');
@@ -107,7 +106,7 @@ function renderLatestItems(items) {
 // Create item element
 function createItemElement(item, type) {
   const link = document.createElement('a');
-  link.href = `item.html?uri=${encodeURIComponent(item.download)}`;
+  link.href = `item.html?uri=${encodeURIComponent(item.download)}&parent_frame=${document.referrer}`;
   link.className = 'card';
   
   const itemDiv = document.createElement('div');
