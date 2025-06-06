@@ -106,7 +106,6 @@ function renderLatestItems(items) {
 // Create item element
 function createItemElement(item, type) {
   const link = document.createElement('a');
-  console.log("page", page)
   if (page === "app") {
     link.href = `app_item.html?uri=${encodeURIComponent(item.download)}&parent_frame=${document.referrer}`;
   } else {
