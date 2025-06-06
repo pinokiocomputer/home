@@ -8,6 +8,8 @@ const dynamicTextItems = [
   "ANYTHING."
 ];
 
+console.log("document.referer", document.referer)
+
 let currentIndex = 0;
 const dynamicTextElement = document.getElementById('dynamicText');
 
