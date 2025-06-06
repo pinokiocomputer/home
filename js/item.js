@@ -138,7 +138,7 @@ function createBitcoinLink(item) {
     return `
         <div class="line">
             <button class="iconbtn" onclick="showBitcoinModal('${item.value}', '${title}')">
-                <img src="/images/bitcoin.png" width="30" height="30" alt="Bitcoin" />
+                <img src="images/bitcoin.png" width="30" height="30" alt="Bitcoin" />
                 ${title}
                 <i class="fas fa-up-right-from-square"></i>
             </button>
