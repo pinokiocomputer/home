@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pinokio</title>
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pinokio" />
+    <meta name="twitter:description" content="AI Browser"/>
+    <meta name="twitter:image" content="https://pinokiocomputer.github.io/homepage/poster.png" />
+    <meta property="og:url" content="https://pinokiocomputer.github.io/homepage" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pinokio" />
+    <meta property="og:description" content="AI Browser" />
+    <meta property="og:image" content="https://pinokiocomputer.github.io/poster.png" />
+    <link rel="stylesheet" href="styles/app.css">
+    <link rel="stylesheet" href="styles/item.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="nav" id="navigation">
+        <a class="logo" href="/">
+            <img src="/images/pinokio.png" width="50" height="50" alt="Pinokio">
+            <div class="brand">pinokio</div>
+        </a>
+        <div class="flexible"></div>
+        <a class="navItem" href="https://discord.gg/TQdNwadtE4"><i class="fab fa-discord"></i> <span>Discord</span></a>
+        <a class="navItem" href="https://github.com/pinokiocomputer/pinokio"><i class="fab fa-github"></i> <span>GitHub</span></a>
+        <a class="navItem" href="https://twitter.com/cocktailpeanut"><i class="fab fa-twitter"></i> <span>Twitter</span></a>
+    </nav>
+    
+    <div class="grid_container">
+        <main>
+            <div class="center2">
+                <div class="itemsContainer" id="profileSection">
+                    <!-- Item profile will be loaded here -->
+                </div>
+                
+                <div class="posts" id="postsSection" style="display: none;">
+                    <div class="posts_header">
+                        <h2>Newsfeed</h2>
+                        <div>Click the X icon on an embedded post to visit the full thread <a href="https://pinokiodocs.netlify.app/#/?id=adding-posts-to-the-newsfeed" target="_blank">(Learn how this works)</a></div>
+                    </div>
+                    <div id="tweetsContainer">
+                        <!-- Tweets will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/config.js"></script>
+    <script src="js/item.js"></script>
+</body>
+</html>

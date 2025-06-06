@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pinokio</title>
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pinokio" />
+    <meta name="twitter:description" content="AI Browser"/>
+    <meta name="twitter:image" content="https://pinokiocomputer.github.io/homepage/poster.png" />
+    <meta property="og:url" content="https://pinokiocomputer.github.io/homepage" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pinokio" />
+    <meta property="og:description" content="AI Browser" />
+    <meta property="og:image" content="https://pinokiocomputer.github.io/poster.png" />
+    <link rel="stylesheet" href="styles/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <nav class="nav">
+        <a class="logo" href="/">
+            <img src="/images/pinokio.png" width="50" height="50" alt="Pinokio">
+            <div class="brand">pinokio</div>
+        </a>
+        <div class="flexible"></div>
+        <a class="navItem" href="https://discord.gg/TQdNwadtE4"><i class="fab fa-discord"></i> <span>Discord</span></a>
+        <a class="navItem" href="https://github.com/pinokiocomputer/pinokio"><i class="fab fa-github"></i> <span>GitHub</span></a>
+        <a class="navItem" href="https://x.com/cocktailpeanut"><i class="fa-brands fa-square-x-twitter"></i> <span>X.com</span></a>
+    </nav>
+    
+    <div class="container">
+        <main>
+            <div class="header">
+                <h1>
+                    <div>Install, Run & Control</div>
+                    <div class="dynamic" id="dynamicText">Everything</div>
+                    <div>on Your Computer</div>
+                    <div>with 1 Click.</div>
+                </h1>
+                <div class="subtitle">Pinokio is a browser that lets you install, run, and manage ANY server application, locally.</div>
+                <div class="btnRow">
+                    <a class="btn" href="https://pinokiodocs.netlify.app/#/?id=install">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                    <a class="btn inverse" href="https://pinokiodocs.netlify.app">
+                        <i class="fas fa-book"></i> Learn
+                    </a>
+                    <a class="btn inverse" href="https://x.com">
+                        <i class="fa-brands fa-square-x-twitter"></i> News
+                    </a>
+                </div>
+            </div>
+            
+            <section class="itemsContainer">
+                <div class="title">
+                    <i class="fas fa-circle-check"></i> Verified
+                </div>
+                <div class="description">Scripts from Verified Publishers</div>
+                <section class="items" id="featuredItems">
+                    <!-- Featured items will be loaded here -->
+                </section>
+            </section>
+            
+            <section class="itemsContainer">
+                <div class="title">Latest</div>
+                <div class="description">Latest Pinokio scripts from the community (tagged as 'pinokio' on GitHub)</div>
+                <section class="items" id="latestItems">
+                    <!-- Latest items will be loaded here -->
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

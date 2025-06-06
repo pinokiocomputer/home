@@ -1,0 +1,337 @@
+/* Item page specific styles */
+
+.grid_container {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.center2 {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.center2 .itemsContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.center2 .itemsContainer .card {
+  background: none;
+  padding: 30px;
+  border: none;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.center2 .card {
+  background: none;
+  padding: 0;
+}
+
+.center2 .itemsContainer > .title {
+  text-align: center;
+  padding: 30px;
+}
+
+.center2 .card .title {
+  font-size: 50px;
+  line-height: 50px;
+  letter-spacing: -2px;
+}
+
+.center2 .card {
+  padding: 30px;
+  border: none;
+}
+
+.app_icon {
+  margin-right: 15px;
+}
+
+.item {
+  display: flex;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  align-items: flex-start;
+}
+
+.item .col {
+  flex-grow: 1;
+  padding-right: 15px;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.item .right {
+  box-shadow: -1px 0px 1px 0px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+  margin-left: 15px;
+  padding: 10px 20px;
+}
+
+.item .title {
+  line-height: 20px;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: rgba(0,0,0,0.9);
+}
+
+.item .description {
+  font-size: 14px;
+  line-height: 18px;
+  padding: 0 0 0px 0;
+  color: rgba(0,0,0,0.8);
+  margin-bottom: 15px;
+}
+
+.item footer {
+  margin-top: 10px;
+  font-size: 14px;
+  color: rgba(0,0,0,0.6);
+}
+
+.ln {
+  color: #2647ad;
+  font-size: 14px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.btn {
+  box-sizing: border-box;
+  border: none;
+  font-size: 18px;
+  color: white;
+  background: black;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  padding: 20px;
+  font-weight: bold;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.badge {
+  font-size: 12px;
+  background: #2647ad;
+  font-weight: bold;
+  color: white;
+  border-radius: 4px;
+  padding: 0 8px;
+  display: inline-block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.author {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.author img {
+  border-radius: 25px;
+  margin-right: 10px;
+}
+
+.author .text {
+  flex-grow: 1;
+}
+
+.author a {
+  color: #2647ad;
+}
+
+.icon {
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.donation {
+  max-width: 500px;
+  min-width: 400px;
+  padding: 1px 0;
+  text-transform: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.donation img {
+  border-radius: 2px !important;
+  width: 16px;
+  height: 16px;
+}
+
+.donation .small {
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.donation h2 {
+  font-size: 30px;
+  margin: 10px;
+}
+
+.donation .addr {
+  font-size: 12px;
+  font-weight: normal;
+  margin-top: 20px;
+  text-transform: none !important;
+}
+
+.donation h3 {
+  font-size: 14px;
+  margin: 0;
+  padding-bottom: 10px;
+}
+
+.donation .line {
+  padding: 5px;
+}
+
+.donation .line img {
+  background: white !important;
+}
+
+.iconbtn {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.iconbtn img {
+  margin-right: 5px !important;
+}
+
+.iconbtn svg, .iconbtn i {
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.iconbtn:hover {
+  text-decoration: none;
+}
+
+.linkgroup {
+  padding: 10px;
+  box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.linktitle {
+  font-size: 14px;
+}
+
+.posts {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0,0,100,0.04);
+  border-top: 2px solid rgba(0,0,0,0.1);
+}
+
+.posts_header {
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 50px;
+}
+
+.posts h2 {
+  margin: 0;
+  font-size: 40px;
+  letter-spacing: -2px;
+}
+
+.empty {
+  background: rgba(0,0,0,0.04);
+  color: rgba(0,0,0,0.3);
+  margin: 20px 0;
+  font-weight: bold;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 50px;
+  font-size: 14px;
+}
+
+/* Tweet container styles */
+.tweet-container {
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.masonry-container {
+  width: 100%;
+  text-align: center;
+}
+
+.masonry-column {
+  vertical-align: top;
+  display: inline-block;
+}
+
+.tweet-item {
+  width: 350px;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+}
+
+#qr-container img {
+  width: 100%; 
+}
+
+/* Loading spinner animation */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 350px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 4px solid rgba(0,0,0,0.1);
+  border-top: 4px solid rgba(0,0,0,0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-left: 10px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Force Twitter widget to respect our width */
+.tweet-item iframe,
+.tweet-item .twitter-tweet,
+.tweet-item blockquote {
+  width: 350px !important;
+  max-width: 350px !important;
+}
