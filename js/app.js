@@ -19,7 +19,9 @@ function updateDynamicText() {
 }
 
 // Start the animation
-setInterval(updateDynamicText, 1500);
+if (dynamicTextElement) {
+  setInterval(updateDynamicText, 1500);
+}
 
 // Load featured items from featured.json
 async function loadFeaturedItems() {
