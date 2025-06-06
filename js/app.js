@@ -103,7 +103,7 @@ function renderLatestItems(items) {
 // Create item element
 function createItemElement(item, type) {
   const link = document.createElement('a');
-  link.href = `/item.html?uri=${encodeURIComponent(item.download)}`;
+  link.href = `item.html?uri=${encodeURIComponent(item.download)}`;
   link.className = 'card';
   
   const itemDiv = document.createElement('div');
