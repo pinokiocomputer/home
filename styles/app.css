@@ -10,6 +10,10 @@ body {
   font-size: 18px;
 }
 
+body.dark {
+  background: #1B1C1D;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -142,11 +146,19 @@ img {
   text-align: left;
 }
 
+body.dark .itemsContainer .title {
+  color: white; 
+}
+
 .itemsContainer .description {
   text-align: left;
   color: rgba(0,0,0,0.7);
   margin-bottom: 10px;
   margin-top: 5px;
+}
+
+body.dark .itemsContainer .description {
+  color: rgba(255,255,255,0.8);
 }
 
 .items {
@@ -161,6 +173,10 @@ img {
   border-radius: 8px;
   padding: 15px;
   border: 2px solid transparent;
+}
+
+body.dark .card {
+  background: rgba(255,255,255,0.03);
 }
 
 .item {
@@ -189,11 +205,19 @@ img {
   color: rgba(0,0,0,0.9);
 }
 
+body.dark .item .title {
+  color: white; 
+}
+
 .item .description {
   font-size: 14px;
   line-height: 18px;
   padding: 0 0 0px 0;
   color: rgba(0,0,0,0.8);
+}
+
+body.dark .item .description {
+  color: rgba(255,255,255,0.8);
 }
 
 a.card:hover {

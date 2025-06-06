@@ -517,10 +517,14 @@ async function loadItemDetails() {
     const uri = getQueryParam('uri');
     const display = getQueryParam('display');
     const parent_frame = getQueryParam('parent_frame');
+    const theme = getQueryParam('theme');
 
     // Hide navigation if display mode is set
     if (display) {
-        document.getElementById('navigation').style.display = 'none';
+        let nav = document.querySelector("#navigation")
+        if (nav) {
+          nav.style.display = 'none';
+        }
     }
     
     if (!uri) {
@@ -655,5 +659,14 @@ async function loadItemDetails() {
     }
 }
 
+function updateTheme() {
+  const theme = getQueryParam('theme');
+  document.querySelector("body").classList.add(theme)
+  document.querySelector("body").setAttribute("data-theme", theme)
+}
+
 // Initialize when page loads
-document.addEventListener('DOMContentLoaded', loadItemDetails);
+document.addEventListener('DOMContentLoaded', function() {
+  updateTheme()
+  loadItemDetails();
+});

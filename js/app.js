@@ -8,6 +8,10 @@ const dynamicTextItems = [
   "ANYTHING."
 ];
 
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
 
 let currentIndex = 0;
 const dynamicTextElement = document.getElementById('dynamicText');
@@ -111,6 +115,10 @@ function createItemElement(item, type) {
   } else {
     link.href = `item.html?uri=${encodeURIComponent(item.download)}&parent_frame=${document.referrer}`;
   }
+  const theme = document.querySelector("body").getAttribute("data-theme")
+  if (theme) {
+    link.href += `&theme=${theme}`
+  }
   link.className = 'card';
   
   const itemDiv = document.createElement('div');
@@ -142,8 +150,15 @@ function createItemElement(item, type) {
   return link;
 }
 
+function updateTheme() {
+  const theme = getQueryParam('theme');
+  document.querySelector("body").classList.add(theme)
+  document.querySelector("body").setAttribute("data-theme", theme)
+}
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
+  updateTheme()
   renderFeaturedItems();
   fetchAndRenderLatestItems();
 });

@@ -1,5 +1,9 @@
 /* Item page specific styles */
 
+body.dark {
+  background: #1B1C1D;
+}
+
 .grid_container {
   width: 100%;
   margin: 0 auto;
@@ -72,12 +76,20 @@
   padding: 10px 20px;
 }
 
+body.dark .item .right {
+  color: white;
+}
+
 .item .title {
   line-height: 20px;
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 5px;
   color: rgba(0,0,0,0.9);
+}
+
+body.dark .item .title {
+  color: white; 
 }
 
 .item .description {
@@ -88,10 +100,18 @@
   margin-bottom: 15px;
 }
 
+body.dark .item .description {
+  color: rgba(255,255,255,0.8);
+}
+
 .item footer {
   margin-top: 10px;
   font-size: 14px;
   color: rgba(0,0,0,0.6);
+}
+
+body.dark .item footer {
+  color: white;
 }
 
 .ln {
@@ -152,6 +172,10 @@
 
 .author a {
   color: #2647ad;
+}
+
+body.dark a {
+  color: royalblue;
 }
 
 .icon {
@@ -252,12 +276,22 @@
   margin-bottom: 20px;
   text-align: center;
   padding: 50px;
+  font-size: 14px;
 }
+
+body.dark .posts_header {
+  color: rgba(255,255,255,0.8);
+}
+
 
 .posts h2 {
   margin: 0;
   font-size: 40px;
   letter-spacing: -2px;
+}
+
+body.dark .posts h2 {
+  color: white;
 }
 
 .empty {
