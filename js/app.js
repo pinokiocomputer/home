@@ -258,12 +258,12 @@ function downloadFromUrl() {
   }
   
   // Create download URL
-  const downloadURL = `pinokio://download?uri=${encodeURIComponent(url)}`;
 
+  let downloadURL
   if (document.referrer) {
-    item.downloadURL = `${document.referrer}?mode=download&uri=${encodeURIComponent(url)}`
+    downloadURL = `${document.referrer}?mode=download&uri=${encodeURIComponent(url)}`
   } else {
-    item.downloadURL = `pinokio://download?uri=${encodeURIComponent(url)}`
+    downloadURL = `pinokio://download?uri=${encodeURIComponent(url)}`
   }
   
   // Try to open with pinokio protocol
