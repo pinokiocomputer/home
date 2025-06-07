@@ -312,7 +312,10 @@ body.dark .tab {
 }
 
 body.dark .tab button {
+  color: white;
+  /*
   color: rgba(255,255,255,0.6);
+  */
 }
 
 .tab button.selected {
@@ -322,7 +325,7 @@ body.dark .tab button {
 }
 
 body.dark .tab button.selected {
-  color: white;
+  color: royalblue;
 }
 
 .tab button:hover {
@@ -355,7 +358,8 @@ aside {
 
 aside h2 {
   margin: 10px;
-  font-size: 18px;
+  font-size: 25px;
+  letter-spacing: -1px;
   color: rgba(0,0,0,0.9);
   font-weight: bold;
 }
@@ -423,7 +427,8 @@ body.dark .description {
 /* Apps section header */
 .apps-header {
   margin: 10px;
-  font-size: 18px;
+  font-size: 25px;
+  letter-spacing: -1px;
   color: rgba(0,0,0,0.9);
   font-weight: bold;
 }
@@ -479,7 +484,7 @@ body.dark .community_item h3 {
   background: rgba(0,0,0,0.03);
   border-radius: 8px;
   padding: 20px;
-  margin: 0 1rem 1rem 1rem;
+  margin: 10px 0;
 }
 
 body.dark .download-section {
@@ -492,13 +497,16 @@ body.dark .download-section {
 #downloadSection h3 {
   margin: 0;
 }
+body.dark #downloadSection {
+  color: white;
+}
 
 .tab button.download-btn, #downloadSection button.download-btn, #downloadSection a.download-btn  {
   background: royalblue;
   color: white;
   border: 2px solid royalblue;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 5px 20px;
+  border-radius: 4px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
@@ -519,7 +527,7 @@ body.dark .download-section {
   padding: 10px;
   margin: 2px 0;
   border: 2px solid rgba(0,0,0,0.1);
-  border-radius: 8px;
+  border-radius: 4px;
   font-size: 14px;
 }
 

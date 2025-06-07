@@ -304,6 +304,10 @@ body.dark .posts h2 {
   padding: 50px;
   font-size: 14px;
 }
+body.dark .empty {
+  color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.04);
+}
 
 /* Tweet container styles */
 .tweet-container {
