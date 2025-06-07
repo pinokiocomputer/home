@@ -31,6 +31,9 @@ img {
   max-width: 100%;
   display: block;
 }
+.git-form {
+  padding: 10px 0;
+}
 
 /* Navigation styles */
 .nav {
@@ -490,7 +493,7 @@ body.dark .download-section {
   margin: 0;
 }
 
-.tab button.download-btn, #downloadSection button.download-btn  {
+.tab button.download-btn, #downloadSection button.download-btn, #downloadSection a.download-btn  {
   background: royalblue;
   color: white;
   border: 2px solid royalblue;
@@ -502,9 +505,10 @@ body.dark .download-section {
   text-decoration: none;
   display: inline-block;
   transition: all 0.2s ease;
+  display: inline;
 }
 
-.tab button.download-btn:hover, #downloadSection button.download-btn:hover  {
+.tab button.download-btn:hover, #downloadSection button.download-btn:hover, #downloadSection a.download-btn:hover  {
   background: transparent;
   color: royalblue;
   text-decoration: none;
@@ -513,7 +517,7 @@ body.dark .download-section {
 .download-input {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
+  margin: 2px 0;
   border: 2px solid rgba(0,0,0,0.1);
   border-radius: 8px;
   font-size: 14px;

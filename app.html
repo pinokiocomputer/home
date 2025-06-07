@@ -20,7 +20,6 @@
 <body>
     <div class="container">
         <main>
-
             <!-- Verified Scripts Section -->
             <div class="grid">
                 <aside>
@@ -32,37 +31,36 @@
                 <div class='sections'>
                   <h2 class="apps-header"><i class="fas fa-desktop"></i> Apps</h2>
                   <input type="search" id="searchInput" class="input" placeholder="Search scripts from verified publishers">
-            <!-- Tab Navigation -->
-            <nav class="tab">
-                <button id="verifiedTab" class="selected" onclick="selectTab('verified')">
-                    <i class="fas fa-check"></i> Verified scripts
-                </button>
-                <button id="communityTab" onclick="selectTab('community')">
-                    <i class="fas fa-shapes"></i> Community scripts
-                </button>
-                <div class="filler"></div>
-                <div class='download-container'>
-                    <button id="toggleDownloadBtn" class="download-btn" onclick="toggleDownloadSection()">
-                        <i class="fas fa-download"></i> Download from URL
-                    </button>
-                </div>
-            </nav>
-            <div id="downloadSection" class="download-section hidden">
-                <h3><i class="fas fa-download"></i> Download from URL</h3>
-                <div>Enter a Git URL to download a script directly:</div>
-                <input type="text" id="downloadUrl" class="download-input" placeholder="https://github.com/username/repo.git">
-                <br>
-                <button class="download-btn" onclick="downloadFromUrl()">
-                    <i class="fas fa-download"></i> Download
-                </button>
-                <button class="download-btn cancel" onclick="toggleDownloadSection()">
-                    Cancel
-                </button>
-            </div>
-
+                  <!-- Tab Navigation -->
+                  <nav class="tab">
+                      <button id="verifiedTab" class="selected" onclick="selectTab('verified')">
+                          <i class="fas fa-check"></i> Verified scripts
+                      </button>
+                      <button id="communityTab" onclick="selectTab('community')">
+                          <i class="fas fa-shapes"></i> Community scripts
+                      </button>
+                      <div class="filler"></div>
+                      <div class='download-container'>
+                          <button id="toggleDownloadBtn" class="download-btn" onclick="toggleDownloadSection()">
+                              <i class="fas fa-download"></i> Download from URL
+                          </button>
+                      </div>
+                  </nav>
+                  <div id="downloadSection" class="download-section hidden">
+                      <h3><i class="fas fa-download"></i> Download from URL</h3>
+                      <div>Enter a Git URL to download a script directly:</div>
+                      <div class='git-form'>
+                        <input type="text" id="downloadUrl" class="download-input" placeholder="The git url (example: https://github.com/username/repo.git)">
+                        <input type="text" id="branch" class="download-input" placeholder="The git branch (optional)">
+                      </div>
+                      <a target="_blank" id='clone-url' class="download-btn">
+                          <i class="fas fa-download"></i> Download
+                      </a>
+                      <button class="download-btn cancel" onclick="toggleDownloadSection()">
+                          Cancel
+                      </button>
+                  </div>
                   <section id="verifiedSection" class="minimalItemsContainer">
-                      <!-- Search Input -->
-                      
                       <div class="community">
                         <div class="community_item">
                           <h3>What is a verified script?</h3>

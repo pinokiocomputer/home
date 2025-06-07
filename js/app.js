@@ -249,29 +249,6 @@ function toggleDownloadSection() {
   }
 }
 
-// Download from URL function
-function downloadFromUrl() {
-  const url = document.getElementById('downloadUrl').value.trim();
-  if (!url) {
-    alert('Please enter a valid Git URL');
-    return;
-  }
-  
-  // Create download URL
-
-  let downloadURL
-  if (document.referrer) {
-    downloadURL = `${document.referrer}?mode=download&uri=${encodeURIComponent(url)}`
-  } else {
-    downloadURL = `pinokio://download?uri=${encodeURIComponent(url)}`
-  }
-  
-  // Try to open with pinokio protocol
-  window.location.href = downloadURL;
-  
-  // Hide the download section after initiating download
-  toggleDownloadSection();
-}
 
 // Load news/tweets
 async function loadNews() {
@@ -298,6 +275,27 @@ async function renderNews() {
   
 }
 
+function refreshClone() {
+  let git = document.querySelector("#downloadUrl").value
+  let branch = document.querySelector("#branch").value
+  let app = document.referrer
+  let downloadURL
+  if (app) {
+    if (branch && branch.length > 0) {
+      downloadURL = `${app}?mode=download&uri=${git}&branch=${branch}`
+    } else {
+      downloadURL = `${app}?mode=download&uri=${git}`
+    }
+  } else {
+    if (branch && branch.length > 0) {
+      downloadURL = `pinokio://download?uri=${git}&branch=${branch}`
+    } else {
+      downloadURL = `pinokio://download?uri=${git}`
+    }
+  }
+  document.querySelector("#clone-url").href = downloadURL
+}
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
   updateTheme()
@@ -310,4 +308,10 @@ document.addEventListener('DOMContentLoaded', function() {
   if (searchInput) {
     searchInput.addEventListener('input', searchItems);
   }
+  document.querySelector("#downloadUrl").addEventListener("input", (e) => {
+    refreshClone()
+  })
+  document.querySelector("#branch").addEventListener("input", (e) => {
+    refreshClone()
+  })
 });
