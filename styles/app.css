@@ -440,8 +440,12 @@ body.dark .apps-header {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.community_item {
+body.dark .community {
+  background: rgba(0,0, 250, 0.06);
+  color: white;
+  border: 2px solid rgba(0,0,250, 0.2);
 }
+
 
 .community_item:last-child {
   margin-bottom: 0;
@@ -452,6 +456,9 @@ body.dark .apps-header {
   color: rgba(0,0,0,0.9);
   padding-left: 10px;
   border-left: 10px solid black;
+}
+body.dark .community_item h3 {
+  border-color: white;
 }
 
 body.dark .community_item h3 {

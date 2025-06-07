@@ -2,6 +2,7 @@ var _currentPosts
 var masonryContainer
 var columns
 var columnCount
+var twitter_theme
 function loadTwitterWidget(callback) {
     if (!window.twttr) {
         // Create script tag
@@ -134,7 +135,7 @@ function loadTweets() {
               tweetDiv.innerHTML = '';
 
               window.twttr.widgets.createTweet(tweetId, tweetDiv, {
-                  theme: 'light',
+                  theme: twitter_theme,
                   conversation: 'none',
                   cards: 'visible',
 //                        width: 350
@@ -210,6 +211,7 @@ function initMasonryColumns() {
         
 // Render tweets using Twitter's embedded tweet widget
 function renderTweets(el, posts) {
+    twitter_theme = (document.body.getAttribute("data-theme") === "dark" ? "dark": "light")
     _currentPosts = posts
     const tweetsContainer = el
     if (_currentPosts.length > 0) {
