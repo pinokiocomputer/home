@@ -20,29 +20,102 @@
 <body>
     <div class="container">
         <main>
-            <section class="itemsContainer">
-                <div class="title">
-                    <i class="fas fa-circle-check"></i> Verified
+
+            <!-- Verified Scripts Section -->
+            <div class="grid">
+                <aside>
+                    <h2><i class="fas fa-rss"></i> News</h2>
+                    <div id="newsContainer">
+                        <!-- News/tweets will be loaded here -->
+                    </div>
+                </aside>
+                <div class='sections'>
+                  <h2 class="apps-header"><i class="fas fa-desktop"></i> Apps</h2>
+                  <input type="search" id="searchInput" class="input" placeholder="Search scripts from verified publishers">
+            <!-- Tab Navigation -->
+            <nav class="tab">
+                <button id="verifiedTab" class="selected" onclick="selectTab('verified')">
+                    <i class="fas fa-check"></i> Verified scripts
+                </button>
+                <button id="communityTab" onclick="selectTab('community')">
+                    <i class="fas fa-shapes"></i> Community scripts
+                </button>
+                <div class="filler"></div>
+                <div class='download-container'>
+                    <button id="toggleDownloadBtn" class="download-btn" onclick="toggleDownloadSection()">
+                        <i class="fas fa-download"></i> Download from URL
+                    </button>
                 </div>
-                <div class="description">Scripts from Verified Publishers</div>
-                <section class="items" id="featuredItems">
-                    <!-- Featured items will be loaded here -->
-                </section>
-            </section>
-            
-            <section class="itemsContainer">
-                <div class="title">Latest</div>
-                <div class="description">Latest Pinokio scripts from the community (tagged as 'pinokio' on GitHub)</div>
-                <section class="items" id="latestItems">
-                    <!-- Latest items will be loaded here -->
-                </section>
-            </section>
+            </nav>
+            <div id="downloadSection" class="download-section hidden">
+                <h3><i class="fas fa-download"></i> Download from URL</h3>
+                <div>Enter a Git URL to download a script directly:</div>
+                <input type="text" id="downloadUrl" class="download-input" placeholder="https://github.com/username/repo.git">
+                <br>
+                <button class="download-btn" onclick="downloadFromUrl()">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button class="download-btn cancel" onclick="toggleDownloadSection()">
+                    Cancel
+                </button>
+            </div>
+
+                  <section id="verifiedSection" class="minimalItemsContainer">
+                      <!-- Search Input -->
+                      
+                      <div class="community">
+                        <div class="community_item">
+                          <h3>What is a verified script?</h3>
+                          <div><strong>1. Verified Authors:</strong> Verified scripts are scripts from verified publishers.</div>
+                          <div><strong>2. How to get verified:</strong> Start by publishing as a community script and ask to be featured on <a href="https://discord.gg/TQdNwadtE4" target="_blank">Pinokio community Discord</a></div>
+                        </div>
+                      </div>
+                      <section class="minimal_items" id="featuredItems">
+                          <!-- Latest items will be loaded here -->
+                      </section>
+                  </section>
+                  
+                  <!-- Community Scripts Section -->
+                  <section id="communitySection" class="minimalItemsContainer hidden">
+                      <div class="community">
+                          <div class="community_item">
+                              <h3>What is a community script?</h3>
+                              <div><strong>1. No filter:</strong> This is a raw feed of pinokio scripts published by the community.</div>
+                              <div><strong>2. Automated:</strong> All github repositories tagged as 'pinokio' show up here automatically.</div>
+                              <div><strong>3. May not work:</strong> Remember, these scripts have NOT been vetted, and they may not work as you expect. If you decide to try these scripts, make sure to find the publisher on <a href="https://discord.gg/TQdNwadtE4" target="_blank">Pinokio community Discord</a> and ask first.</div>
+                          </div>
+                          <div class="community_item">
+                              <h3>Should you install?</h3>
+                              <div><strong>1. Why you need to be careful:</strong> Since Pinokio scripts can run system commands, you need to be careful with what you install and run.</div>
+                              <div><strong>2. [WARNING!!!] DO NOT install a community script unless you TRUST the person who published it.</strong></div>
+                              <div><strong>3. Ask:</strong> Even if you trust the publisher, ask around in <a href="https://discord.gg/TQdNwadtE4" target="_blank">the Pinokio community Discord</a> before installing anything. Ideally, the publisher should be on Discord.</div>
+                              <div><strong>4. Verify yourself:</strong> If you're adventureous, you can read through the script source code to <strong>verify yourself there's nothing wrong</strong>, and then install.</div>
+                          </div>
+                          <div class="community_item">
+                              <h3>How to get listed & verified</h3>
+                              <div><strong>1. Listing:</strong> To list your script here, simply add a topic named <strong>pinokio</strong> on your Github repo. It will automatically show up here. <a target="_blank" href="https://pinokiodocs.netlify.app/#/?id=list-your-script-on-the-directory">Learn more</a></div>
+                              <div><strong>2. When verification?</strong> If the publisher makes a request, or enough people request a community script to be verified, it may be promoted to the "Verified" status through <a href="https://github.com/pinokiofactory" target="_blank">Pinokio Factory</a></div>
+                              <div><strong>3. How verification works:</strong> The original publisher doesn't need to do anything (except for publishing as a community script). The Pinokio Factory Github organization may fork the original code, freeze the code, and THEN feature the frozen script on the "Verified" section.</div>
+                          </div>
+                      </div>
+                      <section class="minimal_items" id="latestItems">
+                          <!-- Latest items will be loaded here -->
+                      </section>
+                  </section>
+                </div>
+            </div>
         </main>
     </div>
     <script>
       var page = "app"
+      var currentTab = "verified"
+      var allFeaturedItems = []
+      var filteredFeaturedItems = []
+      var allLatestItems = []
+      var filteredLatestItems = []
     </script>
     <script src="js/config.js"></script>
+    <script src="js/tweet.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

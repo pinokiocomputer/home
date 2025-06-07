@@ -324,7 +324,7 @@ body.dark .posts h2 {
 }
 
 .tweet-item {
-  width: 350px;
+  width: 300px;
   margin-bottom: 2px;
   box-sizing: border-box;
 }
@@ -339,7 +339,7 @@ body.dark .posts h2 {
   justify-content: center;
   align-items: center;
   height: 200px;
-  width: 350px;
+  width: 300px;
 }
 
 .spinner {
@@ -366,6 +366,6 @@ body.dark .posts h2 {
 .tweet-item iframe,
 .tweet-item .twitter-tweet,
 .tweet-item blockquote {
-  width: 350px !important;
-  max-width: 350px !important;
+  width: 300px !important;
+  max-width: 300px !important;
 }
