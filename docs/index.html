@@ -52,7 +52,9 @@
     window.onload = () => {
       let el = document.querySelector("#" + location.hash.split("=")[1])
       if (el) {
-        scroll(el)
+        setTimeout(() => {
+          scroll(el)
+        }, 500)
       }
     }
     document.addEventListener("DOMContentLoaded", () => {
