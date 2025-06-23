@@ -42,12 +42,38 @@
           hook.doneEach(function () {
             // This runs after the page content is rendered
             console.log('Page rendered:', location.hash);
-            // You can now manipulate the DOM, attach events, etc.
-            let el = document.querySelector("#" + location.hash.split("=")[1])
-            console.log(el)
-            if (el) {
-              scroll(el)
+
+            const images = Array.from(document.querySelectorAll('img'));
+            if (images.length === 0) {
+              afterImagesLoaded();
+            } else {
+              let loaded = 0;
+              images.forEach(img => {
+                if (img.complete) {
+                  if (++loaded === images.length) afterImagesLoaded();
+                } else {
+                  img.addEventListener('load', () => {
+                    if (++loaded === images.length) afterImagesLoaded();
+                  });
+                  img.addEventListener('error', () => {
+                    if (++loaded === images.length) afterImagesLoaded();
+                  });
+                }
+              });
             }
+
+            function afterImagesLoaded() {
+              console.log('All images loaded');
+              // Do something now
+              // You can now manipulate the DOM, attach events, etc.
+              let el = document.querySelector("#" + location.hash.split("=")[1])
+              console.log(el)
+              if (el) {
+                scroll(el)
+              }
+            }
+
+
             document.querySelector(".sidebar").addEventListener("click", (e) => {
               if (e.target.classList.contains("section-link")) {
                 let el = document.querySelector("#" + e.target.href.split("=")[1])
