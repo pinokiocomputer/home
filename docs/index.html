@@ -29,6 +29,10 @@
 <body>
   <div id="app"></div>
   <script>
+    const scroll = (el) => {
+      const y = el.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({top: y, behavior: "smooth" });
+    }
     window.$docsify = {
       name: 'Pinokio',
       themeColor: "#111111",
@@ -44,6 +48,12 @@
             if (el) {
               scroll(el)
             }
+            document.querySelector(".sidebar").addEventListener("click", (e) => {
+              if (e.target.classList.contains("section-link")) {
+                let el = document.querySelector("#" + e.target.href.split("=")[1])
+                scroll(el)
+              }
+            })
           });
         },
         (hook, vm) => {
@@ -57,10 +67,6 @@
         }
       ]
     }
-    const scroll = (el) => {
-      const y = el.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({top: y, behavior: "smooth" });
-    }
 //    window.onload = () => {
 //      let el = document.querySelector("#" + location.hash.split("=")[1])
 //      if (el) {
@@ -69,14 +75,6 @@
 //        }, 500)
 //      }
 //    }
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelector(".sidebar").addEventListener("click", (e) => {
-        if (e.target.classList.contains("section-link")) {
-          let el = document.querySelector("#" + e.target.href.split("=")[1])
-          scroll(el)
-        }
-      })
-    })
   </script>
   <!-- Docsify v4 -->
   <!--
