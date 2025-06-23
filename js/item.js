@@ -266,7 +266,7 @@ function renderItemProfile(item) {
                         <i class="fas fa-download"></i> One-Click Install with Pinokio
                     </a>
                     <footer>
-                        <span>Don't have Pinokio?</span> <a href="https://pinokiocomputer.github.io/program.pinokio.computer/#/?id=install" target="_blank">Download Pinokio</a> first.
+                        <span>Don't have Pinokio?</span> <a href="docs/#/?id=install" target="_blank">Download Pinokio</a> first.
                     </footer>
                 </div>
                 <div class="right">

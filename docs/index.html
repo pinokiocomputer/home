@@ -31,9 +31,8 @@
   <script>
     window.$docsify = {
       name: 'Pinokio',
-      repo: 'https://github.com/pinokiocomputer/program.pinokio.computer',
       themeColor: "#111111",
-      maxLevel: 2,
+      maxLevel: 3,
       plugins: [
         (hook, vm) => {
           hook.ready(() => {
@@ -46,13 +45,22 @@
         }
       ]
     }
+    const scroll = (el) => {
+      const y = el.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({top: y, behavior: "smooth" });
+    }
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         let el = document.querySelector("#" + location.hash.split("=")[1])
         if (el) {
-          const y = el.getBoundingClientRect().top + window.pageYOffset;
-          window.scrollTo({top: y, behavior: "smooth" });
+          scroll(el)
         }
+        document.querySelector(".sidebar").addEventListener("click", (e) => {
+          if (e.target.classList.contains("section-link")) {
+            let el = document.querySelector("#" + e.target.href.split("=")[1])
+            scroll(el)
+          }
+        })
       }, 1000)
     })
   </script>

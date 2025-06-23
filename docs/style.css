@@ -1,6 +1,9 @@
 body {
+  color: black;
+/*
   background: rgb(27, 28, 29);
   color: white;
+  */
 }
 .videoWrapper {
   position: relative;
@@ -20,36 +23,50 @@ a.btn {
   display: inline-block;
   padding: 10px 20px;
   margin: 5px 5px 5px 0;
+  background: royalblue;
+  color: white !important;
+  /*
   background: black;
-  text-decoration: none;
   color: white;
-  border-radius: 10px;
-  font-weight: bold;
+  */
+  text-decoration: none;
+  border-radius: 3px;
+  font-weight: bold !important;
 }
 .sidebar {
   background: none;
+  /*
   color: white;
+  */
 }
 blockquote {
-  border-left: 10px solid rgba(145,208,118,1) !important;
+  border-left: 10px solid royalblue !important;
   padding: 10px;
   /*
   background: rgba(154,205,50,0.1);
   */
+  /*
   background: rgba(145,208,118,0.1);
   color: rgba(255,255,255,0.9) !important;
+  */
 
+}
+img.logo {
+  width: 200px;
 }
 .app-name {
   display: none;
 }
 .markdown-section {
+  font-family: Sans-serif;
   max-width: 800px;
   margin: 0;
 }
+/*
 a.anchor:hover {
  color: white; 
 }
+*/
 /*
 .markdown-section a {
   width: 100%;
@@ -69,9 +86,9 @@ a.anchor:hover {
   object-fit: contain;
 }
 .markdown-section h1 {
-  font-size: 180px;
-  line-height: 140px;
-  letter-spacing: -4px;
+  font-size: 100px;
+  line-height: 100px;
+  letter-spacing: -5px;
   /*
   font-family: sans-serif;
   letter-spacing: -10px;
@@ -81,9 +98,11 @@ a.anchor:hover {
   border-left: 40px solid white;
   */
   text-transform: uppercase;
+  /*
   font-family: "Micro 5", sans-serif;
   font-weight: 400;
   font-style: normal;
+  */
 
 }
 .hidden {
@@ -121,12 +140,12 @@ a.anchor:hover {
   display: inline-block;
   margin: 15px 0 0;
   padding-left: 10px;
-  border-left: 20px solid white;
+  border-left: 20px solid black;
 }
 .markdown-section h5 {
   font-size: 20px;
   line-height: 20px;
-  border-left: 15px solid white;
+  border-left: 15px solid black;
   border-radius: 20px;
   padding-left: 10px;
   margin: 30px 0 0 0;
@@ -142,26 +161,34 @@ a.anchor:hover {
 }
 */
 a.anchor span {
+/*
   color: white;
+  */
+  color: rgba(0,0,0,0.9);
   word-wrap: break-word;
 }
 .sidebar li {
   margin: 0;
 }
 .sidebar ul li.active a {
+/*
   color: white;
+  */
 }
 .sidebar ul li a {
+/*
   color: white;
+  */
+  color: black;
   line-height: 22px;
 }
 .markdown-section h6 a.anchor span {
-  color: #91d076;
+  color: gray;
 }
 .markdown-section h6 {
+  margin: 20px 0 0;
   padding: 5px 10px;
-  border-left: 6px solid #91d076;
-  margin: 0;
+  border-left: 6px solid gray;
 }
 .markdown-section>:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) code {
   line-height: 1rem;
@@ -173,28 +200,36 @@ a.anchor span {
   color: rgba(255,255,255,0.8);
 }
 .markdown-section pre {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.9);
 }
 .markdown-section code {
   background: none;
 }
 .markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section strong {
-  color: #91d076; 
+  font-weight: bold;
+}
+
+.markdown-section li {
 }
 .markdown-section li p {
   margin: 0;
 }
 .markdown-section ol, .markdown-section p, .markdown-section ul {
-  line-height: 1.5rem;
+  line-height: 18px;
+  font-size: 14px;
 }
 .markdown-section a {
+  font-weight: lighter;
+  color: royalblue;
+  text-decoration: none;
 /*
   color: #91d076;
-  */
   color: cornflowerblue;
+  */
 }
-hr {
-  border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+.markdown-section hr {
+  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+  margin: 50px 0 !important;
 }
 
 
