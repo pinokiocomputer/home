@@ -49,16 +49,13 @@
       const y = el.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({top: y, behavior: "smooth" });
     }
-    document.addEventListener("DOMContentLoaded", () => {
+    window.onload = () => {
       let el = document.querySelector("#" + location.hash.split("=")[1])
       if (el) {
-        setTimeout(() => {
-          scroll(el)
-        }, 500)
-        setTimeout(() => {
-          scroll(el)
-        }, 100)
+        scroll(el)
       }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".sidebar").addEventListener("click", (e) => {
         if (e.target.classList.contains("section-link")) {
           let el = document.querySelector("#" + e.target.href.split("=")[1])
