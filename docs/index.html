@@ -33,6 +33,10 @@
       const y = el.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({top: y, behavior: "smooth" });
     }
+    let saved_hash
+    if (location.hash) {
+      saved_hash = location.hash 
+    }
     window.$docsify = {
       name: 'Pinokio',
       themeColor: "#111111",
@@ -66,12 +70,13 @@
               console.log('All images loaded');
               // Do something now
               // You can now manipulate the DOM, attach events, etc.
+              location.hash = saved_hash
               let el = document.querySelector("#" + location.hash.split("=")[1])
               console.log(el)
               if (el) {
-                setTimeout(() => {
+//                setTimeout(() => {
                   scroll(el)
-                }, 1000)
+//                }, 1000)
               }
             }
 
