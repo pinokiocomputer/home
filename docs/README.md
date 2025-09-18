@@ -5445,9 +5445,45 @@ Check whether a command exists (can be run in a terminal), and if so, return the
 
 ---
 
+## exists
+
+Check whether a file or folder exists at the specified relative path
+
+```json
+{
+  "run": [{
+    "when": "{{!exists('app')}}", // run the git clone only if the 'app' path doesn't exist
+    "method": "shell.run",
+    "params": {
+      "message": "git clone https://github.com/abc/def app"
+    }
+  }]
+}
+```
+
+---
+
+## running
+
+Check whether a script file at the specified relative path is currently running
+
+```json
+{
+  "run": [{
+    "when": "{{!running('start.js')}}", // start the script if not already running
+    "method": "script.start",
+    "params": {
+      "uri": "start.js"
+    }
+  }]
+}
+```
+
+---
+
 ## kernel
 
-The kernel JavaScript API
+The kernel JavaScript API. Not intended for usage inside template expressions. Only use when in pure JavaScript.
 
 - `kernel.which()`: same as the [which](#which) in template expressions but can be used in javascript. return the absolute path of any given command. if the command doesn't exist under PATH, returns null.
 - `kernel.exists()`: check if a path exists
@@ -5472,6 +5508,8 @@ let command_path = kernel.which(command)
 #### examples
 
 ##### run command if it exists
+
+When using as a part of a script template expression, use the native `which` method instead of `kernel.which`:
 
 ```json
 {
@@ -5549,10 +5587,12 @@ kernel.exists(...pathChunks)
 
 ##### inside a script
 
+When used inside a script template expression, use the native `exists(relative_path)` method instead of `kernel.exists(path_chunks)`.
+
 ```json
 {
   "run": [{
-    "when": "{{!kernel.exists(cwd, 'env')}}",
+    "when": "{{!exists('env')}}",
     "method": "script.start",
     "params": {
       "uri": "install.js"
@@ -5561,11 +5601,6 @@ kernel.exists(...pathChunks)
 }
 ```
 
-When the template interpreter encounters `kernel.exists`, it merges all the supplied chunks to construct the full path.
-
-1. First resolve the path using the [cwd](#cwd) variable and the string `"env"`, which will resolve to the `env` folder in the current directory.
-2. Then it checks if that path exists.
-3. if exists, returns `true`, otherwise returns `false`
 
 ##### inside pinokio.js
 
@@ -5598,36 +5633,6 @@ module.exports = {
       }]
     }
   }
-}
-```
-
-### kernel.path
-
-Get the absolute path
-
-#### syntax
-
-```
-let absolute_path = kernel.path(...pathChunks)
-```
-
-- `pathChunks`: any number of path chunks.
-  - the chunks will be combined to resolve the full path (Internally using the node.js `path.resolve(...pathChunks)`)
-  - The chunks must resolve to an absolute path when combined.
-
-#### examples
-
-##### check if a path exists, and run the script if it exists
-
-```json
-{
-  "run": [{
-    "when": "{{kernel.exists(kernel.path('api/comfy/start.js'))}}",
-    "method": "script.start",
-    "params": {
-      "uri": "{{kernel.path('api/comfy/start.js')}}"
-    }
-  }]
 }
 ```
 
