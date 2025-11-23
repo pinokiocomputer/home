@@ -91,7 +91,9 @@ body.dark .logo {
 .navLinks {
   display: flex;
   gap: 18px;
-  margin-left: 28px;
+  margin-left: auto;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .navItem {
