@@ -1,11 +1,60 @@
-// Dynamic text animation
-const dynamicTextItems = [
-  "AI apps",
-  "Terminal apps", 
-  "Bots",
-  "Servers",
-  "Databases",
-  "ANYTHING."
+// Hero highlight data
+const heroHighlightItems = [
+  {
+    icon: "fa-solid fa-cloud-bolt",
+    title: "All-in-One",
+    description: "All-in-one environment ready to run any web app or AI server locally with Python, Node.js, Git, Conda, and more built in."
+  },
+  {
+    icon: "fa-solid fa-infinity",
+    title: "Universal Interface",
+    description: "Browse web UIs, consoles, interactive terminals, and editors from one window."
+  },
+  {
+    icon: "fa-solid fa-server",
+    title: "CLI Server",
+    description: "Run any CLI app as a web server with tabs, push alerts, remote access, and 1-click launchers."
+  },
+  {
+    icon: "fa-solid fa-database",
+    title: "Universal Agent Memory",
+    description: "Flat-file logs for every terminal and agent so any AI can recall and collaborate."
+  },
+  {
+    icon: "fa-solid fa-upload",
+    title: "Publish to Localhost",
+    description: "Package and share apps with auto-generated launchers and 1-click GitHub publish."
+  },
+  {
+    icon: "fa-solid fa-border-all",
+    title: "Cell",
+    description: "Adaptive container elements that can become anything - AI, terminals, apps, remote machines."
+  },
+  {
+    icon: "fa-solid fa-code-branch",
+    title: "1-Click Version Control",
+    description: "Jump across versions, commit, and publish to GitHub instantly."
+  },
+  {
+    icon: "fa-solid fa-diagram-project",
+    title: "LAN-Wide Web (LWW)",
+    description: "Surf every machine on your LAN like the public web with automatic discovery."
+  },
+  {
+    icon: "fa-solid fa-link",
+    title: "Instant HTTPS Domains",
+    description: "Get fixed .localhost HTTPS URLs for any local app or external server."
+  },
+  {
+    icon: "fa-solid fa-key",
+    title: "Login with Localhost",
+    description: "Use Hugging Face, GitHub, X.com OAuth inside localhost apps."
+  },
+  {
+    icon: "fa-solid fa-display",
+    title: "Background Mode",
+    description: "Run Pinokio as a menubar background service and open it in a browser."
+  }
 ];
 
 function getQueryParam(param) {
@@ -13,17 +62,36 @@ function getQueryParam(param) {
     return urlParams.get(param);
 }
 
-let currentIndex = 0;
-const dynamicTextElement = document.getElementById('dynamicText');
+function renderHeroHighlights() {
+  const container = document.getElementById('heroHighlights');
+  if (!container) return;
 
-function updateDynamicText() {
-  dynamicTextElement.textContent = dynamicTextItems[currentIndex];
-  currentIndex = (currentIndex + 1) % dynamicTextItems.length;
-}
+  heroHighlightItems.forEach(item => {
+    const highlight = document.createElement('div');
+    highlight.className = 'heroHighlight';
 
-// Start the animation
-if (dynamicTextElement) {
-  setInterval(updateDynamicText, 1500);
+    const heading = document.createElement('div');
+    heading.className = 'heroHighlightHeading';
+
+    if (item.icon) {
+      const icon = document.createElement('i');
+      icon.className = `heroHighlightIcon ${item.icon}`;
+      heading.appendChild(icon);
+    }
+
+    const title = document.createElement('div');
+    title.className = 'heroHighlightTitle';
+    title.textContent = item.title;
+    heading.appendChild(title);
+
+    const description = document.createElement('div');
+    description.className = 'heroHighlightDescription';
+    description.textContent = item.description;
+
+    highlight.appendChild(heading);
+    highlight.appendChild(description);
+    container.appendChild(highlight);
+  });
 }
 
 // Load featured items from featured.json
@@ -155,8 +223,10 @@ function createItemElement(item, type) {
 
 function updateTheme() {
   const theme = getQueryParam('theme');
-  document.querySelector("body").classList.add(theme)
-  document.querySelector("body").setAttribute("data-theme", theme)
+  if (theme) {
+    document.querySelector("body").classList.add(theme)
+    document.querySelector("body").setAttribute("data-theme", theme)
+  }
 }
 
 // Tab selection function
@@ -299,6 +369,7 @@ function refreshClone() {
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
   updateTheme()
+  // renderHeroHighlights();
   renderFeaturedItems();
   fetchAndRenderLatestItems();
   renderNews();
@@ -308,10 +379,16 @@ document.addEventListener('DOMContentLoaded', function() {
   if (searchInput) {
     searchInput.addEventListener('input', searchItems);
   }
-  document.querySelector("#downloadUrl").addEventListener("input", (e) => {
-    refreshClone()
-  })
-  document.querySelector("#branch").addEventListener("input", (e) => {
-    refreshClone()
-  })
+  const downloadUrlInput = document.querySelector("#downloadUrl");
+  const branchInput = document.querySelector("#branch");
+  if (downloadUrlInput) {
+    downloadUrlInput.addEventListener("input", () => {
+      refreshClone()
+    })
+  }
+  if (branchInput) {
+    branchInput.addEventListener("input", () => {
+      refreshClone()
+    })
+  }
 });

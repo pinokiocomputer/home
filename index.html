@@ -3,74 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pinokio</title>
+    <title>Pinokio: The Localhost Cloud</title>
     <link rel="icon" href="favicon.ico" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pinokio" />
-    <meta name="twitter:description" content="AI Browser"/>
+    <meta name="twitter:title" content="Pinokio: The Localhost Cloud" />
+    <meta name="twitter:description" content="Cloud infrastructure without the cloud. Deploy like it's Vercel. Run like it's localhost."/>
     <meta name="twitter:image" content="https://pinokiocomputer.github.io/homepage/poster.png" />
     <meta property="og:url" content="https://pinokiocomputer.github.io/homepage" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Pinokio" />
-    <meta property="og:description" content="AI Browser" />
+    <meta property="og:title" content="Pinokio: The Localhost Cloud" />
+    <meta property="og:description" content="Cloud infrastructure without the cloud. Deploy like it's Vercel. Run like it's localhost." />
     <meta property="og:image" content="https://pinokiocomputer.github.io/poster.png" />
     <link rel="stylesheet" href="styles/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
-    <nav class="nav">
+    <nav class="nav clean">
         <a class="logo" href=".">
-            <img src="images/pinokio.png" width="50" height="50" alt="Pinokio">
+            <img src="images/pinokio.png" width="42" height="42" alt="Pinokio logo">
             <div class="brand">pinokio</div>
         </a>
-        <div class="flexible"></div>
-        <a class="navItem" href="https://discord.gg/TQdNwadtE4"><i class="fab fa-discord"></i> <span>Discord</span></a>
-        <a class="navItem" href="https://github.com/pinokiocomputer/pinokio"><i class="fab fa-github"></i> <span>GitHub</span></a>
-        <a class="navItem" href="https://x.com/cocktailpeanut"><i class="fa-brands fa-square-x-twitter"></i> <span>X.com</span></a>
+        <div class="navLinks">
+            <a class="navItem" href="docs">Docs</a>
+            <a class="navItem" href="https://github.com/pinokiocomputer/pinokio">GitHub</a>
+            <a class="navItem" href="https://discord.gg/TQdNwadtE4">Discord</a>
+        </div>
+        <div class="navActions">
+            <a class="ghostButton" href="https://x.com/cocktailpeanut">News</a>
+            <a class="pillButton" href="download.html">Download</a>
+        </div>
     </nav>
     
-    <div class="container">
-        <main>
-            <div class="header">
-                <h1>
-                    <div>Install, Run & Control</div>
-                    <div class="dynamic" id="dynamicText">Everything</div>
-                    <div>on Your Computer</div>
-                    <div>with 1 Click.</div>
-                </h1>
-                <div class="subtitle">Pinokio is a browser that lets you install, run, and manage ANY server application, locally.</div>
-                <div class="btnRow">
-                    <a class="btn" href="docs/#/?id=install">
-                        <i class="fas fa-download"></i> Download
-                    </a>
-                    <a class="btn inverse" href="docs">
-                        <i class="fas fa-book"></i> Learn
-                    </a>
-                    <a class="btn inverse" href="https://x.com">
-                        <i class="fa-brands fa-square-x-twitter"></i> News
-                    </a>
-                </div>
+    <main class="page">
+        <section class="hero">
+            <div class="heroLogo">
+                <img src="images/pinokio.png" width="220" height="220" alt="Pinokio mascot">
             </div>
-            
-            <section class="itemsContainer">
-                <div class="title">
-                    <i class="fas fa-circle-check"></i> Verified
-                </div>
-                <div class="description">Scripts from Verified Publishers</div>
-                <section class="items" id="featuredItems">
-                    <!-- Featured items will be loaded here -->
-                </section>
+            <!--
+            <p class="heroEyebrow">Cloud-free, local-first</p>
+            -->
+            <p class="heroEyebrow">Your PC is the Cloud</p>
+            <!--
+            <h1>The 1-Click Offline Cloud</h1>
+            -->
+            <h1>The 1-Click Localhost Cloud</h1>
+            <p class="heroSubtitle">Run your own personal Internet on Mac, Windows, and Linux with one click.</p>
+            <div class="heroActions">
+                <a class="pillButton primary" href="download.html">
+                    <i class="fas fa-download"></i> Download
+                </a>
+                <a class="ghostButton" href="docs">
+                    <i class="fas fa-circle-info"></i> How it works
+                </a>
+                <div class="heroCaption">Available for macOS, Windows, and Linux</div>
+            </div>
+        </section>
+
+        <section class="itemsContainer contentBlock">
+            <div class="sectionHeader minimal">
+                <div class="title"><i class="fas fa-circle-check"></i> Verified</div>
+                <div class="description">Scripts from verified publishers</div>
+            </div>
+            <section class="items" id="featuredItems">
+                <!-- Featured items will be loaded here -->
             </section>
-            
-            <section class="itemsContainer">
+        </section>
+        
+        <section class="itemsContainer contentBlock">
+            <div class="sectionHeader minimal">
                 <div class="title">Latest</div>
                 <div class="description">Latest Pinokio scripts from the community (tagged as 'pinokio' on GitHub)</div>
-                <section class="items" id="latestItems">
-                    <!-- Latest items will be loaded here -->
-                </section>
+            </div>
+            <section class="items" id="latestItems">
+                <!-- Latest items will be loaded here -->
             </section>
-        </main>
-    </div>
+        </section>
+
+        <section class="itemsContainer contentBlock newsSection">
+            <div class="sectionHeader minimal">
+                <div class="title">News</div>
+                <div class="description">What we’re sharing lately</div>
+            </div>
+            <div id="newsContainer" class="newsGrid">
+                <!-- News/tweets will be loaded here -->
+            </div>
+        </section>
+    </main>
 
     <script>
       var page = "index"
