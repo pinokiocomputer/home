@@ -1,94 +1,591 @@
 # Pinokio
 
-## Introduction
 
-![animation.gif](animation.gif)
+Pinokio is your **Localhost Cloud**: run anything locally—apps, AI, agents, and web servers—on your own machines with a full toolchain built in.
 
-Pinokio is a browser that lets you **locally install, run, and automate any AI on your computer**. Everything you can run in your command line can be **automated with Pinokio script**, with a user-friendly UI.
+## 1. The Localhost Cloud
+All-in-one environment ready to run ANY web app/AI servers on your PC (Including Python, Node.js, Git, Conda, etc)
 
-You can use Pinokio to automate anything, including:
+### 1.1. 100% Local, running on your PC
 
-1. Install AI apps and models
-2. Manage and Run AI apps
-3. Create workflows to orchestrate installed AI apps
-4. Run any command to automate things on your machine
-5. and more...
+![nocloud.png](nocloud.png)
 
-## Community Help
+A lot of desktop apps nowadays are wrappers that mainly connect to some cloud service. **Pinokio is the exact opposite.**
 
-To stay on top of all the new APIs and app integrations,
+In fact, the main philosophy of Pinokio is: **"The Localhost Cloud"**, a cloud that runs privately and locally on your machines.
 
-### X (Twitter)
 
-> Follow [@cocktailpeanut](https://x.com/cocktailpeanut) on X to stay updated on all the new scripts being released and feature updates.
+### 1.2. All-in-One Platform
 
-### Discord
+Pinokio is like [Vercel](https://vercel.com/), but for localhost.
 
-> Join the [Pinokio discord](https://discord.gg/TQdNwadtE4) to ask questions and get help.
+Practically speaking, it's a platform that lets you host all kinds of web apps and AI apps on your personal computer, and use like they're from public web.
 
+In order to facilitate this, the platform comes with everything you need to build and run anything on your machine.
+
+- Python
+- Node.js
+- Git
+- UV
+- Conda
+- Homebrew
+- FFMpeg
+- Caddy (Reverse Proxy)
+- Can programmatically install ANYTHING additional.
+
+![allinone.png](allinone.png)
+
+### 1.3. Extensible
+
+Thanks to the built in package managers like **Conda** and **Homebrew**, it is extremely simple to automatically install additional packages.
+
+Of course, Pinokio has full access to shell commands so you can pretty much install anything even when there are no pre-packaged binaries.
+
+---
+
+## 2. Universal Interface
+
+Pinokio lets you not only browse websites, but also the backend and your file system, directly in the UI.
+
+### 2.1. Web view
+
+![frontend-browser.gif](frontend-browser.gif)
+
+### 2.2. Console view
+
+![backend-browser.gif](backend-browser.gif)
+
+### 2.3. Interactive web terminal view
+
+![interactive-terminal.gif](interactive-terminal.gif)
+
+### 2.4. CLI app in web terminal view
+
+![cli-agent.gif](cli-agent.gif)
+
+### 2.5. Web editor view
+
+![editor.gif](editor.gif)
+
+
+---
+
+## 3. CLI Server
+
+Pionkio lets you use any CLI app or agent over web UI. No need to enter any command, just run the CLI apps like you surf the web.
+
+### 3.1. Web terminal
+
+Pinokio automatically turns any CLI app into a server process so you can use them like web surfing.
+
+![web-terminal.gif](web-terminal.gif)
+
+You can also access them from any web browser since it's just a web page after all.
+
+![open-in-browser.gif](open-in-browser.gif)
+
+### 3.2. Multitask
+
+Each agent is a tab. Spin up as many tabs as you want for the same project.
+
+![multitask.gif](multitask.gif)
+
+
+### 3.3. Push notification
+
+Agents sends you push notifications when they're done, just like an instant messenger.
+
+All you need to do is just open the CLI agents in Pinokio, and you INSTANTLY get push notifications when they are done, REGARDLESS of which CLI agent.
+
+No more worrying about when the agents are done working. They literally message you.
+
+![push.gif](push.gif)
+
+### 3.4. 1-Click launcher
+
+Create a project AND kick off the agent with 1-click.
+
+![1click-create.gif](1click-create.gif)
+
+
+
+### 3.5. X-Ray mode
+
+The built-in browser lets you copy and paste any region into CLI.
+
+The best part is, it works for ANY CLI agent.
+
+![xray-mode.gif](xray-mode.gif)
+
+### 3.6. Remote control
+
+![build-from-phone.gif](build-from-phone.gif)
+
+You can connect to the machine from a remote device, such as your phone, and work on building, without ever touching your PC keyboard.
+
+### 3.7. Realtime collaboration
+
+The terminal can be opened by simply entering the URL and anyone can jump in and collaborate on the same terminal simultaneously.
+
+![collaborate.gif](collaborate.gif)
+
+
+### 3.8. Any CLI support
+
+It's very simple to create your own gateway.
+
+First, just create a folder under `~/pinokio/plugin` like this:
+
+```
+~/pinokio/plugin
+└── crush
+    ├── pinokio.js
+    └── crush.png
+```
+
+Next, write a `pinokio.js` file like this:
+
+```js
+module.exports = {
+  // display title
+  title: "Crush",
+  // display icon (relative path)
+  icon: "crush.png",
+  // external link
+  link: "https://github.com/charmbracelet/crush",
+  run: [{
+    method: "shell.run",
+    params: {
+      // The command to launch
+      message: "npx -y @charmland/crush",
+      // The path to launch the command from
+      path: "{{args.cwd}}",
+      // buffer size (default: 256)
+      buffer: 1024,
+      // allow input if input: true. otherwise an automated shell execution
+      input: true
+    }
+  }]
+}
+```
+
+
+```js
+module.exports = {
+  title: "Crush",
+  icon: "crush.png",
+  run: [{
+    method: "shell.run",
+    params: {
+      message: "npx -y @charmland/crush",
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }]
+}
+```
+
+That's all! Now you should:
+
+1. The CLI app should show up in the 1-click launcher
+2. The CLI app should show up in dev mode, so you can launch them inside each project
+
+
+---
+
+## 4. Universal Agent Memory
+
+Built-in memory for ALL AI agents. No complicated infrastructure. All based on flat files. No setup required. Everything just works, automatically.
+
+### 4.1. Every terminal event logged
+
+![logs.png](logs.png)
+
+
+Everything that happens in terminals is stored in memory. This includes:
+
+1. `/logs/api`: Automated script logs (Install script logs, launch script logs, etc.). The launch script logs contains the actual application execution logs.
+2. `/logs/dev`: CLI agent logs. All the conversation history with AI agents like codex, claude code, gemini cli, etc.
+3. `/logs/shell`: Actual shell usage. All user interaction with the terminal is logged.
+
+
+### 4.2. Agent agnostic
+
+![shared-memory.png](shared-memory.png)
+
+Everything is stored as files. No database. No API. Just flat files. This means there is no extra infra needed, and ANY AI agent can access the memory simply by reading the files.
+
+- CLI Agents: Codex CLI, Claude Code, Gemini CLI, etc.
+- Standalone Agents: Cursor, Windsurf, etc.
+
+### 4.3. Portable
+
+Everything is stored as files under the `logs` folder inside the project folder. This means you can just copy the entire project folder to another machine and pick up where you left off.
+
+![portable.png](portable.png)
+
+
+
+### 4.4. 1-click fix
+
+Since the agents are instructed to automatically reference the logs, debugging is as easy as saying "Fix". No need to paste error messages--the agents should just figure out by accessing the memory. It just works.
+
+![fix.gif](fix.gif)
+
+### 4.5. Cross-session memory
+
+Since everything is logged, every session can access the old history. This means you can start a new session and resume where you left off last session by asking the agent to first recall what happened so far.
+
+![session.gif](session.gif)
+
+
+
+### 4.6. Multi agent communication
+
+All agents can access the same memory, since the "memory" is simply a bunch of log files.
+
+This makes it easy to make multiple agents collaborate on tasks using the same memory, for example:
+
+1. Start codex CLI and ask it to write down a detailed plan.
+2. Start claude code and review plan from codex, and if nothing is wrong, build it.
+
+![communication.gif](communication.gif)
+
+
+---
+
+## 5. Publish to Localhost
+
+- Launchers: Publish apps to run locally
+- AI-Generated Launchers: Launchers are automatically generated when you build your apps in pinokio folders
+
+### 5.1. Package cloud apps to run locally
+
+![package.png](package.png)
+
+Pinokio makes it easy to package any cloud app into a pack that can run locally.
+
+1. Package an app in a launcher
+2. Publish the packed repository to git hosting services
+3. 1-Click download, install, and run.
+
+### 5.2. Automatic packaging with AI agents
+
+
+![automatic-packaging.png](automatic-packaging.png)
+
+While you can manually write the scripts that package the application, it's much simpler to just let an AI agent do it.
+
+And Pinokio has this agent built-in. All you need to do is build apps inside the Pinokio folder
+
+The Pinokio Packaging Agent seamlessly works with ANY AI coding agent:
+
+- CLI Agents: Claude code, Codex CLI, Gemini CLI, etc.
+- Standalone Applications: Cursor, Windsurf, etc.
+
+### 5.3. 1-Click Publish to GitHub
+
+Thanks to the "login with localhost" feature, it is as easy as 1 click to create github repositories and publish to them, which instantly makes your packaged apps available for download by other people.
+
+![git.gif](git.gif)
+
+---
+
+## 6. Cell
+Adaptive container elements that can become anything - AI, terminals, apps, remote machines.
+
+### 6.1. 1-click create
+
+Spin up a new cell with 1 click.
+
+![cell.gif](cell.gif)
+
+### 6.2. Parallel Browsing
+
+You can spin up multiple windows side by side. This lets you do all kinds of powerful things. For example,
+
+Talk to AI agent on one cell, watch the generated app on another cell:
+
+![agent-web.png](agent-web.png).
+
+Run an app on one cell, watch its backend logs on another cell:
+
+![console-web.png](console-web.png)
+
+Run an app while monitoring processes with terminal apps (like top, htop, etc.)
+
+![top.gif](top.gif)
+
+
+### 6.3. No limits
+
+You can keep creating as many cells as you want, each cell is independent from each other.
+
+![grid.gif](grid.gif)
 
 
 
 ---
 
-# Install
+## 7. 1-Click Version Control
 
-> 1. [Windows](#windows)
-> 2. [Mac](#mac)
-> 3. [Linux](#linux)
+One click version control 
 
-## Windows
+### 7.1. Jump across versions
 
-Make sure to follow **ALL steps below!**
+Switch to any past version you prefer.
 
-#### Step 1. Download
+![git_switch.gif](git_switch.gif)
 
-<a class='btn' href='https://github.com/pinokiocomputer/pinokio/releases/download/3.9.0/Pinokio-3.9.0-win32.zip'><i class="fa-brands fa-windows"></i> Download for Windows</a>
+### 7.2. Save versions
 
-#### Step 2. Unzip
+You can make git commits (save version) with one click
 
-Unzip the downloaded file and you will see a .exe installer file.
+![git_commit.gif](git_commit.gif)
 
+### 7.3. Create a repository on Github
 
-#### Step 3. Install
+Create your own repository on Github with 1-click.
 
-Run the installer file and you will be presented with the following Windows warning:
-
-![win_install.gif](win_install.gif)
-
-This message shows up because the app was downloaded from the Web, and this is what Windows does for apps downloaded from the web.
-
-To bypass this,
-
-1. Click **"More Info"**
-2. Then click **"Run anyway"**
-
----
-
-## Mac
+![git_create.gif](git_create.gif)
 
 
-#### Step 1. Download
+### 7.4. Publish to Github with 1-click
 
-<a class='btn' href='https://github.com/pinokiocomputer/pinokio/releases/download/3.9.0/Pinokio-3.9.0-darwin-arm64.zip'><i class="fa-brands fa-apple"></i> Download for Apple Silicon Mac (M1/M2/M3/M4)</a>&nbsp;&nbsp;<a class='btn' href='https://github.com/pinokiocomputer/pinokio/releases/download/3.9.0/Pinokio-3.9.0-darwin-intel.zip'><i class="fa-brands fa-apple"></i> Download for Intel Mac</a>
+Publish your project to github with one click.
+
+![git_publish.gif](git_publish.gif)
 
 
-#### Step 2. Install (IMPORTANT!!)
 
-![background.gif](background.gif)
+### 7.5. Automatic Version Control
 
-The Pinokio Mac installer ships with [Sentinel](https://itsalin.com/appInfo/?id=sentinel) built in. Sentinel lets you run open source apps that are NOT on the Apple App store (which Pinokio is at the moment).
-
-You just need to drag and drop the installed Pinokio.app onto Sentinel to "Remove app from Quarantine".
+Simply by creating a project in Pinokio folders, you get version control out of the box.
 
 
 ---
 
-## Linux
+## 8. LWW (LAN-Wide-Web)
 
-For linux, you can download and install directly from the latest release on Github (Scroll down to the bottom of the page for all the binaries):
+Pinokio automatically creates a private web made up of all the machines on your office/home network (LAN --- Local Area Network)
 
-<a class='btn' href='https://github.com/pinokiocomputer/pinokio/releases/tag/3.9.0'><i class="fa-brands fa-linux"></i> Go to the Releases Page</a>
+
+### 8.1. Automatic Localhost Discovery
+
+
+![localhost_discovery.gif](localhost_discovery.gif)
+
+Pinokio automatically discovers ALL servers running on your machine (localhost), regardless of whether it was launched by Pinokio or not.
+
+For example, external applications that operate based on a server will be instantly accessible for surfing from Pinokio. Some examples:
+
+- ComfyUI Desktop
+- LMStudio
+- Ollama
+- Any Docker Container
+
+
+
+### 8.2. Private web made up of PCs
+
+![lww.gif](lww.gif)
+
+
+Instantly discover and surf every machine on your LAN as if it's public web.
+
+
+
+---
+
+## 9. Instant HTTPS Web Domains
+Instant HTTPS URLs for all your localhost apps, like https://comfyui.localhost
+
+
+### 9.1. Custom Domains
+
+![custom_domain.png](custom_domain.png)
+
+Custom domains in pinokio is super simple---the folder names are the domain names. That's it.
+
+Give memorable domain names for locally installed apps. No more localhost URLs with ever-changing PORTs.
+
+Regardless of which port the apps launch from, they will ALWAYS have the fixed HTTPS domain.
+
+### 9.2. Automatic HTTPS for External Apps
+
+![instant_https.png](instant_https.png)
+
+**Simply by keeping Pinokio on,** ALL apps running on your machine (even external 3rd party apps like Ollama, LMStudio, etc) gets an HTTPS url.
+
+The convention is:
+
+```
+http://localhost:<PORT>
+```
+
+becomes
+
+```
+https://<PORT>.localhost
+```
+
+Examples:
+
+1. **Ollama:** which runs on http://localhost:11434 automatically gets the url: https://11434.localhost
+2. **LM Studio:** which runs on http://localhost:1234 automatically gets the url: https://1234.localhost
+3. **ComfyUI Desktop:** which runs on http://localhost:8188 automatically gets the url: https://8188.localhost
+
+### 9.3. Custom Domains for External Apps
+
+
+What if you want to get custom domains for ANY web server running on your machine? Even the ones that have NOTHING to do with Pinokio? (Llamabarn, Ollama, LM Studio, ComfyUI Desktop, etc.) Simple, simply create a folder with the custom name and connect a port.
+
+Here's an example where I instantly get a local web domain for a locally running LlamaBarn server (https://github.com/ggml-org/LlamaBarn):
+
+![llamalocalhost.gif](llamalocalhost.gif)
+
+1. Go to the network page
+2. Find the server you want
+3. Click "Get .localhost domain"
+4. Enter the domain and wait
+5. That's it! You can now start using `https://WHATEVER.localhost` directly in any browser.
+
+
+### 9.4. Auto-launch
+
+Running web applications locally usually means dealing with a frustrating workflow: launch the server, wait for it to start up, then finally begin working. You can't leave everything running indefinitely, so this tedious cycle repeats every time you need the app.
+Public web apps solve this perfectly—just open a URL and start working instantly. The server is always ready.
+
+What if we could have this exact experience for localhost apps? ---- If the app is not already running, automatically launch, and then redirect after launching when you enter the URL.
+
+And that's what Auto-launch does!
+
+#### When the app is not running
+
+When the app is not running already, it will automatically launch the app, and then redirect you it after launching.
+
+![autolaunch_before.gif](autolaunch_before.gif)
+
+#### When the app is already running
+
+When the app is already running, it will just work.
+
+![autolaunch_after.gif](autolaunch_after.gif)
+
+---
+
+## 10. Login with localhost
+
+![login.png](login.png)
+
+Pinokio lets you log into online services like Hugging Face, GitHub, X.com, etc. from Localhost apps.
+
+This means your localhost app can:
+
+1. Utilize online identity in the app logic (Example: Display the logged in user's profile and profile information in the web UI)
+2. Access online resources that require authentication (Example: Download HuggingFace models that require login, Clone private GitHub repositories, etc.)
+3. Publish to online from localhost apps: 1-Click publish a trained model to HuggingFace, 1-Click publish to github.)
+4. and more
+
+### 10.1. Huggingface
+
+When you log into Huggingface from Pinokio, all your apps that run in Pinokio will automatically have `HF_TOKEN` environment set when launching. This means it's possible to:
+
+1. Download private models from huggingface
+2. Publish to huggingface
+
+
+### 10.2. Github
+
+When you log into GitHub from Pinokio, without having to authenticate, you can simply run `git` commands or `gh` commands ([Github CLI](https://cli.github.com/)) to do things like:
+
+1. Create repos on github
+2. Clone private github repos
+3. Publish to github
+
+--- 
+
+## 11. Background Mode
+
+Pinokio can run in two different modes:
+
+1. **Desktop mode:** The default pinokio desktop app.
+2. **Background mode:** Launch Pinokio as a background process. Displays the Pinokio icon on the menubar, and opens the app in a regular browser.
+
+You can switch back and forth from the settings page:
+
+![background_mode.png](background_mode.png)
+
+When you switch to background mode, Pinokio will relaunch as a menubar item (No desktop app) and open a localhost URL at http://localhost:42000
+
+![menubar.png](menubar.png)
+
+
+---
+
+## 12. Use Cases
+
+### 12.1. Build a 1-click launcher
+
+Now anyone can build a 1-click launcher for any project just with a prompt.
+
+**Step 1. Click "Create" from Pinokio home**
+
+![home.png](home.png)
+
+
+**Step 2. Enter "1 click launcher for `project url or name`", set the project name, select the AI agent/IDE to work with, and click "Create"**
+
+![create.png](create.png)
+
+**Step 3. Build using your favorite AI agent/IDE**
+
+Pinokio will automatically instruct whichever AI agent or IDE you use to automatically structure the project with a built-in launcher. Build your launcher with your AI.
+
+![cursor_create.gif](cursor_create.gif)
+
+**Step 4. Launch**
+
+When the build has finished, switch to "Run" mode to launch the app using the created app its launcher.
+
+![cursor_run.gif](cursor_run.gif)
+
+**Step 5. Publish**
+
+Use the built-in github publish feature to publish your launcher to github, and share with others.
+
+
+### 12.2. Start a project with a built-in launcher
+
+It doesn't have to be about building a launcher for existing projects---you can create ANY project with 1-click launcher built-in!
+
+All you need to do is initialize your project from Pinokio.
+
+1. Click "Create" from Pinokio home
+2. Enter some prompt and select an AI agent to open with
+3. It should initialize a new project (with pinokio launcher built-in) and open the selected AI agent/IDE
+4. Start building
+5. once finished, open the "run" mode and check that the launcher and the app are working
+
+
+### 12.3. Your own custom app
+
+Take any app and customize it to your liking:
+
+1. Clone an app
+2. Go to dev mode and launch some AI agent
+3. Ask it to change the app to your liking (Change UI, etc.)
+
+### 12.4. Bring all apps to local
+
+Bring all online apps to local so you can run privately.
+
+If you have an app or an online service that you use often but want to run locally, simply:
+
+1. Click "create"
+2. Enter "a clone of the app at `app URL`". Feel free to make it as detailed as possible.
+3. All projects created inside Pinokio will automatically have a built-in 1-click launcher, so just switch to "run" mode after you finish building.
+
 
 ---
 
