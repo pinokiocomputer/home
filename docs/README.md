@@ -2862,6 +2862,189 @@ In this case we are trying to set the registry value, which needs to be run in a
 
 ---
 
+## app
+
+- [app.launch](#applaunch)
+- [app.search](#appsearch)
+- [app.info](#appinfo)
+- [app.refresh](#apprefresh)
+
+### app.launch
+
+#### syntax
+
+Launch a desktop application by id or name. If the app is missing and an `install` URL is provided, Pinokio opens an install modal, waits for detection, handles macOS first-launch prompts, and then launches.
+
+```json
+{
+  "method": "app.launch",
+  "params": {
+    "id": "<app_id>",
+    "app": "<app_name>",
+    "args": [ "<arg>", "..." ],
+    "refresh": <force_reindex>,
+    "install": "<install_url>",
+    "installTimeout": <milliseconds>,
+    "installPollInterval": <milliseconds>
+  }
+}
+```
+
+- `id`: optional app id (preferred when known).
+- `app` / `name`: app name to search for when id is unknown.
+- `args`: optional command-line arguments passed to the app.
+- `refresh`: force a rescan of installed apps before launching.
+- `install`: URL to open if the app is missing. When set, Pinokio shows an install modal, polls until the app is detected, prompts for macOS “Open in Finder” confirmation if needed, then launches.
+- `installTimeout`: how long to wait for detection during install flow (default 5 minutes).
+- `installPollInterval`: detection poll interval during install flow (default 5 seconds).
+
+#### return value
+
+An object describing the launch result, for example:
+
+```json
+{
+  "success": true,
+  "id": "com.apple.Safari",
+  "name": "Safari",
+  "kind": "macos-bundle",
+  "platform": "darwin",
+  "detail": "com.apple.Safari",
+  "pid": 12345,
+  "confidence": 0.92
+}
+```
+
+If the app is not found and no `install` is provided, the RPC throws an error with `code: "APP_NOT_FOUND"`.
+
+#### examples
+
+##### Launch by name
+
+```json
+{
+  "method": "app.launch",
+  "params": {
+    "app": "Safari"
+  }
+}
+```
+
+##### Launch with install flow
+
+```json
+{
+  "method": "app.launch",
+  "params": {
+    "app": "Cursor",
+    "args": ["--new-window"],
+    "install": "https://cursor.sh/",
+    "installTimeout": 600000,
+    "installPollInterval": 5000
+  }
+}
+```
+
+### app.search
+
+#### syntax
+
+```json
+{
+  "method": "app.search",
+  "params": {
+    "query": "<text>",
+    "limit": <max_results>,
+    "refresh": <force_reindex>
+  }
+}
+```
+
+- `query`: search text (app name, bundle id, executable name, etc.).
+- `limit`: max results (default 25).
+- `refresh`: force a rescan before searching.
+
+#### return value
+
+Array of app entries. Each entry typically includes `id`, `name`, `aliases`, `platform`, `kind`, and `detail` (e.g., bundle id or path).
+
+#### example
+
+```json
+{
+  "method": "app.search",
+  "params": {
+    "query": "chrome",
+    "limit": 5
+  }
+}
+```
+
+### app.info
+
+#### syntax
+
+```json
+{
+  "method": "app.info",
+  "params": {
+    "id": "<app_id>",
+    "refresh": <force_reindex>
+  }
+}
+```
+
+- `id`: required app id.
+- `refresh`: force a rescan before returning info.
+
+#### return value
+
+App metadata object: `id`, `name`, `aliases`, `platform`, `kind`, `detail`, and adapter-specific fields such as `path`/`execPath` when available.
+
+#### example
+
+```json
+{
+  "method": "app.info",
+  "params": {
+    "id": "com.microsoft.VSCode",
+    "refresh": true
+  }
+}
+```
+
+### app.refresh
+
+#### syntax
+
+```json
+{
+  "method": "app.refresh",
+  "params": {
+    "force": <boolean>
+  }
+}
+```
+
+- `force`: when true, rebuilds the app index from disk.
+
+#### return value
+
+Adapter-specific refresh result (usually a success flag or summary).
+
+#### example
+
+```json
+{
+  "method": "app.refresh",
+  "params": {
+    "force": true
+  }
+}
+```
+
+---
+
 ## input
 
 You can accept user input through the `input` API.
@@ -7385,4 +7568,3 @@ This use case is needed so often, that we've implemented a program that automati
 
 
 ---
-
