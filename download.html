@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Pinokio</title>
+    <title>Pinokio</title>
     <link rel="icon" href="favicon.ico" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pinokio: The Localhost Cloud" />
-    <meta name="twitter:description" content="Cloud infrastructure without the cloud. Deploy like it's Vercel. Run like it's localhost."/>
-    <meta name="twitter:image" content="https://pinokiocomputer.github.io/homepage/poster.png" />
-    <meta property="og:url" content="https://pinokiocomputer.github.io/homepage" />
+    <meta name="twitter:title" content="Pinokio: The 1-Click Localhost Cloud" />
+    <meta name="twitter:description" content="Run your own personal Internet on Mac, Windows, and Linux with one click."/>
+    <meta name="twitter:image" content="https://pinokio.co/poster.png" />
+    <meta property="og:url" content="https://pinokio.co" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Pinokio: The Localhost Cloud" />
-    <meta property="og:description" content="Cloud infrastructure without the cloud. Deploy like it's Vercel. Run like it's localhost." />
-    <meta property="og:image" content="https://pinokiocomputer.github.io/poster.png" />
+    <meta property="og:title" content="Pinokio: The 1-Click Localhost Cloud" />
+    <meta property="og:description" content="Run your own personal Internet on Mac, Windows, and Linux with one click." />
+    <meta property="og:image" content="https://pinokio.co/poster.png" />
     <link rel="stylesheet" href="styles/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -39,19 +39,194 @@
         <p class="downloadSubtitle">All links point to the latest stable version.</p>
 
         <div class="downloadOptions">
-            <a class="downloadCard" href="docs/#/?id=install">
-                <div class="osIcon"><i class="fab fa-apple"></i></div>
-                <div class="osLabel">macOS</div>
-            </a>
-            <a class="downloadCard" href="docs/#/?id=install">
-                <div class="osIcon"><i class="fab fa-linux"></i></div>
-                <div class="osLabel">Linux</div>
-            </a>
-            <a class="downloadCard" href="docs/#/?id=install">
-                <div class="osIcon"><i class="fab fa-windows"></i></div>
-                <div class="osLabel">Windows</div>
-            </a>
+            <div class="downloadCard macCard" data-platform="mac" data-label="macOS" data-url="docs/#/?id=install">
+                <div class="osHead">
+                    <div class="osIcon"><i class="fab fa-apple"></i></div>
+                    <div class="osLabel">macOS</div>
+                    <p class="osNote">Pick your Mac chip. We’ll suggest one.</p>
+                </div>
+                <div class="archButtons">
+                    <button type="button" class="archButton" data-arch="apple-silicon" data-label="macOS · Apple Silicon" data-url="docs/#/?id=install">
+                        <span>Apple Silicon (M1–M3)</span>
+                        <span class="archBadge">Recommended</span>
+                    </button>
+                    <button type="button" class="archButton" data-arch="intel" data-label="macOS · Intel" data-url="docs/#/?id=install">
+                        <span>Intel</span>
+                        <span class="archBadge">Recommended</span>
+                    </button>
+                </div>
+                <div class="archHint">We’ll recommend a build based on your browser.</div>
+            </div>
+            <div class="downloadCard" data-platform="linux" data-label="Linux" data-url="docs/#/?id=install">
+                <div class="osHead">
+                    <div class="osIcon"><i class="fab fa-linux"></i></div>
+                    <div class="osLabel">Linux</div>
+                    <p class="osNote">Run the AppImage or your distro’s package.</p>
+                </div>
+            </div>
+            <div class="downloadCard" data-platform="windows" data-label="Windows" data-url="docs/#/?id=install">
+                <div class="osHead">
+                    <div class="osIcon"><i class="fab fa-windows"></i></div>
+                    <div class="osLabel">Windows</div>
+                    <p class="osNote">Download the 64-bit installer.</p>
+                </div>
+            </div>
+        </div>
+        <div class="downloadAction">
+            <a class="downloadBtn primaryDownload disabled" href="docs/#/?id=install" aria-disabled="true">Download</a>
+            <div class="downloadHint">Select a platform to get the right download.</div>
         </div>
     </main>
+    <script>
+        (function () {
+            // Centralize download URLs here for easy editing.
+            const downloadLinks = {
+                mac: {
+                    silicon: 'https://github.com/pinokiocomputer/pinokio/releases/download/v5.0.0/Pinokio-5.0.0-arm64.dmg',
+                    intel: 'https://github.com/pinokiocomputer/pinokio/releases/download/v5.0.0/Pinokio-5.0.0.dmg',
+                },
+                linux: 'https://github.com/pinokiocomputer/pinokio/releases/tag/v5.0.0',
+                windows: 'https://github.com/pinokiocomputer/pinokio/releases/download/v5.0.0/Pinokio.exe'
+            };
+
+            const macCard = document.querySelector('.macCard');
+            const downloadBtn = document.querySelector('.primaryDownload');
+            const downloadHint = document.querySelector('.downloadHint');
+            const cards = document.querySelectorAll('.downloadCard');
+
+            if (!macCard || !downloadBtn || !downloadHint) return;
+
+            const siliconBtn = macCard.querySelector('[data-arch="apple-silicon"]');
+            const intelBtn = macCard.querySelector('[data-arch="intel"]');
+            const hint = macCard.querySelector('.archHint');
+
+            if (!siliconBtn || !intelBtn) return;
+
+            const clearSelection = () => {
+                cards.forEach(card => card.classList.remove('selected'));
+            };
+
+            const applyLinks = () => {
+                if (downloadLinks.mac) {
+                    if (downloadLinks.mac.silicon && siliconBtn) {
+                        siliconBtn.dataset.url = downloadLinks.mac.silicon;
+                    }
+                    if (downloadLinks.mac.intel && intelBtn) {
+                        intelBtn.dataset.url = downloadLinks.mac.intel;
+                    }
+                    macCard.dataset.url = downloadLinks.mac.default || downloadLinks.mac.silicon || downloadLinks.mac.intel || macCard.dataset.url;
+                }
+                const linuxCard = document.querySelector('[data-platform="linux"]');
+                if (downloadLinks.linux && linuxCard) {
+                    linuxCard.dataset.url = downloadLinks.linux;
+                }
+                const windowsCard = document.querySelector('[data-platform="windows"]');
+                if (downloadLinks.windows && windowsCard) {
+                    windowsCard.dataset.url = downloadLinks.windows;
+                }
+            };
+
+            const updateDownload = (label, url) => {
+                downloadBtn.href = url;
+                downloadBtn.textContent = `Download for ${label}`;
+                downloadBtn.classList.remove('disabled');
+                downloadBtn.setAttribute('aria-disabled', 'false');
+                downloadHint.textContent = `Ready to download ${label}.`;
+            };
+
+            const setRecommended = (target, label) => {
+                [siliconBtn, intelBtn].forEach(btn => btn.classList.remove('recommended', 'active'));
+                target.classList.add('recommended', 'active');
+                if (hint) hint.textContent = `Looks like ${label}. If not, pick the other build.`;
+                selectMac(target);
+            };
+
+            const setNeutralHint = () => {
+                if (hint) hint.textContent = 'Choose the build that matches your Mac.';
+            };
+
+            const selectMac = (btn) => {
+                clearSelection();
+                macCard.classList.add('selected');
+                [siliconBtn, intelBtn].forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const label = btn.getAttribute('data-label') || 'macOS';
+                const url = btn.getAttribute('data-url') || macCard.getAttribute('data-url');
+                updateDownload(label, url);
+            };
+
+            const selectPlatform = (card) => {
+                clearSelection();
+                card.classList.add('selected');
+                const label = card.getAttribute('data-label') || 'Download';
+                const url = card.getAttribute('data-url') || 'docs/#/?id=install';
+                updateDownload(label, url);
+            };
+
+            const preferSilicon = () => setRecommended(siliconBtn, 'Apple Silicon (M1–M3)');
+            const preferIntel = () => setRecommended(intelBtn, 'Intel');
+
+            applyLinks();
+
+            const ua = navigator.userAgent || '';
+            if (!/Mac/i.test(ua)) {
+                setNeutralHint();
+                return;
+            }
+
+            const fallback = () => {
+                const likelySilicon = /arm64|aarch64/i.test(ua) ||
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                if (likelySilicon) {
+                    preferSilicon();
+                } else {
+                    setNeutralHint();
+                }
+            };
+
+            const uaData = navigator.userAgentData;
+            if (uaData && uaData.platform === 'macOS' && uaData.getHighEntropyValues) {
+                uaData.getHighEntropyValues(['architecture'])
+                    .then(({ architecture }) => {
+                        if (architecture) {
+                            const lowerArch = architecture.toLowerCase();
+                            if (lowerArch.includes('arm')) {
+                                preferSilicon();
+                            } else if (lowerArch.includes('x86') || lowerArch.includes('intel') || lowerArch.includes('amd')) {
+                                preferIntel();
+                            } else {
+                                fallback();
+                            }
+                        } else {
+                            fallback();
+                        }
+                    })
+                    .catch(fallback);
+            } else {
+                fallback();
+            }
+
+            cards.forEach(card => {
+                if (card.classList.contains('macCard')) {
+                    card.addEventListener('click', () => selectMac(siliconBtn.classList.contains('active') ? siliconBtn : intelBtn));
+                } else {
+                    card.addEventListener('click', () => selectPlatform(card));
+                }
+            });
+
+            [siliconBtn, intelBtn].forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectMac(btn);
+                });
+            });
+
+            downloadBtn.addEventListener('click', (e) => {
+                if (downloadBtn.classList.contains('disabled')) {
+                    e.preventDefault();
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
