@@ -169,10 +169,7 @@
             applyLinks();
 
             const ua = navigator.userAgent || '';
-            if (!/Mac/i.test(ua)) {
-                setNeutralHint();
-                return;
-            }
+            const isMac = /Mac/i.test(ua);
 
             const fallback = () => {
                 const likelySilicon = /arm64|aarch64/i.test(ua) ||
@@ -184,26 +181,30 @@
                 }
             };
 
-            const uaData = navigator.userAgentData;
-            if (uaData && uaData.platform === 'macOS' && uaData.getHighEntropyValues) {
-                uaData.getHighEntropyValues(['architecture'])
-                    .then(({ architecture }) => {
-                        if (architecture) {
-                            const lowerArch = architecture.toLowerCase();
-                            if (lowerArch.includes('arm')) {
-                                preferSilicon();
-                            } else if (lowerArch.includes('x86') || lowerArch.includes('intel') || lowerArch.includes('amd')) {
-                                preferIntel();
+            if (isMac) {
+                const uaData = navigator.userAgentData;
+                if (uaData && uaData.platform === 'macOS' && uaData.getHighEntropyValues) {
+                    uaData.getHighEntropyValues(['architecture'])
+                        .then(({ architecture }) => {
+                            if (architecture) {
+                                const lowerArch = architecture.toLowerCase();
+                                if (lowerArch.includes('arm')) {
+                                    preferSilicon();
+                                } else if (lowerArch.includes('x86') || lowerArch.includes('intel') || lowerArch.includes('amd')) {
+                                    preferIntel();
+                                } else {
+                                    fallback();
+                                }
                             } else {
                                 fallback();
                             }
-                        } else {
-                            fallback();
-                        }
-                    })
-                    .catch(fallback);
+                        })
+                        .catch(fallback);
+                } else {
+                    fallback();
+                }
             } else {
-                fallback();
+                setNeutralHint();
             }
 
             cards.forEach(card => {
