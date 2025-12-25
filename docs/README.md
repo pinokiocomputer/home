@@ -5986,6 +5986,30 @@ apple
 
 ---
 
+## ram
+
+Total system RAM in GB
+
+Example:
+
+```json
+32
+```
+
+---
+
+## vram
+
+Total GPU VRAM in GB
+
+Example (NVIDIA 4090):
+
+```json
+24
+```
+
+---
+
 ## current
 
 The `current` variable points to the index of the currently executing instruction within the `run` array. For example:
