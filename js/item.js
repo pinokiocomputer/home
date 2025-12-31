@@ -30,39 +30,90 @@ async function fetchGitHubRepo(owner, repo) {
     }
 }
 
-// Fetch pinokio_meta.json for additional data
-async function fetchPinokioMeta(repoFullName) {
+function resolveRepoFileUrl(repoFullName, assetPath) {
+    if (!assetPath || typeof assetPath !== 'string') {
+        return assetPath;
+    }
+    if (/^(https?:)?\/\//i.test(assetPath) || assetPath.startsWith('data:')) {
+        return assetPath;
+    }
+    const normalizedPath = assetPath.replace(/^\.?\//, '').replace(/^\/+/, '');
+    return `https://raw.githubusercontent.com/${repoFullName}/main/${normalizedPath}`;
+}
+
+function extractTweetIds(posts) {
+    if (!Array.isArray(posts)) return [];
+    const tweetIds = [];
+    const tweetRegex = /(?:twitter|x)\.com\/[^/]+\/status\/(\d+)/i;
+    const idRegex = /^\d+$/;
+    for (const post of posts) {
+        if (typeof post !== 'string') continue;
+        const trimmed = post.trim();
+        if (idRegex.test(trimmed)) {
+            tweetIds.push(trimmed);
+            continue;
+        }
+        const matches = trimmed.match(tweetRegex);
+        if (matches && matches.length > 1) {
+            tweetIds.push(matches[1]);
+        }
+    }
+    return tweetIds;
+}
+
+function mergePinokioMeta(baseMeta, overrideMeta) {
+    if (!baseMeta && !overrideMeta) return null;
+    if (!baseMeta) return { ...overrideMeta };
+    if (!overrideMeta) return { ...baseMeta };
+    return { ...baseMeta, ...overrideMeta };
+}
+
+function applyPinokioMetadata(item, meta, repoFullName) {
+    if (!meta) return;
+    if (meta.title) item.title = meta.title;
+    if (meta.description) item.description = meta.description;
+
+    const iconOrImage = meta.icon || meta.image;
+    if (iconOrImage) {
+        item.image = resolveRepoFileUrl(repoFullName, iconOrImage);
+    }
+
+    const linkOrUrl = meta.link || meta.url;
+    if (linkOrUrl) {
+        item.url = linkOrUrl;
+    }
+
+    if (Array.isArray(meta.links)) {
+        currentLinks = meta.links;
+    }
+
+    if (Array.isArray(meta.posts)) {
+        currentPosts = extractTweetIds(meta.posts);
+    }
+}
+
+async function fetchPinokioJsonFile(repoFullName, filename) {
     try {
-        console.log('Fetching pinokio_meta.json for:', repoFullName);
-        const response = await fetch(`https://raw.githubusercontent.com/${repoFullName}/main/pinokio_meta.json`);
-        const meta = await response.json();
-        console.log('Pinokio meta data:', meta);
-        
-        // Extract tweet IDs from posts
-        if (meta.posts) {
-            const tweetIds = [];
-            for (const post of meta.posts) {
-                // Reset regex for each iteration
-                const tweetRegex = /.*(twitter|x)\.com\/.+\/([0-9]+)/i;
-                const matches = post.match(tweetRegex);
-                if (matches && matches.length > 2) {
-                    tweetIds.push(matches[2]);
-                    console.log('Found tweet ID:', matches[2], 'from:', post);
-                }
-            }
-            currentPosts = tweetIds;
-            console.log('Extracted tweet IDs:', tweetIds);
+        console.log(`Fetching ${filename} for:`, repoFullName);
+        const response = await fetch(`https://raw.githubusercontent.com/${repoFullName}/main/${filename}`);
+        if (!response.ok) {
+            console.log(`${filename} not found for:`, repoFullName);
+            return null;
         }
-        
-        if (meta.links) {
-            currentLinks = meta.links;
-        }
-        
-        return meta;
+        return await response.json();
     } catch (error) {
-        console.error('Error fetching pinokio meta:', error);
+        console.error(`Error fetching ${filename}:`, error);
         return null;
     }
+}
+
+async function fetchPinokioJson(repoFullName) {
+    return fetchPinokioJsonFile(repoFullName, 'pinokio.json');
+}
+
+// Fetch pinokio_meta.json for additional data
+async function fetchPinokioMeta(repoFullName) {
+    return fetchPinokioJsonFile(repoFullName, 'pinokio_meta.json');
 }
 
 // Create author section HTML
@@ -341,8 +392,12 @@ async function loadItemDetails() {
                     id: repoData.full_name
                 };
                 
-                // Fetch additional metadata
-                await fetchPinokioMeta(repoData.full_name);
+                const [pinokioMeta, pinokioJson] = await Promise.all([
+                    fetchPinokioMeta(repoData.full_name),
+                    fetchPinokioJson(repoData.full_name)
+                ]);
+                const mergedMeta = mergePinokioMeta(pinokioMeta, pinokioJson);
+                applyPinokioMetadata(item, mergedMeta, repoData.full_name);
             }
         }
         

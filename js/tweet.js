@@ -225,7 +225,7 @@ function renderTweets(el, posts) {
     } else {
         tweetsContainer.innerHTML = `
             <div class="empty">
-                Feed is Empty. Create a pinokio_meta.json file and add X.com links to the posts array, and the posts will show up here.
+                Feed is Empty. Add X.com links to the posts array in pinokio.json or pinokio_meta.json, and the posts will show up here.
             </div>
         `;
     }
