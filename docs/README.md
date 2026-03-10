@@ -523,9 +523,190 @@ When you switch to background mode, Pinokio will relaunch as a menubar item (No 
 
 ---
 
-## 12. Use Cases
+## 12. Ask AI
 
-### 12.1. Build a 1-click launcher
+![askai.gif](askai.gif)
+
+Ask AI is a drawer on every app's **Run** page.
+
+It lets you open installed tools against the current app folder without leaving the app page.
+
+Ask AI groups the available tools into 2 categories:
+
+- **Terminal Plugins:** start an interactive session inside Pinokio
+- **Desktop Plugins:** open an external desktop app or IDE pointed at the current app folder
+
+
+## 13. Community
+
+Community is a drawer on the app page that loads Pinokio's community/registry view without leaving the current app.
+
+This makes it possible to browse community context while staying inside the current workspace.
+
+When an app does not have a live community feed available yet, the drawer still exists and shows a load screen until the community view is loaded.
+
+![community_drawer.png](community_drawer.png)
+
+## 14. Agent Interpreter
+
+> Install once, talk to any agent.
+
+Anything you install in Pinokio INSTANTLY can talk to ANY AI agent (Claude Code, Codex CLI, Codex Desktop, Gemini CLI, Antigravity, Cursor, etc.)
+
+Zero work required. Pinokio **automatically** figures out how your app works, and creates custom skills for ANY app installed in pinokio.
+
+![agent_interpreter.png](agent_interpreter.png)
+
+### 14.1. What is it?
+
+<video controls playsinline style="width: 100%; max-width: 960px;">
+  <source src="./agentspeak.mp4" type="video/mp4">
+</video>
+
+Normally, if you want an agent to use an app, you have to manually teach it where the app lives, how to start it, how to tell when it is ready, and how to talk to it. That glue work usually has to be repeated for every app and every session.
+
+Pinokio solves this by giving installed apps a standard agent-facing layer automatically. It gives agents:
+
+- a standard way to discover installed apps
+- reusable workflows that do not have to be re-explained in every chat
+- a way to start apps automatically if they are not already running
+- reusable generated clients for talking to apps after first use
+- provider-native instruction files for persistent workspaces
+- and more
+
+The best part is, you do NOT have to understand ANY of this. It "just works".
+
+Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gemini CLI, Codex Desktop, etc.):
+
+1. They should already be aware of a skill named `pinokio`.
+2. Use that skill and try asking anything that can be solved by any app in your pinokio. (Example: "Generate a speech audio of 'hello, how are you?'")
+3. And watch your AI agent automatically discover Pinokio, ask Pinokio which apps to use, pick an app, launch if not already running, and make a request, to finally give you the result you were looking for.
+
+
+
+### 14.2. How does it work?
+
+Pinokio includes a built-in interpreter layer that lets all your apps talk to AI agents **without you having to do anything**.
+
+- No need to write an MCP server
+- No need to write a SKILL.md
+
+It "just works".
+
+Pinokio achieves this by shipping with a set of APIs and built-in `SKILL.md` files (installed automatically under `~/.agents/skills`).
+
+These built-in skills can be used by:
+
+- agents running inside Pinokio
+- compatible external agents such as Claude Desktop, Codex Desktop, Gemini, and other agent apps that honor the same skill files
+
+Even if an agent does not support the `~/.agents/skills` standard (for example Claude Desktop), you can just download the built-in `SKILL.md` file from the **Settings** page, and then just import into your agent manually, and then everything should **just work**.
+
+![downloadskill.png](downloadskill.png)
+
+### 14.3. Pinokio skill
+
+The built-in `pinokio` skill is the main interpreter between agents and installed apps.
+
+Basically, you just talk to ANY of your favorite AI agent, and they will automatically connect to Pinokio and launch and run apps, all automatically, without you doing anything.
+
+In practice, this means:
+
+1. the agent can search installed apps
+2. Pinokio prefers the right app using exact matches, stars, usage history, readiness, and search score (When you "star" an app, they are prioritized; Otherwise, frequently used or most recently used apps are prioritized)
+3. if the app is not running yet, Pinokio can start it automatically
+4. Pinokio waits until the app is actually ready
+5. on first use, the agent can generate a reusable client for that app and keep using it later
+
+Generated reusable clients are stored under:
+
+`PINOKIO_HOME/agents/clients/<app_id>/<operation>.<ext>`
+
+This is also why app starring and launch history are important. The same preference data used by the home page also helps Pinokio rank apps for agent workflows.
+
+That preference data is stored at:
+
+`PINOKIO_HOME/cache/apps/preferences.json`
+
+### 14.4. Gepeto skill
+
+![gepetoskill.png](gepetoskill.png)
+
+The built-in `gepeto` skill is the companion interpreter for building Pinokio launchers and Pinokio-native apps through chat, from ANY AI agent.
+
+In other words, Pinokio can be used both to **run apps with agents** and to **build new launchers with agents**.
+
+## 15. Agent Launcher
+
+The **Agent Launcher** is a persistent workspace and session manager for AI agents.
+
+It automatically discovers workspaces you have already used with agents, shows the session history for each workspace, and lets you resume old sessions instead of starting from scratch every time.
+
+This is not limited to workspaces created inside Pinokio. It also aggregates external project folders outside Pinokio as long as you have used Claude, Codex, or Gemini in those folders.
+
+### 15.1. Agent Aggregator
+
+The Agents tab automatically crawls the workspaces you have already used with agents and indexes the session history for each workspace.
+
+This includes both:
+
+- Pinokio sandboxes under `PINOKIO_HOME/workspaces`
+- external folders outside Pinokio where you have used Claude, Codex, or Gemini
+
+This gives you a searchable view of:
+
+- workspaces you have already worked on
+- every saved session inside each workspace
+- sessions you can resume later instead of restarting
+
+![agent_aggregator.png](agent_aggregator.png)
+
+### 15.2. Sandboxes
+
+Agent workspaces are stored under `PINOKIO_HOME/workspaces`.
+
+These workspaces are persistent. Once a session is created, you can keep coming back to the same workspace and continue where you left off.
+
+You can also create a brand new workspace directly from the Agents tab:
+
+![create_sandbox_modal.png](create_sandbox_modal.png)
+
+### 15.3. Start chat
+
+After selecting a workspace, click **Start chat** to open the session launcher.
+
+From here you can choose:
+
+1. the agent provider
+2. the execution mode
+3. optional skills
+4. optional files to inject into the session
+
+Pinokio currently exposes 2 execution modes:
+
+- **Guarded:** provider default approval/sandbox behavior
+- **YOLO:** run without approvals
+
+![start_agent_modal.png](start_agent_modal.png)
+
+### 15.4. Skill Sandbox
+
+A **skill sandbox** is a deterministic workspace started with selected skills.
+
+When you start one, Pinokio writes the selected skill context into the provider's native instruction files for that workspace.
+
+Depending on the provider, this may include files such as `AGENTS.md`, `.agents/skills/pinokio-selected/SKILL.md`, `CLAUDE.md`, or `GEMINI.md`.
+
+This is what makes the workspace deterministic instead of relying on the agent to notice and enable the right skills on its own, and it is why the same workspace can be reopened later with the same skill behavior still active.
+
+![skill_sandbox.png](skill_sandbox.png)
+
+
+---
+
+# Use Cases
+
+## 1. Build a 1-click launcher
 
 Now anyone can build a 1-click launcher for any project just with a prompt.
 
@@ -555,7 +736,7 @@ When the build has finished, switch to "Run" mode to launch the app using the cr
 Use the built-in github publish feature to publish your launcher to github, and share with others.
 
 
-### 12.2. Start a project with a built-in launcher
+## 2. Start a project with a built-in launcher
 
 It doesn't have to be about building a launcher for existing projects---you can create ANY project with 1-click launcher built-in!
 
@@ -568,7 +749,7 @@ All you need to do is initialize your project from Pinokio.
 5. once finished, open the "run" mode and check that the launcher and the app are working
 
 
-### 12.3. Your own custom app
+## 3. Your own custom app
 
 Take any app and customize it to your liking:
 
@@ -576,7 +757,7 @@ Take any app and customize it to your liking:
 2. Go to dev mode and launch some AI agent
 3. Ask it to change the app to your liking (Change UI, etc.)
 
-### 12.4. Bring all apps to local
+## 4. Bring all apps to local
 
 Bring all online apps to local so you can run privately.
 
@@ -589,11 +770,11 @@ If you have an app or an online service that you use often but want to run local
 
 ---
 
-# Programming Pinokio
+# Building a launcher
 
 ## Components
 
-A Pinokio launcher is made up of 4 types of files (2 of them are auto-generated so you just need to write 2 manually):
+A Pinokio launcher project usually has 4 core parts:
 
 1. **Config:** `pinokio.json` determines how the project is displayed.
     - automatically generated when a project is created.
@@ -650,7 +831,6 @@ Scripts do NOT run on their own, but either triggered by user interaction (via t
 `pinokio.js` creates a menu UI that lets users launch scripts with 1-click.
 
 ![menu.png](menu.png)
-
 
 ---
 
@@ -905,7 +1085,7 @@ Run scripts can have 3 attributes:
 }
 ```
 
-- `<schema_version>`: script schema version (current version is `4.0`)
+- `<schema_version>`: script schema version (current version is `6.0.0`)
 - `<step>`: The `run` array contains multiple `<step>` items. Each `<step>` is executed one by one, with each step passing down its return value to the next step.
 - `<daemon>`: whether to keep the script running after all `<step>` items have finished executing. For example, when you have a script that starts a web server, if you do not set `"daemon": true`, the script will terminate and kill the server at the end. Required for all apps that needs to keep running. Not needed for one off apps that run and return immediately.
 - `<prerequisite_env>`: prerequisite environment variable declaration. A lot of apps require setting some environment variables (such as `OPENAI_API_KEY`) before running. The `<prerequisite_env>` declaration lets you declare the environment variables that need to be set before running a script.
@@ -1953,11 +2133,12 @@ Building a UI requires only a single file named `pinokio.js`. Simply place a fil
 module.exports = {
   "version": <script_schema_version>,
   "pre": <pre>,
+  "on": <event_handlers>,
   "menu": <menu>,
 }
 ```
 
-- `<script_schema_version>`: The schema version used (**the latest version is `"4.0"`**)
+- `<script_schema_version>`: The schema version used (**the latest version is `"6.0.0"`**)
 - `<pre>`: (optional) Prerequisites. In case the script requires installation of 3rd party programs that cannot be easily installed through the script, you may specify a `pre` array to provide download links to the user before the installation starts. Each item in the `pre` array may have the following attributes:
     - `text`: The text to display for the item.
     - `icon`: The icon file path to display for the item.
@@ -1966,6 +2147,16 @@ module.exports = {
       - if set to `"open"`, opens the file
       - if set to `"view"`, opens in file explorer
       - if set to `true`, same as `"view"`. opens in file explorer.
+- `<event_handlers>`: (optional) An object that maps custom event names to scripts.
+  - Each key is an event name.
+  - Each value may have the following attributes:
+    - `href`: The local script path to start when the event is emitted.
+    - `ui`: Optional event panel behavior.
+      - `mode`: One of `"background"`, `"sidebar"`, `"overlay"`, or `"bottom"`.
+      - `title`: Optional title for the event panel.
+      - `open`: `"auto"` or `"manual"`.
+      - `closeOnSuccess`: If `true`, automatically closes the event panel when the launched script finishes successfully.
+      - `refreshOnClose`: If set, refreshes another frame when the panel closes. Supported values are `"source"`, `"root"`, and `"active"`.
 - `<menu>`: An **array** of tab items, or an **async function** that takes `kernel` and `info` as arguments and returns the same tab items array. Each item in the array may have the following attributes:
     - `text`: The text to display on the tab.
     - `icon`: The fontawesome class name to display for the tab---Use the built-in [fontawesome](https://fontawesome.com/search?ic=free) class (example: `"fa-solid fa-house"`).
@@ -1975,6 +2166,7 @@ module.exports = {
       - If passed to a script, the `params` will be made available as the `input` variable inside the first step of the `run` script.
     - `shell` (optional): Start an instant shell.
     - `popout` (optional): Opens the `href` link in an external browser instead of Pinokio if set to `true`
+    - `inject` (optional): A string or an array of local script paths to inject into the opened web page.
     - `menu` (optional): If specified, creates a nested menu. The nested menu follows the same specification as the top level menu (with `text`, `icon`, `href`, `params`, and `popout` attributes)
     - `default` (optional): If specified, this tab item is automatically selected by default. When the `href` attribute is a script URL, the selection also means the script will be automatically started. This can be used to implement automatically executing scripts.
   
@@ -1991,7 +2183,7 @@ We can direct the user to install Ollama before installing the app, using the `<
 
 ```javascript
 module.exports = {
-  version: "2.0",
+  version: "6.0.0",
   title: "LLM App",
   pre: [{
     icon: "ollama.png",
@@ -2015,7 +2207,7 @@ Here's a UI script for generating a minimal launcher UI:
 
 ```javascript
 module.exports = {
-  version: "2.0",
+  version: "6.0.0",
   title: "Test Launcher",
   description: "This is for testing a test launcher",
   icon: "icon.png",
@@ -2169,7 +2361,7 @@ Check out an example below, where it makes use of the `info` API to determine wh
 ```javascript
 const path = require("path")
 module.exports = {
-  version: "2.0",
+  version: "6.0.0",
   title: "InvokeAI",
   description: "Generative AI for Professional Creatives",
   icon: "icon.jpeg",
@@ -2278,6 +2470,7 @@ For example, let's say we want the following behavior:
 
 ```javascript
 module.exports = {
+  version: "6.0.0",
   title: "Auto Launcher",
   icon: "icon.png",
   menu: async (kernel, info) => {
@@ -2306,6 +2499,578 @@ module.exports = {
 }
 ```
 
+---
+
+# Building a plugin
+
+A plugin is a reusable script written as a single `pinokio.js` file.
+
+Unlike a launcher, a plugin is not a multi-file app package. It is one script that runs **inside** another app or workspace.
+
+In other words:
+
+- a **launcher** controls and organizes one app
+- a **plugin** is a reusable action you can run across many apps and workspaces
+
+## Location
+
+Plugins are stored under `PINOKIO_HOME/plugin`.
+
+Each plugin lives in its own folder and is implemented as a single `pinokio.js` file:
+
+```text
+~/pinokio
+  /plugin
+    /my_plugin
+      pinokio.js
+      icon.png
+```
+
+The built-in example plugins are typically downloaded into `PINOKIO_HOME/plugin/code`.
+
+## Syntax
+
+A plugin must export plain data and include a `run` array.
+
+Plugins use the same script syntax as launchers. The plugin-specific part is only the top-level shape of the file. Inside `run`, `install`, `uninstall`, and `update`, you still use the normal Pinokio step syntax documented in [Script](#script) and [API](#api).
+
+Unlike launchers, plugins should not export top-level functions. The plugin loader skips plugins that contain function-valued top-level fields.
+
+```javascript
+module.exports = {
+  version: <schema_version>,
+  daemon: <daemon>,
+  title: <title>,
+  icon: <icon>,
+  description: <description>,
+  link: <link>,
+  launch_type: <launch_type>,
+  env: [
+    <prerequisite_env>,
+    ...
+  ],
+  run: [
+    <step>,
+    <step>,
+    ...
+  ],
+  install: [
+    <step>,
+    <step>,
+    ...
+  ],
+  uninstall: [
+    <step>,
+    <step>,
+    ...
+  ],
+  update: [
+    <step>,
+    <step>,
+    ...
+  ]
+}
+```
+
+- `version`: optional script schema version
+- `daemon`: optional daemon mode, same as normal scripts
+- `title`: display name for the plugin
+- `icon`: icon file path relative to the plugin folder
+- `description`: optional description shown in plugin listings
+- `link`: optional homepage or repository link
+- `launch_type`: optional explicit launch mode. Use `"terminal"` to force the plugin into Pinokio's terminal flow, or `"desktop"` to force the plugin into the external desktop flow. If omitted, Pinokio infers the type from the steps: `shell.run` => terminal plugin, `exec` or `app.launch` => desktop plugin.
+- `env`: optional environment prompts using the same syntax as launcher scripts. When a plugin is launched and values are missing, Pinokio asks for them and writes them into the target app or workspace `ENVIRONMENT` file.
+- `run`: required for plugin loading, and used for the main `Open in` action
+- `install`: optional extra action shown on `/plugins`
+- `uninstall`: optional extra action shown on `/plugins`
+- `update`: optional extra action shown on `/plugins`
+
+The action arrays above all use the same normal Pinokio step syntax. That means features such as `when`, `id`, `method`, `params`, templating, `shell.run`, `exec`, `notify`, and `app.launch` work the same way inside plugins.
+
+When a plugin runs, `args.cwd` is the target app or workspace folder. This is what makes one plugin reusable across many different apps.
+
+- on `/plugins`, the user chooses the target folder through **Open in**
+- in **Ask AI** and `/p/:name/dev`, Pinokio automatically uses the current app folder
+
+So if a plugin needs to run in the selected app or workspace, use `{{args.cwd}}` as the working directory in the step params.
+
+## Examples
+
+### Terminal plugin
+
+```javascript
+module.exports = {
+  title: "OpenAI Codex",
+  icon: "openai.webp",
+  link: "https://github.com/openai/codex",
+  run: [{
+    when: "{{platform === 'win32'}}",
+    id: "run",
+    method: "shell.run",
+    params: {
+      shell: "{{kernel.path('bin/miniconda/Library/bin/bash.exe')}}",
+      conda: {
+        skip: true
+      },
+      message: "npx -y @openai/codex@latest",
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }, {
+    when: "{{platform !== 'win32'}}",
+    id: "run",
+    method: "shell.run",
+    params: {
+      message: "npx -y @openai/codex@latest",
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }]
+}
+```
+
+### Desktop plugin
+
+```javascript
+module.exports = {
+  title: "Cursor",
+  link: "https://cursor.com",
+  icon: "cursor.jpeg",
+  description: "The AI Code Editor",
+  launch_type: "desktop",
+  run: [{
+    when: "{{which('cursor')}}",
+    method: "exec",
+    params: {
+      message: "cursor .",
+      path: "{{args.cwd}}"
+    }
+  }, {
+    when: "{{!which('cursor')}}",
+    method: "notify",
+    params: {
+      html: "Cursor is not installed. Click to visit the Cursor homepage to download",
+      href: "https://cursor.com",
+      target: "_blank"
+    }
+  }]
+}
+```
+
+## Plugin UI
+
+Installed plugins appear in 3 places:
+
+1. `/plugins`
+2. the **Ask AI** drawer
+3. `/p/:name/dev` for every app
+
+On `/plugins`, each plugin gets an **Open in** button so you can run it against a target app or workspace.
+
+![plugins_page.png](plugins_page.png)
+
+Current built-in plugins mostly focus on AI tools, but plugins are not limited to agents. A plugin can launch any reusable workflow that should run inside another app, including IDEs, editors, terminal tools, and helper scripts.
+
+---
+
+# Building a web extension
+
+Web extensions let you inject JavaScript into any web page loaded from a Pinokio launcher.
+
+Use them when you want to augment an embedded web app with Pinokio-specific behavior such as DOM automation, event interception, desktop integration, and triggering launcher scripts from inside the page.
+
+## Inject local scripts
+
+Use `inject` on a launcher menu item when you open a web app and want Pinokio to load one or more local extension scripts into that page.
+
+```javascript
+module.exports = {
+  menu: [{
+    default: true,
+    icon: "fa-solid fa-rocket",
+    text: "Open Web UI",
+    href: "http://127.0.0.1:8188",
+    inject: ["extension.js"]
+  }]
+}
+```
+
+The shorthand form above is normalized to:
+
+```javascript
+inject: [{
+  src: "extension.js",
+  match: ["*"],
+  world: "main",
+  when: "idle",
+  frame: "self"
+}]
+```
+
+In other words, `inject: ["extension.js"]` means "inject `extension.js` into the opened page with no explicit URL restriction, in the main world, after the page settles, on the current frame only".
+
+## Structured inject descriptors
+
+`inject` also supports a full descriptor syntax.
+
+The accepted outer forms are:
+
+- a single string: `inject: "extension.js"`
+- a comma-separated string: `inject: "extension.js,analytics.js"`
+- an array of strings: `inject: ["extension.js", "analytics.js"]`
+- an array of descriptor objects
+
+Example:
+
+```javascript
+module.exports = {
+  menu: [{
+    default: true,
+    icon: "fa-solid fa-rocket",
+    text: "Open Web UI",
+    href: "http://127.0.0.1:8188",
+    inject: [{
+      src: "extension.js",
+      match: ["http://127.0.0.1:8188/*"],
+      world: "main",
+      when: "idle",
+      frame: "self"
+    }]
+  }]
+}
+```
+
+Each inject descriptor supports the following attributes:
+
+- `src`: local script path to inject
+- `match`: one or more URL match rules. Default is `["*"]`
+- `world`: `"main"` or `"isolated"`. Default is `"main"`
+- `when`: `"start"`, `"end"`, or `"idle"`. Default is `"idle"`
+- `frame`: `"self"`, `"all"`, or `"top"`. Default is `"self"`
+
+### match
+
+`match` decides which page URLs receive the extension script.
+
+Accepted input forms:
+
+- a single string:
+
+```javascript
+match: "http://127.0.0.1:8188/*"
+```
+
+- a comma-separated string:
+
+```javascript
+match: "http://127.0.0.1:8188/*,https://example.com/*"
+```
+
+- an array of strings:
+
+```javascript
+match: [
+  "http://127.0.0.1:8188/*",
+  "https://example.com/*"
+]
+```
+
+Normalization rules:
+
+- strings are trimmed
+- comma-separated strings are split into multiple entries
+- empty items are discarded
+- non-string items are ignored
+- duplicate entries are removed
+- entries longer than 1024 characters are ignored
+- if nothing remains after normalization, Pinokio falls back to `["*"]`
+
+Practical meaning:
+
+- `match: ["*"]` means "do not restrict by URL"
+- any other value narrows injection to URLs matching one of the listed rules
+- use fully-qualified patterns whenever possible, for example `http://127.0.0.1:8188/*`
+- Pinokio currently exposes positive matching only. There is no separate `exclude_matches` field in launcher syntax
+
+### world
+
+`world` decides which JavaScript world the extension runs in.
+
+- `main`:
+  - default
+  - runs in the same JavaScript world as the page
+  - use this when you need to read or patch page-owned globals, call app functions already attached to `window`, or integrate deeply with the target app
+- `isolated`:
+  - runs in a separate JavaScript world
+  - use this when you mainly need DOM access, event listeners, and a lower risk of colliding with the page's own scripts
+
+In short:
+
+- choose `main` for deep page integration
+- choose `isolated` for safer DOM-level augmentation
+
+### when
+
+`when` decides when the extension is injected.
+
+- `start`:
+  - inject as early as possible
+  - use this when you must install hooks before the page finishes booting
+- `end`:
+  - inject after the initial document has been parsed
+  - use this when you need the DOM tree to exist, but do not need to wait for the page to fully settle
+- `idle`:
+  - default
+  - inject after the page is further along in loading
+  - use this when you want the most stable default for UI automation and event wiring
+
+In short:
+
+- choose `start` for early hooks
+- choose `end` for DOM-ready hooks
+- choose `idle` for the safest general-purpose default
+
+### frame
+
+`frame` decides which frames receive the extension.
+
+- `self`:
+  - default
+  - inject into the current matched frame only
+- `all`:
+  - inject into all frames for the page instead of just the current one
+  - use this when the target UI renders important controls inside nested iframes
+- `top`:
+  - accepted as input
+  - currently normalized by Pinokio to `self`
+  - this is an alias, not a separate runtime behavior
+
+If you do not know which one to choose, start with `self`, and switch to `all` only when the target page actually uses nested frames.
+
+## Injected script syntax
+
+Current web extension examples use `window.$pinokio.inject(...)`:
+
+```javascript
+window.$pinokio.inject({
+  mount(ctx) {
+    const onClick = (event) => {
+      const link = event.target && typeof event.target.closest === "function"
+        ? event.target.closest("a[href]")
+        : null
+      if (!link) return
+
+      const text = (link.textContent || "").trim().toLowerCase()
+      if (!text.includes("download")) return
+
+      event.preventDefault()
+      event.stopPropagation()
+      event.stopImmediatePropagation()
+
+      ctx.trigger("download", {
+        url: link.href,
+        text: (link.textContent || "").trim()
+      }, {
+        source: "extension.js"
+      })
+    }
+
+    document.addEventListener("click", onClick, true)
+
+    return () => {
+      document.removeEventListener("click", onClick, true)
+    }
+  }
+})
+```
+
+What this does:
+
+- `window.$pinokio.inject(...)` registers the extension
+- `mount(ctx)` is where you install listeners, observers, or any other page logic
+- `ctx.trigger(eventName, payload, context)` emits an event back to the launcher
+- returning a cleanup function lets the extension remove listeners when it is torn down
+
+The payload mapping is:
+
+- if `payload` is an object, its keys become `input.<key>` in the handler script
+- if `payload` is an array, it becomes `input._`
+- the event name and context metadata are exposed under `input.event`
+
+For example, this call:
+
+```javascript
+ctx.trigger("download", {
+  url: link.href,
+  text: "Download"
+}, {
+  source: "extension.js"
+})
+```
+
+produces handler input shaped like:
+
+```javascript
+input.url === link.href
+input.text === "Download"
+input.event.name === "download"
+input.event.source === "extension.js"
+```
+
+## Trigger Pinokio scripts
+
+You can combine `menu[].inject` with launcher-level `on` handlers to make any embedded web app trigger Pinokio scripts.
+
+Launcher file (`pinokio.js`):
+
+```javascript
+module.exports = {
+  on: {
+    "trigger-download": {
+      ui: {
+        mode: "bottom",
+        title: "Downloading model",
+        closeOnSuccess: true,
+        refreshOnClose: "source"
+      },
+      href: "downloader.json"
+    }
+  },
+  menu: [{
+    default: true,
+    icon: "fa-solid fa-rocket",
+    text: "Open Web UI",
+    href: "http://127.0.0.1:8188",
+    inject: [{
+      src: "extension.js",
+      match: ["http://127.0.0.1:8188/*"],
+      world: "main",
+      when: "idle",
+      frame: "self"
+    }]
+  }]
+}
+```
+
+Injected browser script (`extension.js`):
+
+```javascript
+window.$pinokio.inject({
+  mount(ctx) {
+    const onClick = (event) => {
+      const button = event.target && typeof event.target.closest === "function"
+        ? event.target.closest("[data-download-url]")
+        : null
+      if (!button) return
+
+      event.preventDefault()
+      event.stopPropagation()
+      event.stopImmediatePropagation()
+
+      ctx.trigger("trigger-download", {
+        url: button.dataset.downloadUrl,
+        savePath: button.dataset.savePath,
+        filename: button.dataset.filename
+      }, {
+        source: "extension.js"
+      })
+    }
+
+    document.addEventListener("click", onClick, true)
+
+    return () => {
+      document.removeEventListener("click", onClick, true)
+    }
+  }
+})
+```
+
+Event handler script (`downloader.json`):
+
+```javascript
+{
+  "run": [
+    {
+      "method": "fs.download",
+      "params": {
+        "url": "{{input.url}}",
+        "path": "app/models/{{input.savePath}}/{{input.filename}}"
+      }
+    }
+  ]
+}
+```
+
+How it works:
+
+1. Pinokio opens the web tab and resolves the `inject` descriptors.
+2. `extension.js` is loaded into the matching page or frame.
+3. The extension watches the DOM and calls `ctx.trigger("trigger-download", ...)`.
+4. The launcher `on["trigger-download"]` handler resolves to `downloader.json`.
+5. The emitted payload becomes `input`, and the emitted metadata becomes `input.event`.
+
+For the example above, the handler script receives:
+
+```javascript
+input.url === "<value from data-download-url>"
+input.savePath === "<value from data-save-path>"
+input.filename === "<value from data-filename>"
+input.event.name === "trigger-download"
+input.event.source === "extension.js"
+```
+
+This pattern keeps the desktop bridge minimal:
+
+- the web app decides when to emit
+- the launcher decides what script to run
+- the handler script stays declarative
+
+## Inject external scripts
+
+If a browser library normally works by adding a tag such as `<script src="https://cdn.example.com/library.js"></script>`, keep `inject` pointed at a local extension file and let that file append the external script tag.
+
+Launcher file (`pinokio.js`):
+
+```javascript
+module.exports = {
+  menu: [{
+    default: true,
+    icon: "fa-solid fa-rocket",
+    text: "Open Web UI",
+    href: "http://127.0.0.1:8188",
+    inject: [{
+      src: "load-library.js",
+      match: ["http://127.0.0.1:8188/*"],
+      world: "main",
+      when: "start",
+      frame: "self"
+    }]
+  }]
+}
+```
+
+Injected browser script (`load-library.js`):
+
+```javascript
+window.$pinokio.inject({
+  mount() {
+    const src = "https://cdn.example.com/library.js"
+    if (document.querySelector(`script[data-pinokio-external="${src}"]`)) {
+      return
+    }
+
+    const script = document.createElement("script")
+    script.src = src
+    script.crossOrigin = "anonymous"
+    script.dataset.pinokioExternal = src
+    document.head.appendChild(script)
+  }
+})
+```
+
+Use `world: "main"` when the external library expects to behave like a normal page script and attach globals to `window`.
+
+Note that `crossorigin="true"` is not the usual browser value. In JavaScript, use `script.crossOrigin = "anonymous"` or `script.crossOrigin = "use-credentials"` depending on the library.
 
 ---
 
@@ -5297,6 +6062,7 @@ You can display a notification, and launch an external browser when clicked. Jus
 
 - [script.download](#scriptdownload)
 - [script.start](#scriptstart)
+- [script.restart](#scriptrestart)
 - [script.stop](#scriptstop)
 - [script.return](#scriptreturn)
 
@@ -5486,6 +6252,67 @@ When this script runs, here's what happens:
 3. Then it starts the script [install.js](https://github.com/cocktailpeanutlabs/torch/blob/main/install.js) with a `params` of `{ "venv": "{{path.resolve(cwd, 'env')}}" }`, which resolves to the `env` folder of the current script
     - Note that the `cwd` is the path of the original script: `/PINOKIO_HOME/api/myapp` (not the path for the repository just downloaded)
     - This means the actual `params` that gets passed will look something like `{ "venv": "/PINOKIO_HOME/api/myapp/install.json" }`
+
+---
+
+### script.restart
+
+Restart a script.
+
+#### syntax
+
+```json
+{
+  "method": "script.restart",
+  "params": {
+    "uri": <uri>,
+    "params": {
+      "a": "hello",
+      "b": "world"
+    }
+  }
+}
+```
+
+- `<uri>`: **(optional)** the script path to restart.
+  - If omitted while running inside a script, Pinokio restarts the current script.
+  - If specified, Pinokio stops the target script and starts it again.
+- `<params>`: **(optional)** params to pass into the restarted script.
+  - If omitted during a self-restart, Pinokio reuses the current script `args`.
+
+#### return value
+
+```json
+{
+  "uri": <uri>,
+  "scheduled": true,
+  "self": <is_self_restart>,
+  "params": <params>
+}
+```
+
+#### example
+
+Self-restart when a running process tells Pinokio it needs a clean restart:
+
+```javascript
+module.exports = {
+  daemon: true,
+  restart: [{
+    method: "script.restart"
+  }],
+  run: [{
+    method: "shell.run",
+    params: {
+      message: "python main.py",
+      on: [{
+        event: "/Restarting to reapply dependency installation/i",
+        trigger: "restart"
+      }]
+    }
+  }]
+}
+```
 
 ---
 
@@ -6683,8 +7510,11 @@ Let's quickly go through what each folder does:
 3. `cache`: stores all the files automatically cached by apps you run.
     - When something doesn't work, deleting this folder and starting fresh may fix it.
     - It is OK to delete the `cache` folder as it will be re-populated by the apps you use as you start using apps.
+    - This also stores app preferences such as stars and launch history.
 4. `drive`: stores all the virtual drives created by the [fs.link](#fslink) Pinokio API
-5. `logs`: stores all the log files for each app.
+5. `plugin`: stores reusable plugins
+6. `workspaces`: stores persistent agent workspaces / sandboxes
+7. `logs`: stores all the log files for each app.
 
 > You can learn more about the file system [here](#file-system)
 
@@ -6715,7 +7545,9 @@ The top level folders under the Pinokio home directory look like the following
       /peers
         ...
       /pip
+  /plugin
   /cache
+  /workspaces
   /logs
 ```
 
@@ -6747,9 +7579,34 @@ The `drive` folder stores virtual drives, used for deduplicating redundant files
 
 > Learn more about virtual drives [here](#virtual-drive)
 
+### /plugin
+
+The `plugin` folder stores reusable plugins.
+
+- Every plugin is a single `pinokio.js` file inside its own folder
+- Built-in examples are typically downloaded into `plugin/code`
+- Installed plugins automatically show up in `/plugins`, **Ask AI**, and `/p/:name/dev`
+
 ### /cache
 
 The `cache` folder stores cache files programmatically downloaded or generated by apps (through `pip`, `torch`, `huggingface-cli`, etc.)
+
+It also stores app preference metadata used by the home page and the Pinokio skill:
+
+- `cache/apps/preferences.json`
+  - starred apps
+  - star timestamps
+  - last launch time
+  - last launch source
+  - launch counts
+
+### /workspaces
+
+The `workspaces` folder stores persistent agent workspaces (sandboxes).
+
+- The **Agents** tab creates and reuses these folders
+- Each workspace can contain multiple reusable agent sessions
+- When a workspace is started with selected skills, Pinokio can materialize skill instructions into provider-native files inside that workspace
 
 ### /logs
 
