@@ -582,9 +582,24 @@ Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gem
 2. Use that skill and try asking anything that can be solved by any app in your pinokio. (Example: "Generate a speech audio of 'hello, how are you?'")
 3. And watch your AI agent automatically discover Pinokio, ask Pinokio which apps to use, pick an app, launch if not already running, and make a request, to finally give you the result you were looking for.
 
+### 14.2. Works with any agent
 
+It works with any AI agent. You can use the built-in CLI agents in pinokio:
 
-### 14.2. How does it work?
+<video controls playsinline style="width: 100%; max-width: 960px;">
+  <source src="./tts-cli.mp4" type="video/mp4">
+</video>
+
+Or you can use any external AI agents:
+
+- Codex CLI in terminal
+- Claude Code in terminal
+- Codex Desktop
+- Gemini CLI
+- Cursor
+- Anything else
+
+### 14.3. How does it work?
 
 Pinokio includes a built-in interpreter layer that lets all your apps talk to AI agents **without you having to do anything**.
 
@@ -604,7 +619,7 @@ Even if an agent does not support the `~/.agents/skills` standard (for example C
 
 ![downloadskill.png](downloadskill.png)
 
-### 14.3. Pinokio skill
+### 14.4. Pinokio skill
 
 The built-in `pinokio` skill is the main interpreter between agents and installed apps.
 
@@ -628,7 +643,7 @@ That preference data is stored at:
 
 `PINOKIO_HOME/cache/apps/preferences.json`
 
-### 14.4. Gepeto skill
+### 14.5. Gepeto skill
 
 ![gepetoskill.png](gepetoskill.png)
 
