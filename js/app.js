@@ -121,6 +121,7 @@ async function loadBlacklist() {
 // Render featured items
 async function renderFeaturedItems() {
   const featuredContainer = document.getElementById('featuredItems');
+  if (!featuredContainer) return;
   featuredContainer.innerHTML = '';
   
   const featuredItems = await loadFeaturedItems();
@@ -135,6 +136,9 @@ async function renderFeaturedItems() {
 
 // Fetch and render latest items from GitHub API
 async function fetchAndRenderLatestItems() {
+  const latestContainer = document.getElementById('latestItems');
+  if (!latestContainer) return;
+
   try {
     const response = await fetch("https://api.github.com/search/repositories?q=topic:pinokio&sort=updated&direction=desc&per_page=100");
     const data = await response.json();
@@ -160,13 +164,14 @@ async function fetchAndRenderLatestItems() {
   } catch (error) {
     console.error('Error fetching latest items:', error);
     // Show error message or fallback content
-    document.getElementById('latestItems').innerHTML = '<div class="empty">Unable to load latest items</div>';
+    latestContainer.innerHTML = '<div class="empty">Unable to load latest items</div>';
   }
 }
 
 // Render latest items
 function renderLatestItems(items) {
   const latestContainer = document.getElementById('latestItems');
+  if (!latestContainer) return;
   latestContainer.innerHTML = '';
 
   allLatestItems = items
@@ -334,11 +339,13 @@ async function loadNews() {
 
 // Render news using Twitter's official widget
 async function renderNews() {
-  const newsIds = await loadNews();
   const container = document.getElementById('newsContainer');
+  if (!container) return;
+
+  const newsIds = await loadNews();
   if (newsIds.length === 0) {
     const placeholder = '<div class="tweet-placeholder">No news available</div>';
-    if (container) container.innerHTML = placeholder;
+    container.innerHTML = placeholder;
     return;
   }
   renderTweets(container, newsIds)
@@ -370,9 +377,18 @@ function refreshClone() {
 document.addEventListener('DOMContentLoaded', function() {
   updateTheme()
   // renderHeroHighlights();
-  renderFeaturedItems();
-  fetchAndRenderLatestItems();
-  renderNews();
+
+  if (document.getElementById('featuredItems')) {
+    renderFeaturedItems();
+  }
+
+  if (document.getElementById('latestItems')) {
+    fetchAndRenderLatestItems();
+  }
+
+  if (document.getElementById('newsContainer')) {
+    renderNews();
+  }
   
   // Attach event listeners
   const searchInput = document.getElementById('searchInput');

@@ -587,7 +587,7 @@ Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gem
 It works with any AI agent. You can use the built-in CLI agents in pinokio:
 
 <video controls playsinline style="width: 100%; max-width: 960px;">
-  <source src="./tts-cli.mp4" type="video/mp4">
+  <source src="./ttsss.mp4" type="video/mp4">
 </video>
 
 Or you can use any external AI agents:
@@ -599,7 +599,19 @@ Or you can use any external AI agents:
 - Cursor
 - Anything else
 
-### 14.3. How does it work?
+### 14.3. Example
+
+Launch and control Pinokio and all its apps automatically through autonomous agent systems like [Openclaw](https://openclaw.ai/), [Hermes Agent](https://hermes-agent.nousresearch.com/), and more.
+
+Here's an example where I'm using my Discord iPhone app to connect to my desktop at home to generate a video using LTX-2.3 Video model through [WanGP installed in Pinokio](https://beta.pinokio.co/apps/github-com-pinokiofactory-wan):
+
+<video controls playsinline style="width: 100%; max-width: 480px;">
+  <source src="./vid.mp4" type="video/mp4">
+</video>
+
+> This is purely through the agent, WITHOUT touching Pinokio at all. This means you can use any 3rd party messaging apps like Discord, Whatsapp, Telegram, etc. to control Pinokio and installed apps.
+
+### 14.4. How does it work?
 
 Pinokio includes a built-in interpreter layer that lets all your apps talk to AI agents **without you having to do anything**.
 
@@ -619,7 +631,7 @@ Even if an agent does not support the `~/.agents/skills` standard (for example C
 
 ![downloadskill.png](downloadskill.png)
 
-### 14.4. Pinokio skill
+### 14.5. Pinokio skill
 
 The built-in `pinokio` skill is the main interpreter between agents and installed apps.
 
@@ -643,7 +655,7 @@ That preference data is stored at:
 
 `PINOKIO_HOME/cache/apps/preferences.json`
 
-### 14.5. Gepeto skill
+### 14.6. Gepeto skill
 
 ![gepetoskill.png](gepetoskill.png)
 

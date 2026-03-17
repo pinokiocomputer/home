@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 html,
 body {
@@ -405,6 +405,301 @@ body.dark .itemsContainer .title {
 
 body.dark .itemsContainer .description {
   color: rgba(255,255,255,0.8);
+}
+
+.homePage {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  background:
+    radial-gradient(circle at top center, rgba(52, 81, 188, 0.035), transparent 26%),
+    linear-gradient(180deg, #fafbfd 0%, #ffffff 44%, #ffffff 100%);
+}
+
+.homePageLayout {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 18px;
+}
+
+.homeHero {
+  padding: 26px 0 44px;
+  gap: 14px;
+}
+
+.homePage .heroLogo img {
+  width: 152px;
+  height: 152px;
+  filter: drop-shadow(0 20px 34px rgba(15,17,21,0.06));
+}
+
+.homePage .heroEyebrow {
+  letter-spacing: 2.4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(15,17,21,0.44);
+}
+
+.homePage .hero h1 {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  font-size: clamp(42px, 5.4vw, 62px);
+  font-weight: 600;
+  letter-spacing: -1.8px;
+  line-height: 1;
+  max-width: 760px;
+}
+
+.homePage .heroSubtitle {
+  max-width: 640px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: rgba(15,17,21,0.62);
+}
+
+.homePage .heroCaption {
+  font-size: 14px;
+  color: rgba(15,17,21,0.5);
+}
+
+.homePage .heroActions {
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.homePage .pillButton,
+.homePage .ghostButton {
+  padding: 11px 18px;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.homePage .pillButton:hover,
+.homePage .ghostButton:hover {
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+.homePage .ghostButton {
+  background: rgba(255,255,255,0.88);
+  border-color: rgba(15,17,21,0.1);
+}
+
+.homePage .ghostButton:hover {
+  background: rgba(245,247,251,1);
+}
+
+.overviewSection {
+  padding: 18px 0 0;
+}
+
+.highlightMosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) minmax(280px, 0.88fr);
+  grid-template-areas:
+    "launcher agent"
+    "cloud agent";
+  gap: 18px;
+}
+
+.highlightPanel {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  min-width: 0;
+  border: 1px solid rgba(15,17,21,0.08);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.92);
+}
+
+.highlightPanelLauncher {
+  grid-area: launcher;
+  align-content: start;
+}
+
+.highlightPanelAgent {
+  grid-area: agent;
+  align-content: start;
+  grid-template-rows: auto 1fr;
+}
+
+.highlightPanelCloud {
+  grid-area: cloud;
+  align-content: start;
+}
+
+.highlightPanelCopy {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.highlightPanelCopy h3 {
+  margin: 0;
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  font-size: clamp(24px, 2.3vw, 31px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.5px;
+}
+
+.highlightPanelCopy p {
+  margin: 0;
+  color: rgba(15,17,21,0.68);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.highlightPanelActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.highlightPanelButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 15px;
+  border: 1px solid rgba(15,17,21,0.12);
+  border-radius: 999px;
+  background: rgba(247,248,251,0.92);
+  color: rgba(15,17,21,0.82);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+
+.highlightPanelButton:hover {
+  background: rgba(255,255,255,0.98);
+  border-color: rgba(15,17,21,0.2);
+  color: rgba(15,17,21,0.96);
+  transform: translateY(-1px);
+}
+
+.highlightPanelButtonPrimary {
+  background: rgba(15,17,21,0.94);
+  border-color: rgba(15,17,21,0.94);
+  color: rgba(255,255,255,0.98);
+}
+
+.highlightPanelButtonPrimary:hover {
+  background: rgba(15,17,21,1);
+  border-color: rgba(15,17,21,1);
+  color: rgba(255,255,255,1);
+}
+
+.highlightPanelMedia {
+  align-self: start;
+  border-radius: 14px;
+  background: rgba(248,249,252,0.96);
+  padding: 8px;
+  min-width: 0;
+}
+
+.highlightPanelMedia img {
+  width: 100%;
+  display: block;
+  height: auto;
+}
+
+.highlightPanelMediaTall {
+  display: flex;
+  justify-content: center;
+}
+
+.highlightPanelMediaTall img {
+  width: 100%;
+}
+
+.highlightRowIndex {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(66,88,156,0.76);
+}
+
+.highlightRowMeta {
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(15,17,21,0.44);
+}
+
+body.dark .overviewSection {
+  box-shadow: none;
+}
+
+body.dark .highlightPanel {
+  border-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.035);
+}
+
+body.dark .highlightPanelCopy p {
+  color: rgba(255,255,255,0.8);
+}
+
+body.dark .highlightPanelButton {
+  border-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.045);
+  color: rgba(255,255,255,0.88);
+}
+
+body.dark .highlightPanelButton:hover {
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.98);
+}
+
+body.dark .highlightPanelButtonPrimary {
+  background: rgba(255,255,255,0.94);
+  border-color: rgba(255,255,255,0.94);
+  color: rgba(15,17,21,0.96);
+}
+
+body.dark .highlightPanelButtonPrimary:hover {
+  background: rgba(255,255,255,1);
+  border-color: rgba(255,255,255,1);
+  color: rgba(15,17,21,1);
+}
+
+body.dark .highlightPanelMedia {
+  background: rgba(255,255,255,0.03);
+}
+
+body.dark .highlightRowIndex {
+  color: rgba(144, 164, 255, 0.88);
+}
+
+body.dark .highlightRowMeta {
+  color: rgba(255,255,255,0.6);
+}
+
+body.dark.homePage {
+  background:
+    radial-gradient(circle at top center, rgba(117, 134, 255, 0.08), transparent 24%),
+    linear-gradient(180deg, #121318 0%, #17181d 40%, #1b1c1d 100%);
+}
+
+body.dark.homePage .heroEyebrow {
+  color: rgba(255,255,255,0.58);
+}
+
+body.dark.homePage .heroSubtitle {
+  color: rgba(255,255,255,0.74);
+}
+
+body.dark.homePage .heroCaption {
+  color: rgba(255,255,255,0.58);
+}
+
+body.dark.homePage .ghostButton {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.12);
 }
 
 .items {
@@ -966,6 +1261,21 @@ a.card {
   text-decoration: none;
 }
 
+@media(max-width: 960px) {
+  .highlightMosaic {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "launcher"
+      "agent"
+      "cloud";
+  }
+
+  .highlightPanelLauncher,
+  .highlightPanelCloud {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Responsive styles */
 @media(max-width: 720px) {
   .items {
@@ -1003,23 +1313,59 @@ a.card {
     padding: 24px 16px 60px;
   }
 
-  .hero {
-    padding: 40px 0 20px;
+  .homeHero {
+    padding: 30px 0 28px;
   }
 
-  .heroLogo img {
-    width: 180px;
-    height: 180px;
+  .homePage .heroLogo img {
+    width: 152px;
+    height: 152px;
   }
 
-  .hero h1 {
-    font-size: 40px;
+  .homePage .hero h1 {
+    font-size: 38px;
+    letter-spacing: -1.4px;
+  }
+
+  .homePage .heroSubtitle {
+    font-size: 18px;
+  }
+
+  .overviewSection {
+    padding-top: 10px;
+  }
+
+  .highlightPanel {
+    padding: 18px;
+  }
+
+  .highlightPanelCopy h3 {
+    font-size: 24px;
+  }
+
+  .highlightPanelCopy p {
+    font-size: 16px;
   }
 }
 
 @media(max-width: 480px) {
   .items {
     grid-template-columns: 1fr;
+  }
+
+  .homePage .heroActions {
+    justify-content: stretch;
+  }
+
+  .homePage .heroActions .pillButton,
+  .homePage .heroActions .ghostButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .highlightPanel {
+    gap: 8px;
+    padding: 16px;
   }
 }
 
