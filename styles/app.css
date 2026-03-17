@@ -415,7 +415,7 @@ body.dark .itemsContainer .description {
 }
 
 .homePageLayout {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding-top: 18px;
 }
@@ -496,7 +496,8 @@ body.dark .itemsContainer .description {
   grid-template-areas:
     "launcher agent"
     "cloud agent"
-    "assistant assistant";
+    "assistant assistant"
+    "agentLauncher agentLauncher";
   gap: 18px;
 }
 
@@ -523,6 +524,11 @@ body.dark .itemsContainer .description {
 
 .highlightPanelAssistant {
   grid-area: assistant;
+  align-content: start;
+}
+
+.highlightPanelAgentLauncher {
+  grid-area: agentLauncher;
   align-content: start;
 }
 
@@ -1274,10 +1280,12 @@ a.card {
       "launcher"
       "agent"
       "cloud"
-      "assistant";
+      "assistant"
+      "agentLauncher";
   }
 
   .highlightPanelLauncher,
+  .highlightPanelAgentLauncher,
   .highlightPanelAssistant,
   .highlightPanelCloud {
     grid-template-columns: 1fr;

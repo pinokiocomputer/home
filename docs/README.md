@@ -663,6 +663,52 @@ The built-in `gepeto` skill is the companion interpreter for building Pinokio la
 
 In other words, Pinokio can be used both to **run apps with agents** and to **build new launchers with agents**.
 
+
+### 14.7. Automatic skill discovery
+
+Pinokio automatically places the `gepeto` and `pinokio` skills inside `~/.agents/skills` folder when you run pinokio, which means most AI agents (The ones that automatically look up that path for skill discovery) will find them automatically. They will **"just work"**.
+
+Such agents, which auto-discover skills this way are: **Codex CLI**, **Codex Desktop**, **Gemini CLI**, **Openclaw**, etc. For these agents, you do NOT need to do anything. The skills will just be there, and automatically work.
+
+
+### 14.8. Manual skill discovery
+
+Unlike the agents mentioned in the previous section, there are some agents that do NOT automatically discover skills from pre-defined locations, and you have to manually import the skills.
+
+These agents include: Manus Desktop, etc.
+
+In these cases, you will have to:
+
+1. Download the SKILL.md files from Pinokio:
+    - pinokio skill: http://localhost:42000/settings/docs/pinokio/download
+    - pinokio skill: http://localhost:42000/settings/docs/gepeto/download
+2. Import the skill.md files into the agents manually.
+
+For example on Manus desktop:
+
+![manus.png](manus.png)
+
+### 14.9. Skills should automaticallly work
+
+In most cases, the `pinokio` and `gepeto` skill will automatically trigger whenever you ask for something that requires some complex app usage, such as local video ai generation, etc.
+
+For example, if you simply say:
+
+> "Generate a video of a cat playing the piano, using LTX-2.3 model"
+
+it will automatically trigger the `pinokio` skill and look for available apps on pinokio, then launch, and then actually run the prompt. All automatically.
+
+### 14.10. Manually activating the skills
+
+But if you do NOT want to rely on the skills being automatically triggered based on your prompt, and force the skill to always trigger, you can explicitly activate them. For example in Codex desktop you can start typing `/pinokio` and it will let you select the pinokio skill:
+
+![codex_skill.gif](codex_skill.gif)
+
+Here's an example where I activate the `pinokio` skill in Claude code by typing `/pinokio`:
+
+![claude_code_skill.gif](claude_code_skill.gif)
+
+
 ## 15. Agent Launcher
 
 The **Agent Launcher** is a persistent workspace and session manager for AI agents.
