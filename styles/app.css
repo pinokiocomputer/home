@@ -495,7 +495,8 @@ body.dark .itemsContainer .description {
   grid-template-columns: minmax(0, 1.28fr) minmax(280px, 0.88fr);
   grid-template-areas:
     "launcher agent"
-    "cloud agent";
+    "cloud agent"
+    "assistant assistant";
   gap: 18px;
 }
 
@@ -518,6 +519,11 @@ body.dark .itemsContainer .description {
   grid-area: agent;
   align-content: start;
   grid-template-rows: auto 1fr;
+}
+
+.highlightPanelAssistant {
+  grid-area: assistant;
+  align-content: start;
 }
 
 .highlightPanelCloud {
@@ -616,7 +622,7 @@ body.dark .itemsContainer .description {
 
 .highlightRowIndex {
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: 0.08em;
   color: rgba(66,88,156,0.76);
@@ -1267,10 +1273,12 @@ a.card {
     grid-template-areas:
       "launcher"
       "agent"
-      "cloud";
+      "cloud"
+      "assistant";
   }
 
   .highlightPanelLauncher,
+  .highlightPanelAssistant,
   .highlightPanelCloud {
     grid-template-columns: 1fr;
   }
