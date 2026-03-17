@@ -487,10 +487,12 @@ body.dark .itemsContainer .description {
 }
 
 .overviewSection {
-  padding: 18px 0 0;
+  padding: 10px 0 0;
 }
 
 .highlightMosaic {
+  --highlight-grid-line: rgba(15,17,21,0.08);
+  --highlight-media-frame: rgba(15,17,21,0.1);
   display: grid;
   grid-template-columns: minmax(0, 1.28fr) minmax(280px, 0.88fr);
   grid-template-areas:
@@ -498,17 +500,19 @@ body.dark .itemsContainer .description {
     "cloud agent"
     "assistant assistant"
     "agentLauncher agentLauncher";
-  gap: 18px;
+  gap: 0;
+  border-top: 1px solid var(--highlight-grid-line);
+  border-left: 1px solid var(--highlight-grid-line);
 }
 
 .highlightPanel {
   display: grid;
   gap: 18px;
-  padding: 22px;
+  padding: clamp(22px, 2.2vw, 30px);
   min-width: 0;
-  border: 1px solid rgba(15,17,21,0.08);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.92);
+  border-right: 1px solid var(--highlight-grid-line);
+  border-bottom: 1px solid var(--highlight-grid-line);
+  background: transparent;
 }
 
 .highlightPanelLauncher {
@@ -540,44 +544,45 @@ body.dark .itemsContainer .description {
 .highlightPanelCopy {
   display: grid;
   align-content: start;
-  gap: 8px;
+  gap: 10px;
   min-width: 0;
 }
 
 .highlightPanelCopy h3 {
   margin: 0;
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
-  font-size: clamp(24px, 2.3vw, 31px);
+  font-size: clamp(24px, 2.35vw, 30px);
   font-weight: 600;
-  line-height: 1.06;
-  letter-spacing: -0.5px;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
 }
 
 .highlightPanelCopy p {
   margin: 0;
   color: rgba(15,17,21,0.68);
-  font-size: 16px;
-  line-height: 1.6;
+  max-width: 58ch;
+  font-size: 15px;
+  line-height: 1.65;
 }
 
 .highlightPanelActions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding-top: 6px;
+  padding-top: 8px;
 }
 
 .highlightPanelButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 0 15px;
+  min-height: 36px;
+  padding: 0 12px;
   border: 1px solid rgba(15,17,21,0.12);
   border-radius: 999px;
-  background: rgba(247,248,251,0.92);
-  color: rgba(15,17,21,0.82);
-  font-size: 14px;
+  background: transparent;
+  color: rgba(15,17,21,0.84);
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.01em;
   text-decoration: none;
@@ -585,16 +590,16 @@ body.dark .itemsContainer .description {
 }
 
 .highlightPanelButton:hover {
-  background: rgba(255,255,255,0.98);
+  background: rgba(15,17,21,0.04);
   border-color: rgba(15,17,21,0.2);
-  color: rgba(15,17,21,0.96);
+  color: rgba(15,17,21,1);
   transform: translateY(-1px);
 }
 
 .highlightPanelButtonPrimary {
-  background: rgba(15,17,21,0.94);
-  border-color: rgba(15,17,21,0.94);
-  color: rgba(255,255,255,0.98);
+  background: rgba(15,17,21,0.98);
+  border-color: rgba(15,17,21,0.98);
+  color: rgba(255,255,255,1);
 }
 
 .highlightPanelButtonPrimary:hover {
@@ -605,9 +610,8 @@ body.dark .itemsContainer .description {
 
 .highlightPanelMedia {
   align-self: start;
-  border-radius: 14px;
-  background: rgba(248,249,252,0.96);
-  padding: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--highlight-grid-line);
   min-width: 0;
 }
 
@@ -615,11 +619,12 @@ body.dark .itemsContainer .description {
   width: 100%;
   display: block;
   height: auto;
+  border: 1px solid var(--highlight-media-frame);
+  background: rgba(255,255,255,0.96);
 }
 
 .highlightPanelMediaTall {
-  display: flex;
-  justify-content: center;
+  display: block;
 }
 
 .highlightPanelMediaTall img {
@@ -630,47 +635,51 @@ body.dark .itemsContainer .description {
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
   font-size: 20px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  color: rgba(66,88,156,0.76);
+  letter-spacing: 0.14em;
+  color: rgba(15,17,21,0.5);
 }
 
 .highlightRowMeta {
   text-transform: uppercase;
-  letter-spacing: 1.6px;
+  letter-spacing: 0.16em;
   font-size: 10px;
   font-weight: 600;
-  color: rgba(15,17,21,0.44);
+  color: rgba(15,17,21,0.42);
 }
 
 body.dark .overviewSection {
   box-shadow: none;
 }
 
+body.dark .highlightMosaic {
+  --highlight-grid-line: rgba(255,255,255,0.1);
+  --highlight-media-frame: rgba(255,255,255,0.12);
+}
+
 body.dark .highlightPanel {
-  border-color: rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.035);
+  background: transparent;
 }
 
 body.dark .highlightPanelCopy p {
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.78);
 }
 
 body.dark .highlightPanelButton {
-  border-color: rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.045);
+  border-color: rgba(255,255,255,0.14);
+  background: transparent;
   color: rgba(255,255,255,0.88);
 }
 
 body.dark .highlightPanelButton:hover {
   border-color: rgba(255,255,255,0.22);
   background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.98);
+  color: rgba(255,255,255,1);
 }
 
 body.dark .highlightPanelButtonPrimary {
-  background: rgba(255,255,255,0.94);
-  border-color: rgba(255,255,255,0.94);
-  color: rgba(15,17,21,0.96);
+  background: rgba(255,255,255,0.98);
+  border-color: rgba(255,255,255,0.98);
+  color: rgba(15,17,21,1);
 }
 
 body.dark .highlightPanelButtonPrimary:hover {
@@ -680,15 +689,19 @@ body.dark .highlightPanelButtonPrimary:hover {
 }
 
 body.dark .highlightPanelMedia {
+  background: transparent;
+}
+
+body.dark .highlightPanelMedia img {
   background: rgba(255,255,255,0.03);
 }
 
 body.dark .highlightRowIndex {
-  color: rgba(144, 164, 255, 0.88);
+  color: rgba(255,255,255,0.56);
 }
 
 body.dark .highlightRowMeta {
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.44);
 }
 
 body.dark.homePage {
