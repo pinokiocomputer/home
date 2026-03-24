@@ -4,7 +4,7 @@
 Pinokio is your **Localhost Cloud**: run anything locally—apps, AI, agents, and web servers—on your own machines with a full toolchain built in.
 
 ## 1. The Localhost Cloud
-All-in-one environment ready to run ANY web app/AI servers on your PC (Including Python, Node.js, Git, Conda, etc)
+All-in-one environment ready to run ANY web app/AI servers on your PC, including Python, Node.js, Bun, Git, tmux (macOS/Linux), Conda, and more out of the box.
 
 ### 1.1. 100% Local, running on your PC
 
@@ -21,15 +21,19 @@ Pinokio is like [Vercel](https://vercel.com/), but for localhost.
 
 Practically speaking, it's a platform that lets you host all kinds of web apps and AI apps on your personal computer, and use like they're from public web.
 
-In order to facilitate this, the platform comes with everything you need to build and run anything on your machine.
+In order to facilitate this, the platform comes with the core runtimes, package managers, and tools you need to build and run things on your machine.
+
+Depending on your platform, Pinokio comes with tools such as:
 
 - Python
 - Node.js
+- Bun
 - Git
-- UV
+- uv
+- tmux (macOS/Linux)
 - Conda
 - Homebrew
-- FFMpeg
+- FFmpeg
 - Caddy (Reverse Proxy)
 - Can programmatically install ANYTHING additional.
 
@@ -37,7 +41,7 @@ In order to facilitate this, the platform comes with everything you need to buil
 
 ### 1.3. Extensible
 
-Thanks to the built in package managers like **Conda** and **Homebrew**, it is extremely simple to automatically install additional packages.
+Thanks to the built in package managers like **Conda**, **Homebrew**, **Bun**, and **npm**, it is extremely simple to automatically install additional packages.
 
 Of course, Pinokio has full access to shell commands so you can pretty much install anything even when there are no pre-packaged binaries.
 
@@ -2353,7 +2357,9 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
 ```json
 {
   "shell": {
+    "shell": <shell>,
     "input": <input>,
+    "state_interval": <state_interval>,
     "message": <message>,
     "path": <path>,
     "env": <env>,
@@ -2363,9 +2369,16 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
 }
 ```
 
+- `<shell>` **(optional)**: Override the shell executable used to run the command.
+  - **When NOT specified:** Pinokio uses the default shell for the platform (`cmd.exe` on Windows, `bash` on macOS/Linux).
+  - **When specified:** Pinokio launches the command with the specified shell instead.
+  - The value can be a command name such as `bash` or `cmd.exe`, or an absolute path. When you pass a command name, Pinokio first tries to resolve it against its managed environment before launching the shell.
+  - If that lookup succeeds, Pinokio launches the resolved executable path. If it does not, Pinokio passes the original value through to the shell launcher.
+  - This is especially useful on Windows when a CLI expects Bash semantics. For example, `shell: "bash"` will resolve to Pinokio's bundled Bash. If you want the resolved path explicitly, you can also use `{{which('bash')}}`.
 - `<input>`: **(optional)** Whether the shell is interactive or not (whether the user can enter keystrokes into the shell)
   - **when `true`**: the shell launches in input mode. The user can enter keys. Useful for launching CLI Apps that require user interaction.
   - **when `false` (or not specified):** the shell launches in non-interactive mode. Useful for automated shell execution that should not allow user interaction.
+- `<state_interval>`: **(optional)** Same as `shell.run`. Useful for interactive TUIs and other CLI apps that repaint frequently.
 - `<message>`: The message to enter into the shell. May be a string (Different from `shell.run` in that it can only have one message).
   - **string** => enters the message.
 - `<path>` **(optional)**: The path from which to start the shell session (can be either a relative or absolute path).
@@ -2379,7 +2392,7 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
   - **When specified:** Creates a venv at the specified path if it doesn't exist yet, or if it exists, activates the existing venv at the specified path, and runs the shell session in that venv.
   - the shell automatically creates a venv environment at that path if it doesn't exist, then automatically activates the environment before running the command(s) specified by the `message` attribute.
 - `<conda_config>` **(optional)**: Declarative syntax for defining the conda environment that will be activated for this shell session. Can be an object or a string.
-  - **When NOT specified (default):** By default Pinokio installs a handful of essential modules in the `base` conda environment that's isolated to Pinokio (Even if you have a conda installed on your system globally, Pinokio will NOT use it and use the isolated conda built-into Pinokio).
+  - **When NOT specified (default):** By default Pinokio activates its isolated `base` conda environment. Pinokio-managed shared tools live under `PINOKIO_HOME/bin` (for example through Conda, Bun, npm, Homebrew, and other setup-managed installers depending on platform and selected bundle), so Pinokio does NOT rely on your system-wide setup.
   - **When specified:** The `<conda_config>` attribute can be a **string** or an **object**.
     - **string:** the `<conda_config>` is interpreted as the path in which the conda environment is stored. (Ex: if `"conda": "conda_env"`, the shell will activate the conda environment at the `conda_env` path).
     - **object:** In some cases you may want more advanced ways of creating/activating the conda environments declaratively. When the `<conda_config> is an **object** type instead of **string**, the following rules apply:
@@ -2681,7 +2694,7 @@ module.exports = {
     id: "run",
     method: "shell.run",
     params: {
-      shell: "{{kernel.path('bin/miniconda/Library/bin/bash.exe')}}",
+      shell: "bash",
       conda: {
         skip: true
       },
@@ -2701,6 +2714,8 @@ module.exports = {
   }]
 }
 ```
+
+The Windows branch explicitly sets `shell` to `bash`, and Pinokio resolves it to the bundled Bash on Windows so Bash-oriented terminal plugins can run there too.
 
 ### Desktop plugin
 
@@ -3170,7 +3185,9 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
 {
   "method": "shell.run",
   "params": {
+    "shell": <shell>,
     "input": <input>,
+    "state_interval": <state_interval>,
     "message": <message>,
     "path": <path>,
     "env": <env>,
@@ -3183,9 +3200,20 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
 }
 ```
 
+- `<shell>` **(optional)**: Override the shell executable used to run the command.
+  - **When NOT specified:** Pinokio uses the default shell for the platform (`cmd.exe` on Windows, `bash` on macOS/Linux).
+  - **When specified:** Pinokio launches the command with the specified shell instead.
+  - The value can be a command name such as `bash` or `cmd.exe`, or an absolute path. When you pass a command name, Pinokio first tries to resolve it against its managed environment before launching the shell.
+  - If that lookup succeeds, Pinokio launches the resolved executable path. If it does not, Pinokio passes the original value through to the shell launcher.
+  - This is especially useful on Windows when a CLI expects Bash semantics. For example, `shell: "bash"` will resolve to Pinokio's bundled Bash. If you want the resolved path explicitly, you can also use `{{which('bash')}}`.
 - `<input>`: **(optional)** Whether the shell is interactive or not (whether the user can enter keystrokes into the shell)
   - **when `true`**: the shell launches in input mode. The user can enter keys. Useful for launching CLI Apps that require user interaction.
   - **when `false` (or not specified):** the shell launches in non-interactive mode. Useful for automated shell execution that should not allow user interaction.
+- `<state_interval>`: **(optional)** positive integer in milliseconds. Throttles how often Pinokio rebuilds the server-side terminal state for this shell session.
+  - **when NOT specified:** Pinokio keeps the default behavior and refreshes terminal state on every output chunk.
+  - **when specified:** raw terminal output, keyboard input, and `on` event parsing still happen live, but the reconstructed terminal `state` is refreshed at most once per interval.
+  - Useful for fullscreen TUIs and other CLI apps that repaint frequently.
+  - Shell completion, detach, and kill still force one final fresh state sync.
 - `<message>`: The message to enter into the shell. May be a string, or an array.
   - **string** => enters the message.
   - **array** => enters the messages in the array sequentially.
@@ -3201,7 +3229,7 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
   - **When specified:** Creates a venv at the specified path if it doesn't exist yet, or if it exists, activates the existing venv at the specified path, and runs the shell session in that venv.
   - the shell automatically creates a venv environment at that path if it doesn't exist, then automatically activates the environment before running the command(s) specified by the `message` attribute.
 - `<conda_config>` **(optional)**: Declarative syntax for defining the conda environment that will be activated for this shell session. Can be an object or a string.
-  - **When NOT specified (default):** By default Pinokio installs a handful of essential modules in the `base` conda environment that's isolated to Pinokio (Even if you have a conda installed on your system globally, Pinokio will NOT use it and use the isolated conda built-into Pinokio).
+  - **When NOT specified (default):** By default Pinokio activates its isolated `base` conda environment. Pinokio-managed shared tools live under `PINOKIO_HOME/bin` (for example through Conda, Bun, npm, Homebrew, and other setup-managed installers depending on platform and selected bundle), so Pinokio does NOT rely on your system-wide setup.
   - **When specified:** The `<conda_config>` attribute can be a **string** or an **object**.
     - **string:** the `<conda_config>` is interpreted as the path in which the conda environment is stored. (Ex: if `"conda": "conda_env"`, the shell will activate the conda environment at the `conda_env` path).
     - **object:** In some cases you may want more advanced ways of creating/activating the conda environments declaratively. When the `<conda_config> is an **object** type instead of **string**, the following rules apply:
@@ -3229,6 +3257,19 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
     - `HF_HOME`: huggingface cache. used to store model files downloaded from huggingface.
     - `TORCH_HOME`: pytorch hub cache. used to store model files downloaded from torch hub
     - `GRADIO_TEMP_DIR`: gradio cache. used to store files processed by gradio
+
+**Example: interactive TUI with throttled terminal state sync**
+
+```json
+{
+  "method": "shell.run",
+  "params": {
+    "message": "btop",
+    "input": true,
+    "state_interval": 500
+  }
+}
+```
 
 #### return value
 
@@ -7582,7 +7623,7 @@ You can also store the port in a local variable and use it multiple times later:
 Pinokio is a self-contained platform that lets you install apps in an isolated manner.
 
 1. **Isolated Environment:** no need to worry about messing up your global system configurations and environments
-2. **Batteries Included:** no need to manually install required programs just to install something (such as **ffpeg**, **node.js**, **visual studio**, **conda**, **python**, **pip**, etc.). Pinokio takes care of it automatically.
+2. **Batteries Included:** no need to manually install required programs just to install something. Pinokio already comes with bundled tools such as **ffmpeg**, **node.js**, **bun**, **tmux** (macOS/Linux), **visual studio**, **conda**, **python**, **pip**, etc., depending on platform.
 
 To achieve this, Pinokio **stores everything under a single isolated folder ("pinokio home")**, so it never has to rely on your system-wide configs and programs but runs everything in a self-contained manner.
 
@@ -7602,8 +7643,8 @@ Let's quickly go through what each folder does:
 
 1. `api`: stores all the downloaded apps (scripts).
     - The folders inside this folder are displayed on your Pinokio's home.
-2. `bin`: stores globally installed modules shared by multiple apps so you don't need to install them redundantly.
-    - For example, `ffmpeg`, `nodejs`, `python`, etc.
+2. `bin`: stores Pinokio-managed shared runtimes, package managers, and tools so multiple apps can reuse them without redundant installs.
+    - For example, `ffmpeg`, `node.js`, `bun`, `tmux` (macOS/Linux), `python`, etc.
 3. `cache`: stores all the files automatically cached by apps you run.
     - When something doesn't work, deleting this folder and starting fresh may fix it.
     - It is OK to delete the `cache` folder as it will be re-populated by the apps you use as you start using apps.
@@ -7636,6 +7677,8 @@ The top level folders under the Pinokio home directory look like the following
   /bin
     /miniconda
     /homebrew
+    /bun
+    /npm
     /py
   /drive
     /drives
@@ -7647,6 +7690,8 @@ The top level folders under the Pinokio home directory look like the following
   /workspaces
   /logs
 ```
+
+Actual contents of `/bin` vary by platform and by which setup bundles/tools you have installed. Many shared tools live inside prefixes such as `/miniconda`, `/homebrew`, `/bun`, `/npm`, and `/py` rather than getting their own top-level folder.
 
 
 
@@ -7660,12 +7705,13 @@ The `api` folder is where the downloaded app repositories are stored. An API fol
 
 ### /bin
 
-The `bin` folder stores all the binaries commonly used by AI engines.
+The `bin` folder stores the shared runtimes, package managers, and tools commonly used by Pinokio apps and agents.
 
-- **miniconda:** for conda environment
-- **brew:** for dealing with homebrew on macs
-- **python** (and `pip`)
-- **node.js** (and `npm`)
+- **miniconda:** for the isolated conda environment and conda-installed tools such as `ffmpeg`, `uv`, and `tmux` on macOS/Linux
+- **brew:** for dealing with Homebrew on macOS
+- **bun:** for the Bun runtime, package manager, and Bun-installed tools
+- **py:** for Pinokio's shared Python-side tooling
+- **npm:** for global npm-installed tools used with the shared Node.js runtime, such as `pterm`
 - etc.
 
 Things installed into the `/bin` folder can be shared across multiple apps in the `/api` folder.
