@@ -2436,8 +2436,20 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
   - **when `true`**: the shell launches in input mode. The user can enter keys. Useful for launching CLI Apps that require user interaction.
   - **when `false` (or not specified):** the shell launches in non-interactive mode. Useful for automated shell execution that should not allow user interaction.
 - `<state_interval>`: **(optional)** Same as `shell.run`. Useful for interactive TUIs and other CLI apps that repaint frequently.
-- `<message>`: The message to enter into the shell. May be a string (Different from `shell.run` in that it can only have one message).
-  - **string** => enters the message.
+- `<message>`: The message to enter into the shell. Different from `shell.run`, instant `shell` only launches one command, so this can be either:
+  - **string** => raw shell text
+  - **object** => structured argv-style command, escaped automatically for the selected shell
+
+```json
+{
+  "shell": {
+    "message": {
+      "_": ["npx", "-y", "@openai/codex@latest", "{{args.prompt}}"]
+    },
+    "input": true
+  }
+}
+```
 - `<path>` **(optional)**: The path from which to start the shell session (can be either a relative or absolute path).
   - **When NOT specified:** the shell starts from the same path as the currently running script.
   - **When specified:** the shell session starts from the specified path
@@ -3431,7 +3443,11 @@ Note that `input` is `false` by default for all `shell.run` API requests. So you
 
 ##### message
 
-You can either pass one message (string), or multiple messages (array):
+You can pass the `message` attribute in three forms:
+
+- `string`: Raw shell text.
+- `array`: Multiple shell commands executed in sequence.
+- `object`: Structured argv-style command. This is the safest way to pass multiline prompts and shell-sensitive characters such as `!`, quotes, and newlines.
 
 ###### Single message
 
@@ -3467,6 +3483,49 @@ If the `message` attribute is an array, it executes the commands in sequence.
   }]
 }
 ```
+
+Array items can also be structured command objects. String items are still treated as raw shell commands.
+
+###### Structured message
+
+If the `message` attribute is an object, Pinokio treats it as a structured command instead of raw shell text.
+
+- `_`: positional arguments
+- other keys: flags
+- unresolved pure-template values such as `{{args.prompt}}` are omitted in this structured mode
+- each argument is escaped automatically for the selected shell
+
+```json
+{
+  "run": [{
+    "method": "shell.run",
+    "params": {
+      "message": {
+        "_": ["npx", "-y", "@openai/codex@latest", "{{args.prompt}}"]
+      },
+      "input": true
+    }
+  }]
+}
+```
+
+```json
+{
+  "run": [{
+    "method": "shell.run",
+    "params": {
+      "message": {
+        "_": ["npx", "-y", "@google/gemini-cli"],
+        "i": "{{args.prompt}}",
+        "include-directories": "{{kernel.path('prototype')}}"
+      },
+      "input": true
+    }
+  }]
+}
+```
+
+Use the structured form when you want Pinokio to handle shell escaping for you. Use the string form when you intentionally need raw shell syntax such as pipes, redirects, `&&`, or subshell expressions.
 
 ##### path
 
