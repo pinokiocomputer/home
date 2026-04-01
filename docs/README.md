@@ -45,6 +45,39 @@ Thanks to the built in package managers like **Conda**, **Homebrew**, **Bun**, a
 
 Of course, Pinokio has full access to shell commands so you can pretty much install anything even when there are no pre-packaged binaries.
 
+### 1.4. Safer Package Installs
+
+Installing 3rd party packages is one of the biggest risks in local app platforms.
+
+To reduce exposure to freshly published malicious packages, Pinokio applies a built-in package cooldown by default for:
+
+- `npm`
+- `npx`
+- `uv`
+- `uvx`
+
+By default, Pinokio delays packages newer than `72h` and resolves to the newest version that is old enough.
+
+This protection applies automatically to normal app shells and `shell.run` calls. Apps can still override it when they intentionally need very recent packages.
+
+Use the app's `ENVIRONMENT` file to customize it:
+
+```bash
+# default behavior when unset
+PINOKIO_PACKAGE_COOLDOWN=72h
+
+# stricter
+PINOKIO_PACKAGE_COOLDOWN=7d
+
+# disable for a specific app
+PINOKIO_PACKAGE_COOLDOWN=off
+```
+
+Current scope:
+
+- Covered: `npm`, `npx`, `uv`, `uvx`
+- Not yet covered by this cooldown: raw `pip` / `python -m pip`, `conda`, `brew`, `cargo`
+
 ---
 
 ## 2. Universal Interface
@@ -1211,6 +1244,30 @@ A lot of apps require you setting some environment variable values such as `OPEN
 With Pinokio, you do not need to manually specify the environment variables every time you run these apps thanks to the [ENVIRONMENT](#environment-1) file.
 
 Every pinokio project has a file named `ENVIRONMENT` which stores environment variable values. Wheenver script files are run, the values in the `ENVIRONMENT` file are imported automatically.
+
+Pinokio also uses `ENVIRONMENT` for built-in runtime policy controls. One important example is the package cooldown feature:
+
+```bash
+# default when unset
+PINOKIO_PACKAGE_COOLDOWN=72h
+```
+
+Accepted values:
+
+- `24h`
+- `48h`
+- `72h`
+- `7d`
+- `1w`
+- `off`
+
+When enabled, Pinokio translates this to the native package-manager settings at runtime:
+
+- `NPM_CONFIG_BEFORE`
+- `npm_config_before`
+- `UV_EXCLUDE_NEWER`
+
+If you explicitly set one of those native variables yourself, Pinokio respects that and does not overwrite it.
 
 
 #### env
@@ -2387,6 +2444,12 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
 - `<env>` **(optional)**: Environment variable key/value pairs.
   - when the key/value pairs are specified, the custom environment values are set.
   - when NOT specified, the shell uses the default environment
+  - Pinokio also injects a default package cooldown for app shells unless disabled. By default this affects `npm`, `npx`, `uv`, and `uvx`.
+  - To disable or customize it per app, set `PINOKIO_PACKAGE_COOLDOWN` in the app `ENVIRONMENT` file.
+  - To disable or customize it per call, pass explicit env values such as:
+    - `PINOKIO_PACKAGE_COOLDOWN=off`
+    - `NPM_CONFIG_BEFORE=<timestamp>`
+    - `UV_EXCLUDE_NEWER=<duration_or_timestamp>`
 - `<venv_path>` **(optional)**: A declarative syntax for automatically creating or activating a venv environment at the specified path.
   - **When NOT specified (default):** Does not create or activate a venv and runs the shell session normally.
   - **When specified:** Creates a venv at the specified path if it doesn't exist yet, or if it exists, activates the existing venv at the specified path, and runs the shell session in that venv.
