@@ -45,73 +45,78 @@ Thanks to the built in package managers like **Conda**, **Homebrew**, **Bun**, a
 
 Of course, Pinokio has full access to shell commands so you can pretty much install anything even when there are no pre-packaged binaries.
 
-### 1.4. Safer Package Installs
+## 2. Package Install Protection
 
 Installing 3rd party packages is one of the biggest risks in local app platforms.
 
-To reduce exposure to freshly published malicious packages, Pinokio applies a built-in package cooldown by default for:
+Pinokio uses Bluefairy to add a freshness delay to supported package-manager install and update flows. The default delay is `72h`.
 
-- `npm`
-- `npx`
-- `uv`
-- `uvx`
+Turning it on or off:
 
-By default, Pinokio delays packages newer than `72h` and resolves to the newest version that is old enough.
+- App shells default to Protection `On`.
+- The terminal `Protection` toggle controls the default for that app.
+- For an explicit shell API call, set `params.bluefairy` to `"on"` or `"off"`.
 
-This protection applies automatically to normal app shells and `shell.run` calls. Apps can still override it when they intentionally need very recent packages.
+When Protection is off, Pinokio does not inject Bluefairy, and `npm`, `uv`, and `bun` run normally.
 
-Use the app's `ENVIRONMENT` file to customize it:
+Built-in installer, reinstall, and repair flows default to `bluefairy: "off"`.
 
-```bash
-# default behavior when unset
-PINOKIO_PACKAGE_COOLDOWN=72h
+Not covered:
 
-# stricter
-PINOKIO_PACKAGE_COOLDOWN=7d
+- `npx`, `uvx`, raw `pip` / `python -m pip`, `conda`, `brew`, `cargo`
 
-# disable for a specific app
-PINOKIO_PACKAGE_COOLDOWN=off
-```
+### 2.1. npm
 
-Current scope:
+- Protected commands: `install`, `i`, `add`, `ci`, `update`, `up`, `dedupe`, `audit fix`
+- Freshness policy: Bluefairy applies npm's normal age gate. On newer npm it uses `--min-release-age`; on older npm it falls back to `--before`.
+- Exact pins: too-new exact direct pins are still blocked.
 
-- Covered: `npm`, `npx`, `uv`, `uvx`
-- Not yet covered by this cooldown: raw `pip` / `python -m pip`, `conda`, `brew`, `cargo`
+### 2.2. uv
+
+- Protected commands: `uv pip install`, `uv pip sync`
+- Freshness policy: Bluefairy injects a uv policy file with `exclude-newer`.
+- Exact pins: exact direct pins are exempted package-by-package with `exclude-newer-package`, so direct exact pins can stay exact.
+
+### 2.3. bun
+
+- Protected commands: `bun install`, `bun add`, `bun update`
+- Freshness policy: Bluefairy applies Bun's `minimum-release-age` policy.
+- Exact pins: too-new exact direct pins are still blocked.
 
 ---
 
-## 2. Universal Interface
+## 3. Universal Interface
 
 Pinokio lets you not only browse websites, but also the backend and your file system, directly in the UI.
 
-### 2.1. Web view
+### 3.1. Web view
 
 ![frontend-browser.gif](frontend-browser.gif)
 
-### 2.2. Console view
+### 3.2. Console view
 
 ![backend-browser.gif](backend-browser.gif)
 
-### 2.3. Interactive web terminal view
+### 3.3. Interactive web terminal view
 
 ![interactive-terminal.gif](interactive-terminal.gif)
 
-### 2.4. CLI app in web terminal view
+### 3.4. CLI app in web terminal view
 
 ![cli-agent.gif](cli-agent.gif)
 
-### 2.5. Web editor view
+### 3.5. Web editor view
 
 ![editor.gif](editor.gif)
 
 
 ---
 
-## 3. CLI Server
+## 4. CLI Server
 
 Pionkio lets you use any CLI app or agent over web UI. No need to enter any command, just run the CLI apps like you surf the web.
 
-### 3.1. Web terminal
+### 4.1. Web terminal
 
 Pinokio automatically turns any CLI app into a server process so you can use them like web surfing.
 
@@ -121,14 +126,14 @@ You can also access them from any web browser since it's just a web page after a
 
 ![open-in-browser.gif](open-in-browser.gif)
 
-### 3.2. Multitask
+### 4.2. Multitask
 
 Each agent is a tab. Spin up as many tabs as you want for the same project.
 
 ![multitask.gif](multitask.gif)
 
 
-### 3.3. Push notification
+### 4.3. Push notification
 
 Agents sends you push notifications when they're done, just like an instant messenger.
 
@@ -138,7 +143,7 @@ No more worrying about when the agents are done working. They literally message 
 
 ![push.gif](push.gif)
 
-### 3.4. 1-Click launcher
+### 4.4. 1-Click launcher
 
 Create a project AND kick off the agent with 1-click.
 
@@ -146,7 +151,7 @@ Create a project AND kick off the agent with 1-click.
 
 
 
-### 3.5. X-Ray mode
+### 4.5. X-Ray mode
 
 The built-in browser lets you copy and paste any region into CLI.
 
@@ -154,20 +159,20 @@ The best part is, it works for ANY CLI agent.
 
 ![xray-mode.gif](xray-mode.gif)
 
-### 3.6. Remote control
+### 4.6. Remote control
 
 ![build-from-phone.gif](build-from-phone.gif)
 
 You can connect to the machine from a remote device, such as your phone, and work on building, without ever touching your PC keyboard.
 
-### 3.7. Realtime collaboration
+### 4.7. Realtime collaboration
 
 The terminal can be opened by simply entering the URL and anyone can jump in and collaborate on the same terminal simultaneously.
 
 ![collaborate.gif](collaborate.gif)
 
 
-### 3.8. Any CLI support
+### 4.8. Any CLI support
 
 It's very simple to create your own gateway.
 
@@ -230,11 +235,11 @@ That's all! Now you should:
 
 ---
 
-## 4. Universal Agent Memory
+## 5. Universal Agent Memory
 
 Built-in memory for ALL AI agents. No complicated infrastructure. All based on flat files. No setup required. Everything just works, automatically.
 
-### 4.1. Every terminal event logged
+### 5.1. Every terminal event logged
 
 ![logs.png](logs.png)
 
@@ -246,7 +251,7 @@ Everything that happens in terminals is stored in memory. This includes:
 3. `/logs/shell`: Actual shell usage. All user interaction with the terminal is logged.
 
 
-### 4.2. Agent agnostic
+### 5.2. Agent agnostic
 
 ![shared-memory.png](shared-memory.png)
 
@@ -255,7 +260,7 @@ Everything is stored as files. No database. No API. Just flat files. This means 
 - CLI Agents: Codex CLI, Claude Code, Gemini CLI, etc.
 - Standalone Agents: Cursor, Windsurf, etc.
 
-### 4.3. Portable
+### 5.3. Portable
 
 Everything is stored as files under the `logs` folder inside the project folder. This means you can just copy the entire project folder to another machine and pick up where you left off.
 
@@ -263,13 +268,13 @@ Everything is stored as files under the `logs` folder inside the project folder.
 
 
 
-### 4.4. 1-click fix
+### 5.4. 1-click fix
 
 Since the agents are instructed to automatically reference the logs, debugging is as easy as saying "Fix". No need to paste error messages--the agents should just figure out by accessing the memory. It just works.
 
 ![fix.gif](fix.gif)
 
-### 4.5. Cross-session memory
+### 5.5. Cross-session memory
 
 Since everything is logged, every session can access the old history. This means you can start a new session and resume where you left off last session by asking the agent to first recall what happened so far.
 
@@ -277,7 +282,7 @@ Since everything is logged, every session can access the old history. This means
 
 
 
-### 4.6. Multi agent communication
+### 5.6. Multi agent communication
 
 All agents can access the same memory, since the "memory" is simply a bunch of log files.
 
@@ -291,12 +296,12 @@ This makes it easy to make multiple agents collaborate on tasks using the same m
 
 ---
 
-## 5. Publish to Localhost
+## 6. Publish to Localhost
 
 - Launchers: Publish apps to run locally
 - AI-Generated Launchers: Launchers are automatically generated when you build your apps in pinokio folders
 
-### 5.1. Package cloud apps to run locally
+### 6.1. Package cloud apps to run locally
 
 ![package.png](package.png)
 
@@ -306,7 +311,7 @@ Pinokio makes it easy to package any cloud app into a pack that can run locally.
 2. Publish the packed repository to git hosting services
 3. 1-Click download, install, and run.
 
-### 5.2. Automatic packaging with AI agents
+### 6.2. Automatic packaging with AI agents
 
 
 ![automatic-packaging.png](automatic-packaging.png)
@@ -320,7 +325,7 @@ The Pinokio Packaging Agent seamlessly works with ANY AI coding agent:
 - CLI Agents: Claude code, Codex CLI, Gemini CLI, etc.
 - Standalone Applications: Cursor, Windsurf, etc.
 
-### 5.3. 1-Click Publish to GitHub
+### 6.3. 1-Click Publish to GitHub
 
 Thanks to the "login with localhost" feature, it is as easy as 1 click to create github repositories and publish to them, which instantly makes your packaged apps available for download by other people.
 
@@ -328,16 +333,16 @@ Thanks to the "login with localhost" feature, it is as easy as 1 click to create
 
 ---
 
-## 6. Cell
+## 7. Cell
 Adaptive container elements that can become anything - AI, terminals, apps, remote machines.
 
-### 6.1. 1-click create
+### 7.1. 1-click create
 
 Spin up a new cell with 1 click.
 
 ![cell.gif](cell.gif)
 
-### 6.2. Parallel Browsing
+### 7.2. Parallel Browsing
 
 You can spin up multiple windows side by side. This lets you do all kinds of powerful things. For example,
 
@@ -354,7 +359,7 @@ Run an app while monitoring processes with terminal apps (like top, htop, etc.)
 ![top.gif](top.gif)
 
 
-### 6.3. No limits
+### 7.3. No limits
 
 You can keep creating as many cells as you want, each cell is independent from each other.
 
@@ -364,30 +369,30 @@ You can keep creating as many cells as you want, each cell is independent from e
 
 ---
 
-## 7. 1-Click Version Control
+## 8. 1-Click Version Control
 
 One click version control 
 
-### 7.1. Jump across versions
+### 8.1. Jump across versions
 
 Switch to any past version you prefer.
 
 ![git_switch.gif](git_switch.gif)
 
-### 7.2. Save versions
+### 8.2. Save versions
 
 You can make git commits (save version) with one click
 
 ![git_commit.gif](git_commit.gif)
 
-### 7.3. Create a repository on Github
+### 8.3. Create a repository on Github
 
 Create your own repository on Github with 1-click.
 
 ![git_create.gif](git_create.gif)
 
 
-### 7.4. Publish to Github with 1-click
+### 8.4. Publish to Github with 1-click
 
 Publish your project to github with one click.
 
@@ -395,19 +400,19 @@ Publish your project to github with one click.
 
 
 
-### 7.5. Automatic Version Control
+### 8.5. Automatic Version Control
 
 Simply by creating a project in Pinokio folders, you get version control out of the box.
 
 
 ---
 
-## 8. LWW (LAN-Wide-Web)
+## 9. LWW (LAN-Wide-Web)
 
 Pinokio automatically creates a private web made up of all the machines on your office/home network (LAN --- Local Area Network)
 
 
-### 8.1. Automatic Localhost Discovery
+### 9.1. Automatic Localhost Discovery
 
 
 ![localhost_discovery.gif](localhost_discovery.gif)
@@ -423,7 +428,7 @@ For example, external applications that operate based on a server will be instan
 
 
 
-### 8.2. Private web made up of PCs
+### 9.2. Private web made up of PCs
 
 ![lww.gif](lww.gif)
 
@@ -434,11 +439,11 @@ Instantly discover and surf every machine on your LAN as if it's public web.
 
 ---
 
-## 9. Instant HTTPS Web Domains
+## 10. Instant HTTPS Web Domains
 Instant HTTPS URLs for all your localhost apps, like https://comfyui.localhost
 
 
-### 9.1. Custom Domains
+### 10.1. Custom Domains
 
 ![custom_domain.png](custom_domain.png)
 
@@ -448,7 +453,7 @@ Give memorable domain names for locally installed apps. No more localhost URLs w
 
 Regardless of which port the apps launch from, they will ALWAYS have the fixed HTTPS domain.
 
-### 9.2. Automatic HTTPS for External Apps
+### 10.2. Automatic HTTPS for External Apps
 
 ![instant_https.png](instant_https.png)
 
@@ -472,7 +477,7 @@ Examples:
 2. **LM Studio:** which runs on http://localhost:1234 automatically gets the url: https://1234.localhost
 3. **ComfyUI Desktop:** which runs on http://localhost:8188 automatically gets the url: https://8188.localhost
 
-### 9.3. Custom Domains for External Apps
+### 10.3. Custom Domains for External Apps
 
 
 What if you want to get custom domains for ANY web server running on your machine? Even the ones that have NOTHING to do with Pinokio? (Llamabarn, Ollama, LM Studio, ComfyUI Desktop, etc.) Simple, simply create a folder with the custom name and connect a port.
@@ -488,7 +493,7 @@ Here's an example where I instantly get a local web domain for a locally running
 5. That's it! You can now start using `https://WHATEVER.localhost` directly in any browser.
 
 
-### 9.4. Auto-launch
+### 10.4. Auto-launch
 
 Running web applications locally usually means dealing with a frustrating workflow: launch the server, wait for it to start up, then finally begin working. You can't leave everything running indefinitely, so this tedious cycle repeats every time you need the app.
 Public web apps solve this perfectly—just open a URL and start working instantly. The server is always ready.
@@ -511,7 +516,7 @@ When the app is already running, it will just work.
 
 ---
 
-## 10. Login with localhost
+## 11. Login with localhost
 
 ![login.png](login.png)
 
@@ -524,7 +529,7 @@ This means your localhost app can:
 3. Publish to online from localhost apps: 1-Click publish a trained model to HuggingFace, 1-Click publish to github.)
 4. and more
 
-### 10.1. Huggingface
+### 11.1. Huggingface
 
 When you log into Huggingface from Pinokio, all your apps that run in Pinokio will automatically have `HF_TOKEN` environment set when launching. This means it's possible to:
 
@@ -532,7 +537,7 @@ When you log into Huggingface from Pinokio, all your apps that run in Pinokio wi
 2. Publish to huggingface
 
 
-### 10.2. Github
+### 11.2. Github
 
 When you log into GitHub from Pinokio, without having to authenticate, you can simply run `git` commands or `gh` commands ([Github CLI](https://cli.github.com/)) to do things like:
 
@@ -542,7 +547,7 @@ When you log into GitHub from Pinokio, without having to authenticate, you can s
 
 --- 
 
-## 11. Background Mode
+## 12. Background Mode
 
 Pinokio can run in two different modes:
 
@@ -560,7 +565,7 @@ When you switch to background mode, Pinokio will relaunch as a menubar item (No 
 
 ---
 
-## 12. Ask AI
+## 13. Ask AI
 
 ![askai.gif](askai.gif)
 
@@ -574,7 +579,7 @@ Ask AI groups the available tools into 2 categories:
 - **Desktop Plugins:** open an external desktop app or IDE pointed at the current app folder
 
 
-## 13. Community
+## 14. Community
 
 Community is a drawer on the app page that loads Pinokio's community/registry view without leaving the current app.
 
@@ -584,7 +589,7 @@ When an app does not have a live community feed available yet, the drawer still 
 
 ![community_drawer.png](community_drawer.png)
 
-## 14. Agent Interpreter
+## 15. Agent Interpreter
 
 > Install once, talk to any agent.
 
@@ -594,7 +599,7 @@ Zero work required. Pinokio **automatically** figures out how your app works, an
 
 ![agent_interpreter.png](agent_interpreter.png)
 
-### 14.1. What is it?
+### 15.1. What is it?
 
 <video controls playsinline style="width: 100%; max-width: 960px;">
   <source src="./agentspeak.mp4" type="video/mp4">
@@ -619,7 +624,7 @@ Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gem
 2. Use that skill and try asking anything that can be solved by any app in your pinokio. (Example: "Generate a speech audio of 'hello, how are you?'")
 3. And watch your AI agent automatically discover Pinokio, ask Pinokio which apps to use, pick an app, launch if not already running, and make a request, to finally give you the result you were looking for.
 
-### 14.2. Works with any agent
+### 15.2. Works with any agent
 
 It works with any AI agent. You can use the built-in CLI agents in pinokio:
 
@@ -636,7 +641,7 @@ Or you can use any external AI agents:
 - Cursor
 - Anything else
 
-### 14.3. Example
+### 15.3. Example
 
 Launch and control Pinokio and all its apps automatically through autonomous agent systems like [Openclaw](https://openclaw.ai/), [Hermes Agent](https://hermes-agent.nousresearch.com/), and more.
 
@@ -648,7 +653,7 @@ Here's an example where I'm using my Discord iPhone app to connect to my desktop
 
 > This is purely through the agent, WITHOUT touching Pinokio at all. This means you can use any 3rd party messaging apps like Discord, Whatsapp, Telegram, etc. to control Pinokio and installed apps.
 
-### 14.4. How does it work?
+### 15.4. How does it work?
 
 Pinokio includes a built-in interpreter layer that lets all your apps talk to AI agents **without you having to do anything**.
 
@@ -668,7 +673,7 @@ Even if an agent does not support the `~/.agents/skills` standard (for example C
 
 ![downloadskill.png](downloadskill.png)
 
-### 14.5. Pinokio skill
+### 15.5. Pinokio skill
 
 The built-in `pinokio` skill is the main interpreter between agents and installed apps.
 
@@ -692,7 +697,7 @@ That preference data is stored at:
 
 `PINOKIO_HOME/cache/apps/preferences.json`
 
-### 14.6. Gepeto skill
+### 15.6. Gepeto skill
 
 ![gepetoskill.png](gepetoskill.png)
 
@@ -701,14 +706,14 @@ The built-in `gepeto` skill is the companion interpreter for building Pinokio la
 In other words, Pinokio can be used both to **run apps with agents** and to **build new launchers with agents**.
 
 
-### 14.7. Automatic skill discovery
+### 15.7. Automatic skill discovery
 
 Pinokio automatically places the `gepeto` and `pinokio` skills inside `~/.agents/skills` folder when you run pinokio, which means most AI agents (The ones that automatically look up that path for skill discovery) will find them automatically. They will **"just work"**.
 
 Such agents, which auto-discover skills this way are: **Codex CLI**, **Codex Desktop**, **Gemini CLI**, **Openclaw**, etc. For these agents, you do NOT need to do anything. The skills will just be there, and automatically work.
 
 
-### 14.8. Manual skill discovery
+### 15.8. Manual skill discovery
 
 Unlike the agents mentioned in the previous section, there are some agents that do NOT automatically discover skills from pre-defined locations, and you have to manually import the skills.
 
@@ -725,7 +730,7 @@ For example on Manus desktop:
 
 ![manus.png](manus.png)
 
-### 14.9. Skills should automaticallly work
+### 15.9. Skills should automaticallly work
 
 In most cases, the `pinokio` and `gepeto` skill will automatically trigger whenever you ask for something that requires some complex app usage, such as local video ai generation, etc.
 
@@ -735,7 +740,7 @@ For example, if you simply say:
 
 it will automatically trigger the `pinokio` skill and look for available apps on pinokio, then launch, and then actually run the prompt. All automatically.
 
-### 14.10. Manually activating the skills
+### 15.10. Manually activating the skills
 
 But if you do NOT want to rely on the skills being automatically triggered based on your prompt, and force the skill to always trigger, you can explicitly activate them. For example in Codex desktop you can start typing `/pinokio` and it will let you select the pinokio skill:
 
@@ -746,7 +751,7 @@ Here's an example where I activate the `pinokio` skill in Claude code by typing 
 ![claude_code_skill.gif](claude_code_skill.gif)
 
 
-## 15. Agent Launcher
+## 16. Agent Launcher
 
 The **Agent Launcher** is a persistent workspace and session manager for AI agents.
 
@@ -754,7 +759,7 @@ It automatically discovers workspaces you have already used with agents, shows t
 
 This is not limited to workspaces created inside Pinokio. It also aggregates external project folders outside Pinokio as long as you have used Claude, Codex, or Gemini in those folders.
 
-### 15.1. Agent Aggregator
+### 16.1. Agent Aggregator
 
 The Agents tab automatically crawls the workspaces you have already used with agents and indexes the session history for each workspace.
 
@@ -771,7 +776,7 @@ This gives you a searchable view of:
 
 ![agent_aggregator.png](agent_aggregator.png)
 
-### 15.2. Sandboxes
+### 16.2. Sandboxes
 
 Agent workspaces are stored under `PINOKIO_HOME/workspaces`.
 
@@ -781,7 +786,7 @@ You can also create a brand new workspace directly from the Agents tab:
 
 ![create_sandbox_modal.png](create_sandbox_modal.png)
 
-### 15.3. Start chat
+### 16.3. Start chat
 
 After selecting a workspace, click **Start chat** to open the session launcher.
 
@@ -799,7 +804,7 @@ Pinokio currently exposes 2 execution modes:
 
 ![start_agent_modal.png](start_agent_modal.png)
 
-### 15.4. Skill Sandbox
+### 16.4. Skill Sandbox
 
 A **skill sandbox** is a deterministic workspace started with selected skills.
 
@@ -1245,29 +1250,22 @@ With Pinokio, you do not need to manually specify the environment variables ever
 
 Every pinokio project has a file named `ENVIRONMENT` which stores environment variable values. Wheenver script files are run, the values in the `ENVIRONMENT` file are imported automatically.
 
-Pinokio also uses `ENVIRONMENT` for built-in runtime policy controls. One important example is the package cooldown feature:
+Pinokio also uses `ENVIRONMENT` for runtime policy controls. Bluefairy reads these variables when it is enabled for a shell:
 
 ```bash
-# default when unset
-PINOKIO_PACKAGE_COOLDOWN=72h
+# master switch
+BLUEFAIRY_ENABLED=1
+
+# default freshness delay
+BLUEFAIRY_DELAY_HOURS=72
+
+# optional per-manager delay overrides
+BLUEFAIRY_NPM_DELAY_HOURS=72
+BLUEFAIRY_PYTHON_DELAY_HOURS=72
+BLUEFAIRY_BUN_DELAY_HOURS=72
 ```
 
-Accepted values:
-
-- `24h`
-- `48h`
-- `72h`
-- `7d`
-- `1w`
-- `off`
-
-When enabled, Pinokio translates this to the native package-manager settings at runtime:
-
-- `NPM_CONFIG_BEFORE`
-- `npm_config_before`
-- `UV_EXCLUDE_NEWER`
-
-If you explicitly set one of those native variables yourself, Pinokio respects that and does not overwrite it.
+Set `BLUEFAIRY_ENABLED=0` to disable Bluefairy entirely in shells where it is injected. Per-shell `params.bluefairy` still overrides that shell's on/off state.
 
 
 #### env
@@ -2456,12 +2454,9 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
 - `<env>` **(optional)**: Environment variable key/value pairs.
   - when the key/value pairs are specified, the custom environment values are set.
   - when NOT specified, the shell uses the default environment
-  - Pinokio also injects a default package cooldown for app shells unless disabled. By default this affects `npm`, `npx`, `uv`, and `uvx`.
-  - To disable or customize it per app, set `PINOKIO_PACKAGE_COOLDOWN` in the app `ENVIRONMENT` file.
-  - To disable or customize it per call, pass explicit env values such as:
-    - `PINOKIO_PACKAGE_COOLDOWN=off`
-    - `NPM_CONFIG_BEFORE=<timestamp>`
-    - `UV_EXCLUDE_NEWER=<duration_or_timestamp>`
+  - Pinokio can also inject Bluefairy into app shells.
+  - When Bluefairy is on, it guards supported `npm`, `uv`, and `bun` install/update flows.
+  - Tune the policy with `BLUEFAIRY_*` variables in the app `ENVIRONMENT` file, or override injection for a specific shell with `bluefairy: "on"` or `bluefairy: "off"`.
 - `<venv_path>` **(optional)**: A declarative syntax for automatically creating or activating a venv environment at the specified path.
   - **When NOT specified (default):** Does not create or activate a venv and runs the shell session normally.
   - **When specified:** Creates a venv at the specified path if it doesn't exist yet, or if it exists, activates the existing venv at the specified path, and runs the shell session in that venv.
@@ -3270,7 +3265,8 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
     "conda": <conda_config>,
     "on": <shell_event_handler>,
     "sudo": <sudo>,
-    "cache": <cache>
+    "cache": <cache>,
+    "bluefairy": <bluefairy>
   }
 }
 ```
@@ -3332,6 +3328,13 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
     - `HF_HOME`: huggingface cache. used to store model files downloaded from huggingface.
     - `TORCH_HOME`: pytorch hub cache. used to store model files downloaded from torch hub
     - `GRADIO_TEMP_DIR`: gradio cache. used to store files processed by gradio
+- `<bluefairy>`: **(optional)** controls whether Bluefairy is injected into this shell session.
+  - Bluefairy is Pinokio's package freshness guard for supported `npm`, `uv`, and `bun` install/update flows.
+  - **when NOT specified:** the shell inherits the app's `Protection` setting. If there is no app preference, the default is `"on"`.
+  - **when set to `"on"`:** Pinokio injects the Bluefairy shims into the shell session.
+  - **when set to `"off"`:** Pinokio skips that injection and the package managers run normally.
+  - the same parameter also works with `shell.start`.
+  - useful when a shell intentionally needs the newest packages or raw package-manager behavior.
 
 **Example: interactive TUI with throttled terminal state sync**
 
