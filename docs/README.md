@@ -2266,6 +2266,10 @@ module.exports = {
   "version": <script_schema_version>,
   "pre": <pre>,
   "on": <event_handlers>,
+  "plugins": [
+    <plugin_script_path>,
+    ...
+  ],
   "menu": <menu>,
 }
 ```
@@ -2289,6 +2293,12 @@ module.exports = {
       - `open`: `"auto"` or `"manual"`.
       - `closeOnSuccess`: If `true`, automatically closes the event panel when the launched script finishes successfully.
       - `refreshOnClose`: If set, refreshes another frame when the panel closes. Supported values are `"source"`, `"root"`, and `"active"`.
+- `<plugins>`: (optional) An array of bundled plugin script paths such as `"plugins/no-gateway/pinokio.js"`.
+  - Each path is resolved relative to the launcher root.
+  - If the launcher is at `/api/my_app/pinokio.js`, the root is `/api/my_app`.
+  - If the launcher is at `/api/my_app/pinokio/pinokio.js`, the root is `/api/my_app/pinokio`.
+  - Each referenced file must be a normal plugin `pinokio.js`.
+  - Bundled plugins are discovered alongside standalone plugins and appear in `/plugins`, **Ask AI**, and `/p/:name/dev`.
 - `<menu>`: An **array** of tab items, or an **async function** that takes `kernel` and `info` as arguments and returns the same tab items array. Each item in the array may have the following attributes:
     - `text`: The text to display on the tab.
     - `icon`: The fontawesome class name to display for the tab---Use the built-in [fontawesome](https://fontawesome.com/search?ic=free) class (example: `"fa-solid fa-house"`).
@@ -2668,22 +2678,6 @@ In other words:
 - a **launcher** controls and organizes one app
 - a **plugin** is a reusable action you can run across many apps and workspaces
 
-## Location
-
-Plugins are stored under `PINOKIO_HOME/plugin`.
-
-Each plugin lives in its own folder and is implemented as a single `pinokio.js` file:
-
-```text
-~/pinokio
-  /plugin
-    /my_plugin
-      pinokio.js
-      icon.png
-```
-
-The built-in example plugins are typically downloaded into `PINOKIO_HOME/plugin/code`.
-
 ## Syntax
 
 A plugin must export plain data and include a `run` array.
@@ -2696,6 +2690,7 @@ Unlike launchers, plugins should not export top-level functions. The plugin load
 module.exports = {
   version: <schema_version>,
   daemon: <daemon>,
+  path: <path>, // use "plugin" for standalone global plugins
   title: <title>,
   icon: <icon>,
   description: <description>,
@@ -2730,6 +2725,7 @@ module.exports = {
 
 - `version`: optional script schema version
 - `daemon`: optional daemon mode, same as normal scripts
+- `path`: required for standalone global plugins, and must be set to `"plugin"`. This tells Pinokio to install the launcher under `PINOKIO_HOME/plugin`. Bundled app plugins do not need this field.
 - `title`: display name for the plugin
 - `icon`: icon file path relative to the plugin folder
 - `description`: optional description shown in plugin listings
@@ -2750,12 +2746,221 @@ When a plugin runs, `args.cwd` is the target app or workspace folder. This is wh
 
 So if a plugin needs to run in the selected app or workspace, use `{{args.cwd}}` as the working directory in the step params.
 
+If a plugin also needs files that belong to the plugin itself, use `{{dirname}}` to refer to the plugin script directory. This is useful for plugin-owned virtual environments, helper scripts, and relative assets.
+
+## Global Plugins
+
+Global plugins are stored under `PINOKIO_HOME/plugin`.
+
+Each plugin lives in its own folder and is implemented as a single `pinokio.js` file:
+
+```text
+~/pinokio
+  /plugin
+    /my_plugin
+      pinokio.js
+      icon.png
+```
+
+Standalone global plugins should include `path: "plugin"` in their `pinokio.js`:
+
+```javascript
+module.exports = {
+  version: "6.0",
+  path: "plugin",
+  title: "My Plugin",
+  icon: "icon.png",
+  run: [{
+    method: "shell.run",
+    params: {
+      path: "{{args.cwd}}",
+      message: "my-plugin",
+      input: true
+    }
+  }]
+}
+```
+
+This is required for the generic Pinokio download/install flow so the launcher is installed into `PINOKIO_HOME/plugin` instead of the default app location under `PINOKIO_HOME/api`.
+
+### Instant Plugins
+
+Instant plugins can be launched immediately without a separate setup step.
+
+These plugins are still standalone global plugins, so they still live under `PINOKIO_HOME/plugin/<name>` and should still set `path: "plugin"`. They usually only define `run` and optional metadata such as `title`, `icon`, `description`, `link`, and `env`.
+
+```javascript
+module.exports = {
+  version: "6.0",
+  path: "plugin",
+  title: "OpenAI Codex",
+  icon: "openai.webp",
+  link: "https://github.com/openai/codex",
+  run: [{
+    when: "{{platform === 'win32'}}",
+    id: "run",
+    method: "shell.run",
+    params: {
+      shell: "{{kernel.path('bin/miniconda/Library/bin/bash.exe')}}",
+      conda: {
+        skip: true
+      },
+      message: "npx -y @openai/codex@latest {{args.prompt ? JSON.stringify(args.prompt) : ''}}",
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }, {
+    when: "{{platform !== 'win32'}}",
+    id: "run",
+    method: "shell.run",
+    params: {
+      message: "npx -y @openai/codex@latest {{args.prompt ? JSON.stringify(args.prompt) : ''}}",
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }]
+}
+```
+
+### Installable Plugins
+
+Installable plugins add lifecycle actions such as `install`, `update`, and `uninstall`.
+
+Use this pattern when the plugin needs to install or manage a shared CLI, runtime, or tool before it can be launched. These plugins are also standalone global plugins, so they should set `path: "plugin"`.
+
+```javascript
+module.exports = {
+  version: "6.0",
+  path: "plugin",
+  title: "Opencode",
+  icon: "icon.svg",
+  description: "The open source AI coding agent for the terminal.",
+  link: "https://github.com/anomalyco/opencode",
+  install: [{
+    method: "shell.run",
+    params: {
+      message: "npm install -g opencode-ai@latest"
+    }
+  }],
+  uninstall: [{
+    method: "shell.run",
+    params: {
+      message: "npm uninstall -g opencode-ai"
+    }
+  }, {
+    method: "fs.rm",
+    params: {
+      path: "."
+    }
+  }],
+  update: [{
+    method: "shell.run",
+    params: {
+      message: "git pull"
+    }
+  }, {
+    method: "shell.run",
+    params: {
+      message: "npm install -g opencode-ai@latest"
+    }
+  }],
+  run: [{
+    when: "{{platform === 'win32'}}",
+    id: "run",
+    method: "shell.run",
+    params: {
+      shell: "bash",
+      message: "opencode {{args.prompt ? '--prompt ' + JSON.stringify(args.prompt) : ''}}",
+      path: "{{args.cwd}}",
+      input: true,
+      buffer: 1024
+    }
+  }, {
+    when: "{{platform !== 'win32'}}",
+    id: "run",
+    method: "shell.run",
+    params: {
+      message: "opencode {{args.prompt ? '--prompt ' + JSON.stringify(args.prompt) : ''}}",
+      path: "{{args.cwd}}",
+      input: true,
+      buffer: 1024
+    }
+  }]
+}
+```
+
+The built-in example plugins are typically downloaded into `PINOKIO_HOME/plugin/code`.
+
+## App Plugins
+
+Plugins can also be bundled inside app launchers.
+
+In this case, the plugin file itself is still a normal plugin script using the same syntax described above. The only difference is how it is discovered.
+
+If an app launcher exports a top-level `plugins` array, each entry points to a plugin script relative to the launcher root:
+
+```javascript
+// Parent app launcher: /PINOKIO_HOME/api/hermes-agent/pinokio.js
+module.exports = {
+  title: "Hermes Agent",
+  plugins: [
+    "plugins/no-gateway/pinokio.js"
+  ],
+  menu: [ ... ]
+}
+```
+
+The referenced file is the actual bundled plugin:
+
+```javascript
+// Bundled plugin: /PINOKIO_HOME/api/hermes-agent/plugins/no-gateway/pinokio.js
+module.exports = {
+  title: "Hermes Agent",
+  description: "Start Hermes Agent in any folder",
+  icon: "../../icon.png",
+  launch_type: "terminal",
+  run: [{
+    method: "shell.run",
+    params: {
+      venv: "{{path.resolve(dirname, '../../app/env')}}",
+      path: "{{args.cwd}}",
+      env: {
+        PYTHONUTF8: "1",
+        PYTHONIOENCODING: "utf-8"
+      },
+      message: "hermes",
+      input: true
+    }
+  }]
+}
+```
+
+Example layout:
+
+```text
+/PINOKIO_HOME
+  /api
+    /hermes-agent
+      pinokio.js
+      /plugins
+        /no-gateway
+          pinokio.js
+```
+
+Each plugin path is resolved relative to the launcher root:
+
+- If the launcher is `/PINOKIO_HOME/api/my_app/pinokio.js`, the plugin root is `/PINOKIO_HOME/api/my_app`
+- If the launcher is `/PINOKIO_HOME/api/my_app/pinokio/pinokio.js`, the plugin root is `/PINOKIO_HOME/api/my_app/pinokio`
+
+Bundled app plugins do not need `path: "plugin"` because they are not installed as standalone downloadable plugins.
+
 ## Examples
 
 ### Terminal plugin
 
 ```javascript
 module.exports = {
+  path: "plugin",
   title: "OpenAI Codex",
   icon: "openai.webp",
   link: "https://github.com/openai/codex",
@@ -2791,6 +2996,7 @@ The Windows branch explicitly sets `shell` to `bash`, and Pinokio resolves it to
 
 ```javascript
 module.exports = {
+  path: "plugin",
   title: "Cursor",
   link: "https://cursor.com",
   icon: "cursor.jpeg",
@@ -2817,7 +3023,7 @@ module.exports = {
 
 ## Plugin UI
 
-Installed plugins appear in 3 places:
+Standalone plugins under `/plugin` and bundled plugins declared by app launchers both appear in 3 places:
 
 1. `/plugins`
 2. the **Ask AI** drawer
@@ -7849,11 +8055,12 @@ The `drive` folder stores virtual drives, used for deduplicating redundant files
 
 ### /plugin
 
-The `plugin` folder stores reusable plugins.
+The `plugin` folder stores standalone reusable plugins.
 
 - Every plugin is a single `pinokio.js` file inside its own folder
 - Built-in examples are typically downloaded into `plugin/code`
-- Installed plugins automatically show up in `/plugins`, **Ask AI**, and `/p/:name/dev`
+- Standalone plugins automatically show up in `/plugins`, **Ask AI**, and `/p/:name/dev`
+- Apps may also ship bundled plugins inside `/api/<app>/...` by declaring `plugins` in the app launcher `pinokio.js`
 
 ### /cache
 
