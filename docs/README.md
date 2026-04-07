@@ -85,38 +85,159 @@ Not covered:
 
 ---
 
-## 3. Universal Interface
+## 3. Tasks
+
+Tasks are saved prompt templates.
+
+Instead of rewriting the same prompt every time, you can save it once as a task, reuse it later, share it with other people, or download tasks they publish.
+
+Tasks are useful when you have a repeatable workflow such as:
+
+- researching repositories in **Ask Pinokio**
+- creating the same kind of app over and over
+- generating similar plugins from a standard prompt
+
+![tasks_library.png](tasks_library.png)
+
+The **Tasks** page is where you browse saved tasks, create new ones, and reopen them later.
+
+### 3.1. Task types
+
+Each task has one type. That type decides where it shows up in Pinokio.
+
+#### 3.1.1. `workspaces`
+
+`workspaces` tasks show up in **Ask Pinokio**.
+
+Use them for open-ended work such as research, coding, planning, or writing, where Pinokio should create a workspace and keep the work there.
+
+#### 3.1.2. `api`
+
+`api` tasks show up in **Create App** through **Use template**.
+
+Use them when the task should help create an app. Pinokio uses the task to fill the prompt, then continues with the normal app creation flow.
+
+#### 3.1.3. `plugin`
+
+`plugin` tasks show up in **Create Plugin** through **Use template**.
+
+Use them when the task should help create a plugin. Pinokio uses the task to fill the prompt, then continues with the normal plugin creation flow.
+
+If you want to build tasks manually or inspect the generated files, see [Building a task](#building-a-task).
+
+### 3.2. Prompt templates and inputs
+
+Tasks can ask for the parts that change, such as a repo URL, a question, a product name, or a tool name.
+
+Pinokio can:
+
+- turn those changing parts into input fields automatically
+- ask for the values before launch
+- keep the reusable prompt structure the same
+- render the final prompt from the values you entered
+
+![task_builder.png](task_builder.png)
+
+### 3.3. Ask Pinokio
+
+`workspaces` tasks have the fullest task flow.
+
+If a workspace task remembers an existing workspace, Ask Pinokio can offer both:
+
+- **Continue** in an existing linked workspace
+- **Start fresh workspace** to create a new one
+
+This is useful when you want a task to feel like an ongoing project instead of a one-off prompt.
+
+![ask_pinokio_task.png](ask_pinokio_task.png)
+
+### 3.4. Create App and Create Plugin
+
+`api` and `plugin` tasks are lighter-weight template flows.
+
+When you choose one from **Use template**, Pinokio fills the prompt from the task and then continues with the normal create flow.
+
+- In **Create App**, only `api` tasks are shown.
+- In **Create Plugin**, only `plugin` tasks are shown.
+- Selecting a task fills the prompt, but you still choose the final folder name yourself.
+
+![create_app_task_template.png](create_app_task_template.png)
+
+![create_plugin_task_template.png](create_plugin_task_template.png)
+
+### 3.5. Run, share, and download
+
+Tasks can also be opened directly from the **Tasks** page.
+
+#### 3.5.1. Run
+
+From the task detail page you can:
+
+- preview the rendered prompt
+- fill task inputs
+- select the tool
+- optionally override the folder name
+- run the task directly
+
+![task_run_page.png](task_run_page.png)
+
+#### 3.5.2. Share
+
+Tasks can be shared too.
+
+- local links such as `/task?id=t15` only work on the current machine
+- once the task is published to GitHub, Pinokio can generate a real share link based on the remote repository
+- the permalink tracks the task and its input values
+- tool choice and folder name stay local and are not encoded into the share link
+
+![task_share_header.png](task_share_header.png)
+
+#### 3.5.3. Download
+
+You can download a shared task directly from the **Ask Pinokio** modal.
+
+Switch the modal into download mode, paste the task's Git URL, and import it.
+
+After downloading, the task appears in your **Tasks** page and in the matching place in Pinokio based on its type.
+
+![ask_pinokio_task_download.png](ask_pinokio_task_download.png)
+
+If you want to author one yourself, see [Building a task](#building-a-task).
+
+---
+
+## 4. Universal Interface
 
 Pinokio lets you not only browse websites, but also the backend and your file system, directly in the UI.
 
-### 3.1. Web view
+### 4.1. Web view
 
 ![frontend-browser.gif](frontend-browser.gif)
 
-### 3.2. Console view
+### 4.2. Console view
 
 ![backend-browser.gif](backend-browser.gif)
 
-### 3.3. Interactive web terminal view
+### 4.3. Interactive web terminal view
 
 ![interactive-terminal.gif](interactive-terminal.gif)
 
-### 3.4. CLI app in web terminal view
+### 4.4. CLI app in web terminal view
 
 ![cli-agent.gif](cli-agent.gif)
 
-### 3.5. Web editor view
+### 4.5. Web editor view
 
 ![editor.gif](editor.gif)
 
 
 ---
 
-## 4. CLI Server
+## 5. CLI Server
 
 Pionkio lets you use any CLI app or agent over web UI. No need to enter any command, just run the CLI apps like you surf the web.
 
-### 4.1. Web terminal
+### 5.1. Web terminal
 
 Pinokio automatically turns any CLI app into a server process so you can use them like web surfing.
 
@@ -126,14 +247,14 @@ You can also access them from any web browser since it's just a web page after a
 
 ![open-in-browser.gif](open-in-browser.gif)
 
-### 4.2. Multitask
+### 5.2. Multitask
 
 Each agent is a tab. Spin up as many tabs as you want for the same project.
 
 ![multitask.gif](multitask.gif)
 
 
-### 4.3. Push notification
+### 5.3. Push notification
 
 Agents sends you push notifications when they're done, just like an instant messenger.
 
@@ -143,7 +264,7 @@ No more worrying about when the agents are done working. They literally message 
 
 ![push.gif](push.gif)
 
-### 4.4. 1-Click launcher
+### 5.4. 1-Click launcher
 
 Create a project AND kick off the agent with 1-click.
 
@@ -151,7 +272,7 @@ Create a project AND kick off the agent with 1-click.
 
 
 
-### 4.5. X-Ray mode
+### 5.5. X-Ray mode
 
 The built-in browser lets you copy and paste any region into CLI.
 
@@ -159,20 +280,20 @@ The best part is, it works for ANY CLI agent.
 
 ![xray-mode.gif](xray-mode.gif)
 
-### 4.6. Remote control
+### 5.6. Remote control
 
 ![build-from-phone.gif](build-from-phone.gif)
 
 You can connect to the machine from a remote device, such as your phone, and work on building, without ever touching your PC keyboard.
 
-### 4.7. Realtime collaboration
+### 5.7. Realtime collaboration
 
 The terminal can be opened by simply entering the URL and anyone can jump in and collaborate on the same terminal simultaneously.
 
 ![collaborate.gif](collaborate.gif)
 
 
-### 4.8. Any CLI support
+### 5.8. Any CLI support
 
 It's very simple to create your own gateway.
 
@@ -235,11 +356,11 @@ That's all! Now you should:
 
 ---
 
-## 5. Universal Agent Memory
+## 6. Universal Agent Memory
 
 Built-in memory for ALL AI agents. No complicated infrastructure. All based on flat files. No setup required. Everything just works, automatically.
 
-### 5.1. Every terminal event logged
+### 6.1. Every terminal event logged
 
 ![logs.png](logs.png)
 
@@ -251,7 +372,7 @@ Everything that happens in terminals is stored in memory. This includes:
 3. `/logs/shell`: Actual shell usage. All user interaction with the terminal is logged.
 
 
-### 5.2. Agent agnostic
+### 6.2. Agent agnostic
 
 ![shared-memory.png](shared-memory.png)
 
@@ -260,7 +381,7 @@ Everything is stored as files. No database. No API. Just flat files. This means 
 - CLI Agents: Codex CLI, Claude Code, Gemini CLI, etc.
 - Standalone Agents: Cursor, Windsurf, etc.
 
-### 5.3. Portable
+### 6.3. Portable
 
 Everything is stored as files under the `logs` folder inside the project folder. This means you can just copy the entire project folder to another machine and pick up where you left off.
 
@@ -268,13 +389,13 @@ Everything is stored as files under the `logs` folder inside the project folder.
 
 
 
-### 5.4. 1-click fix
+### 6.4. 1-click fix
 
 Since the agents are instructed to automatically reference the logs, debugging is as easy as saying "Fix". No need to paste error messages--the agents should just figure out by accessing the memory. It just works.
 
 ![fix.gif](fix.gif)
 
-### 5.5. Cross-session memory
+### 6.5. Cross-session memory
 
 Since everything is logged, every session can access the old history. This means you can start a new session and resume where you left off last session by asking the agent to first recall what happened so far.
 
@@ -282,7 +403,7 @@ Since everything is logged, every session can access the old history. This means
 
 
 
-### 5.6. Multi agent communication
+### 6.6. Multi agent communication
 
 All agents can access the same memory, since the "memory" is simply a bunch of log files.
 
@@ -296,12 +417,12 @@ This makes it easy to make multiple agents collaborate on tasks using the same m
 
 ---
 
-## 6. Publish to Localhost
+## 7. Publish to Localhost
 
 - Launchers: Publish apps to run locally
 - AI-Generated Launchers: Launchers are automatically generated when you build your apps in pinokio folders
 
-### 6.1. Package cloud apps to run locally
+### 7.1. Package cloud apps to run locally
 
 ![package.png](package.png)
 
@@ -311,7 +432,7 @@ Pinokio makes it easy to package any cloud app into a pack that can run locally.
 2. Publish the packed repository to git hosting services
 3. 1-Click download, install, and run.
 
-### 6.2. Automatic packaging with AI agents
+### 7.2. Automatic packaging with AI agents
 
 
 ![automatic-packaging.png](automatic-packaging.png)
@@ -325,7 +446,7 @@ The Pinokio Packaging Agent seamlessly works with ANY AI coding agent:
 - CLI Agents: Claude code, Codex CLI, Gemini CLI, etc.
 - Standalone Applications: Cursor, Windsurf, etc.
 
-### 6.3. 1-Click Publish to GitHub
+### 7.3. 1-Click Publish to GitHub
 
 Thanks to the "login with localhost" feature, it is as easy as 1 click to create github repositories and publish to them, which instantly makes your packaged apps available for download by other people.
 
@@ -333,16 +454,16 @@ Thanks to the "login with localhost" feature, it is as easy as 1 click to create
 
 ---
 
-## 7. Cell
+## 8. Cell
 Adaptive container elements that can become anything - AI, terminals, apps, remote machines.
 
-### 7.1. 1-click create
+### 8.1. 1-click create
 
 Spin up a new cell with 1 click.
 
 ![cell.gif](cell.gif)
 
-### 7.2. Parallel Browsing
+### 8.2. Parallel Browsing
 
 You can spin up multiple windows side by side. This lets you do all kinds of powerful things. For example,
 
@@ -359,7 +480,7 @@ Run an app while monitoring processes with terminal apps (like top, htop, etc.)
 ![top.gif](top.gif)
 
 
-### 7.3. No limits
+### 8.3. No limits
 
 You can keep creating as many cells as you want, each cell is independent from each other.
 
@@ -369,30 +490,30 @@ You can keep creating as many cells as you want, each cell is independent from e
 
 ---
 
-## 8. 1-Click Version Control
+## 9. 1-Click Version Control
 
 One click version control 
 
-### 8.1. Jump across versions
+### 9.1. Jump across versions
 
 Switch to any past version you prefer.
 
 ![git_switch.gif](git_switch.gif)
 
-### 8.2. Save versions
+### 9.2. Save versions
 
 You can make git commits (save version) with one click
 
 ![git_commit.gif](git_commit.gif)
 
-### 8.3. Create a repository on Github
+### 9.3. Create a repository on Github
 
 Create your own repository on Github with 1-click.
 
 ![git_create.gif](git_create.gif)
 
 
-### 8.4. Publish to Github with 1-click
+### 9.4. Publish to Github with 1-click
 
 Publish your project to github with one click.
 
@@ -400,19 +521,19 @@ Publish your project to github with one click.
 
 
 
-### 8.5. Automatic Version Control
+### 9.5. Automatic Version Control
 
 Simply by creating a project in Pinokio folders, you get version control out of the box.
 
 
 ---
 
-## 9. LWW (LAN-Wide-Web)
+## 10. LWW (LAN-Wide-Web)
 
 Pinokio automatically creates a private web made up of all the machines on your office/home network (LAN --- Local Area Network)
 
 
-### 9.1. Automatic Localhost Discovery
+### 10.1. Automatic Localhost Discovery
 
 
 ![localhost_discovery.gif](localhost_discovery.gif)
@@ -428,7 +549,7 @@ For example, external applications that operate based on a server will be instan
 
 
 
-### 9.2. Private web made up of PCs
+### 10.2. Private web made up of PCs
 
 ![lww.gif](lww.gif)
 
@@ -439,11 +560,11 @@ Instantly discover and surf every machine on your LAN as if it's public web.
 
 ---
 
-## 10. Instant HTTPS Web Domains
+## 11. Instant HTTPS Web Domains
 Instant HTTPS URLs for all your localhost apps, like https://comfyui.localhost
 
 
-### 10.1. Custom Domains
+### 11.1. Custom Domains
 
 ![custom_domain.png](custom_domain.png)
 
@@ -453,7 +574,7 @@ Give memorable domain names for locally installed apps. No more localhost URLs w
 
 Regardless of which port the apps launch from, they will ALWAYS have the fixed HTTPS domain.
 
-### 10.2. Automatic HTTPS for External Apps
+### 11.2. Automatic HTTPS for External Apps
 
 ![instant_https.png](instant_https.png)
 
@@ -477,7 +598,7 @@ Examples:
 2. **LM Studio:** which runs on http://localhost:1234 automatically gets the url: https://1234.localhost
 3. **ComfyUI Desktop:** which runs on http://localhost:8188 automatically gets the url: https://8188.localhost
 
-### 10.3. Custom Domains for External Apps
+### 11.3. Custom Domains for External Apps
 
 
 What if you want to get custom domains for ANY web server running on your machine? Even the ones that have NOTHING to do with Pinokio? (Llamabarn, Ollama, LM Studio, ComfyUI Desktop, etc.) Simple, simply create a folder with the custom name and connect a port.
@@ -493,7 +614,7 @@ Here's an example where I instantly get a local web domain for a locally running
 5. That's it! You can now start using `https://WHATEVER.localhost` directly in any browser.
 
 
-### 10.4. Auto-launch
+### 11.4. Auto-launch
 
 Running web applications locally usually means dealing with a frustrating workflow: launch the server, wait for it to start up, then finally begin working. You can't leave everything running indefinitely, so this tedious cycle repeats every time you need the app.
 Public web apps solve this perfectly—just open a URL and start working instantly. The server is always ready.
@@ -516,7 +637,7 @@ When the app is already running, it will just work.
 
 ---
 
-## 11. Login with localhost
+## 12. Login with localhost
 
 ![login.png](login.png)
 
@@ -529,7 +650,7 @@ This means your localhost app can:
 3. Publish to online from localhost apps: 1-Click publish a trained model to HuggingFace, 1-Click publish to github.)
 4. and more
 
-### 11.1. Huggingface
+### 12.1. Huggingface
 
 When you log into Huggingface from Pinokio, all your apps that run in Pinokio will automatically have `HF_TOKEN` environment set when launching. This means it's possible to:
 
@@ -537,7 +658,7 @@ When you log into Huggingface from Pinokio, all your apps that run in Pinokio wi
 2. Publish to huggingface
 
 
-### 11.2. Github
+### 12.2. Github
 
 When you log into GitHub from Pinokio, without having to authenticate, you can simply run `git` commands or `gh` commands ([Github CLI](https://cli.github.com/)) to do things like:
 
@@ -547,7 +668,7 @@ When you log into GitHub from Pinokio, without having to authenticate, you can s
 
 --- 
 
-## 12. Background Mode
+## 13. Background Mode
 
 Pinokio can run in two different modes:
 
@@ -565,7 +686,7 @@ When you switch to background mode, Pinokio will relaunch as a menubar item (No 
 
 ---
 
-## 13. Ask AI
+## 14. Ask AI
 
 ![askai.gif](askai.gif)
 
@@ -579,7 +700,7 @@ Ask AI groups the available tools into 2 categories:
 - **Desktop Plugins:** open an external desktop app or IDE pointed at the current app folder
 
 
-## 14. Community
+## 15. Community
 
 Community is a drawer on the app page that loads Pinokio's community/registry view without leaving the current app.
 
@@ -589,7 +710,7 @@ When an app does not have a live community feed available yet, the drawer still 
 
 ![community_drawer.png](community_drawer.png)
 
-## 15. Agent Interpreter
+## 16. Agent Interpreter
 
 > Install once, talk to any agent.
 
@@ -599,7 +720,7 @@ Zero work required. Pinokio **automatically** figures out how your app works, an
 
 ![agent_interpreter.png](agent_interpreter.png)
 
-### 15.1. What is it?
+### 16.1. What is it?
 
 <video controls playsinline style="width: 100%; max-width: 960px;">
   <source src="./agentspeak.mp4" type="video/mp4">
@@ -624,7 +745,7 @@ Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gem
 2. Use that skill and try asking anything that can be solved by any app in your pinokio. (Example: "Generate a speech audio of 'hello, how are you?'")
 3. And watch your AI agent automatically discover Pinokio, ask Pinokio which apps to use, pick an app, launch if not already running, and make a request, to finally give you the result you were looking for.
 
-### 15.2. Works with any agent
+### 16.2. Works with any agent
 
 It works with any AI agent. You can use the built-in CLI agents in pinokio:
 
@@ -641,7 +762,7 @@ Or you can use any external AI agents:
 - Cursor
 - Anything else
 
-### 15.3. Example
+### 16.3. Example
 
 Launch and control Pinokio and all its apps automatically through autonomous agent systems like [Openclaw](https://openclaw.ai/), [Hermes Agent](https://hermes-agent.nousresearch.com/), and more.
 
@@ -653,7 +774,7 @@ Here's an example where I'm using my Discord iPhone app to connect to my desktop
 
 > This is purely through the agent, WITHOUT touching Pinokio at all. This means you can use any 3rd party messaging apps like Discord, Whatsapp, Telegram, etc. to control Pinokio and installed apps.
 
-### 15.4. How does it work?
+### 16.4. How does it work?
 
 Pinokio includes a built-in interpreter layer that lets all your apps talk to AI agents **without you having to do anything**.
 
@@ -673,7 +794,7 @@ Even if an agent does not support the `~/.agents/skills` standard (for example C
 
 ![downloadskill.png](downloadskill.png)
 
-### 15.5. Pinokio skill
+### 16.5. Pinokio skill
 
 The built-in `pinokio` skill is the main interpreter between agents and installed apps.
 
@@ -697,7 +818,7 @@ That preference data is stored at:
 
 `PINOKIO_HOME/cache/apps/preferences.json`
 
-### 15.6. Gepeto skill
+### 16.6. Gepeto skill
 
 ![gepetoskill.png](gepetoskill.png)
 
@@ -706,14 +827,14 @@ The built-in `gepeto` skill is the companion interpreter for building Pinokio la
 In other words, Pinokio can be used both to **run apps with agents** and to **build new launchers with agents**.
 
 
-### 15.7. Automatic skill discovery
+### 16.7. Automatic skill discovery
 
 Pinokio automatically places the `gepeto` and `pinokio` skills inside `~/.agents/skills` folder when you run pinokio, which means most AI agents (The ones that automatically look up that path for skill discovery) will find them automatically. They will **"just work"**.
 
 Such agents, which auto-discover skills this way are: **Codex CLI**, **Codex Desktop**, **Gemini CLI**, **Openclaw**, etc. For these agents, you do NOT need to do anything. The skills will just be there, and automatically work.
 
 
-### 15.8. Manual skill discovery
+### 16.8. Manual skill discovery
 
 Unlike the agents mentioned in the previous section, there are some agents that do NOT automatically discover skills from pre-defined locations, and you have to manually import the skills.
 
@@ -730,7 +851,7 @@ For example on Manus desktop:
 
 ![manus.png](manus.png)
 
-### 15.9. Skills should automaticallly work
+### 16.9. Skills should automaticallly work
 
 In most cases, the `pinokio` and `gepeto` skill will automatically trigger whenever you ask for something that requires some complex app usage, such as local video ai generation, etc.
 
@@ -740,7 +861,7 @@ For example, if you simply say:
 
 it will automatically trigger the `pinokio` skill and look for available apps on pinokio, then launch, and then actually run the prompt. All automatically.
 
-### 15.10. Manually activating the skills
+### 16.10. Manually activating the skills
 
 But if you do NOT want to rely on the skills being automatically triggered based on your prompt, and force the skill to always trigger, you can explicitly activate them. For example in Codex desktop you can start typing `/pinokio` and it will let you select the pinokio skill:
 
@@ -751,7 +872,7 @@ Here's an example where I activate the `pinokio` skill in Claude code by typing 
 ![claude_code_skill.gif](claude_code_skill.gif)
 
 
-## 16. Agent Launcher
+## 17. Agent Launcher
 
 The **Agent Launcher** is a persistent workspace and session manager for AI agents.
 
@@ -759,7 +880,7 @@ It automatically discovers workspaces you have already used with agents, shows t
 
 This is not limited to workspaces created inside Pinokio. It also aggregates external project folders outside Pinokio as long as you have used Claude, Codex, or Gemini in those folders.
 
-### 16.1. Agent Aggregator
+### 17.1. Agent Aggregator
 
 The Agents tab automatically crawls the workspaces you have already used with agents and indexes the session history for each workspace.
 
@@ -776,7 +897,7 @@ This gives you a searchable view of:
 
 ![agent_aggregator.png](agent_aggregator.png)
 
-### 16.2. Sandboxes
+### 17.2. Sandboxes
 
 Agent workspaces are stored under `PINOKIO_HOME/workspaces`.
 
@@ -786,7 +907,7 @@ You can also create a brand new workspace directly from the Agents tab:
 
 ![create_sandbox_modal.png](create_sandbox_modal.png)
 
-### 16.3. Start chat
+### 17.3. Start chat
 
 After selecting a workspace, click **Start chat** to open the session launcher.
 
@@ -804,7 +925,7 @@ Pinokio currently exposes 2 execution modes:
 
 ![start_agent_modal.png](start_agent_modal.png)
 
-### 16.4. Skill Sandbox
+### 17.4. Skill Sandbox
 
 A **skill sandbox** is a deterministic workspace started with selected skills.
 
@@ -2664,6 +2785,154 @@ module.exports = {
   }
 }
 ```
+
+---
+
+# Building a task
+
+A task is a reusable prompt template package.
+
+You do not need to write task files manually.
+
+In most cases, build the task inside Pinokio from the **Tasks** page and let Pinokio generate `pinokio.json` and `task.md` for you.
+
+## In Pinokio
+
+### Open Tasks
+
+Open the `/tasks` page and click **New task**.
+
+![task_build_step_1.png](task_build_step_1.png)
+
+### Write Template
+
+Fill in the title and description, then write the template in the builder.
+
+Use `{{variables}}` anywhere in the template text to define task inputs.
+
+![task_build_step_2.png](task_build_step_2.png)
+
+### Save Task
+
+Pinokio detects the variables automatically, turns them into editable task inputs, and lets you save the task without hand-writing the files yourself.
+
+After saving:
+
+- `workspaces` tasks appear in **Ask Pinokio**
+- `api` tasks appear in **Create App** through **Use template**
+- `plugin` tasks appear in **Create Plugin** through **Use template**
+
+![task_build_step_3.png](task_build_step_3.png)
+
+### Publish
+
+After saving a task, open it from the library and publish it from the task page.
+
+Pinokio can create the GitHub repository, publish the first version, and turn the local task into a shareable task URL.
+
+![task_publish.png](task_publish.png)
+
+### Download
+
+To install a shared task, open **Ask Pinokio**, switch to **Download**, paste the task's Git URL, and import it.
+
+Pinokio downloads the task package into `PINOKIO_HOME/tasks`.
+
+![ask_pinokio_task_download.png](ask_pinokio_task_download.png)
+
+## Spec
+
+The files below are informational. Pinokio generates them for you when you save a task, but they are useful to understand if you want to inspect, edit, version, or publish the task repository manually.
+
+### Files
+
+A task repository looks like this:
+
+```text
+my-task/
+  pinokio.json
+  task.md
+```
+
+#### pinokio.json
+
+```json
+{
+  "title": "Repository Research",
+  "description": "Investigate whether a repository is safe to install.",
+  "path": "tasks",
+  "target": "workspaces",
+  "inputs": [
+    {
+      "name": "repo_url",
+      "label": "Repo Url",
+      "required": true
+    },
+    {
+      "name": "question",
+      "label": "Question",
+      "required": true
+    },
+    {
+      "name": "selected_text",
+      "label": "Selected Text",
+      "required": false
+    }
+  ]
+}
+```
+
+- `title`: display name for the task
+- `description`: optional short explanation shown in task listings
+- `path`: should be `"tasks"` for task packages
+- `target`: where the task is meant to be used
+  - `"workspaces"` => Ask Pinokio
+  - `"api"` => Create App
+  - `"plugin"` => Create Plugin
+- `inputs`: the declared task inputs
+
+Pinokio currently defaults a missing `target` to `"workspaces"` for compatibility, but new tasks should always include an explicit `target`.
+
+#### task.md
+
+```md
+Research {{repo_url}}.
+
+Answer this question:
+{{question}}
+
+Use this context if helpful:
+{{selected_text}}
+```
+
+Each `{{variable}}` in `task.md` must have a matching `inputs[].name` entry in `pinokio.json`.
+
+Pinokio validates that:
+
+- every declared input is used in `task.md`
+- every template variable has a matching declared input
+- input names are unique
+
+The task builder UI can generate and maintain this schema automatically, but manually authored tasks should still keep `pinokio.json` and `task.md` in sync.
+
+### Target
+
+Use exactly one target per task:
+
+- `workspaces`: for tasks that should create or reuse an agent workspace
+- `api`: for tasks that should create an app folder
+- `plugin`: for tasks that should create a plugin folder
+
+The task package itself is still installed under `PINOKIO_HOME/tasks` in all cases. The target only controls where the result is created and where the task appears in the launcher UI.
+
+### Tips
+
+- Keep the prompt generic and parameterize the user-specific parts with `{{variables}}`
+- Use `required: false` for optional context such as selected text or notes
+- Prefer a short description that explains when the task is useful
+- Publish the repository to GitHub if you want to share it with other Pinokio users
+
+For the user-facing task workflow, see [Tasks](#tasks).
 
 ---
 
@@ -7982,8 +8251,9 @@ Let's quickly go through what each folder does:
     - This also stores app preferences such as stars and launch history.
 4. `drive`: stores all the virtual drives created by the [fs.link](#fslink) Pinokio API
 5. `plugin`: stores reusable plugins
-6. `workspaces`: stores persistent agent workspaces / sandboxes
-7. `logs`: stores all the log files for each app.
+6. `tasks`: stores reusable task packages and prompt templates
+7. `workspaces`: stores persistent agent workspaces / sandboxes
+8. `logs`: stores all the log files for each app.
 
 > You can learn more about the file system [here](#file-system)
 
@@ -8018,6 +8288,7 @@ The top level folders under the Pinokio home directory look like the following
       /pip
   /plugin
   /cache
+  /tasks
   /workspaces
   /logs
 ```
@@ -8061,6 +8332,18 @@ The `plugin` folder stores standalone reusable plugins.
 - Built-in examples are typically downloaded into `plugin/code`
 - Standalone plugins automatically show up in `/plugins`, **Ask AI**, and `/p/:name/dev`
 - Apps may also ship bundled plugins inside `/api/<app>/...` by declaring `plugins` in the app launcher `pinokio.js`
+
+### /tasks
+
+The `tasks` folder stores reusable task packages.
+
+- Each installed task lives in its own folder such as `PINOKIO_HOME/tasks/t15`
+- The package itself stays under `/tasks`
+- The task's `target` decides where it is actually used or created when run:
+  - `workspaces` => `PINOKIO_HOME/workspaces`
+  - `api` => `PINOKIO_HOME/api`
+  - `plugin` => `PINOKIO_HOME/plugin`
+- The `/tasks` page is a library of task templates, not a listing of actual app or workspace folders
 
 ### /cache
 
