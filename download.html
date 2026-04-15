@@ -47,7 +47,7 @@
                 </div>
                 <div class="archButtons">
                     <button type="button" class="archButton" data-arch="apple-silicon" data-label="macOS · Apple Silicon" data-url="docs/#/?id=install">
-                        <span>Apple Silicon (M1–M3)</span>
+                        <span>Apple Silicon</span>
                         <span class="archBadge">Recommended</span>
                     </button>
                     <button type="button" class="archButton" data-arch="intel" data-label="macOS · Intel" data-url="docs/#/?id=install">
@@ -163,7 +163,7 @@
                 updateDownload(label, url);
             };
 
-            const preferSilicon = () => setRecommended(siliconBtn, 'Apple Silicon (M1–M3)');
+            const preferSilicon = () => setRecommended(siliconBtn, 'Apple Silicon');
             const preferIntel = () => setRecommended(intelBtn, 'Intel');
 
             applyLinks();
