@@ -18,125 +18,146 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body class="homePage">
-    <nav class="nav clean">
+    <nav class="nav clean homeNav">
         <a class="logo" href=".">
             <img src="images/pinokio.png" width="42" height="42" alt="Pinokio logo">
             <div class="brand">pinokio</div>
         </a>
         <div class="navLinks">
-            <a class="navItem" href="docs"><i class="fas fa-book"></i> Docs</a>
-            <a class="navItem" href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
-            <a class="navItem" href="https://discord.gg/TQdNwadtE4" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Discord</a>
-            <a class="navItem" href="https://x.com/cocktailpeanut" target="_blank" rel="noopener"><i class="fa-brands fa-square-x-twitter"></i> X</a>
+            <a class="navItem" href="docs">Docs</a>
+            <a class="navItem" href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener">GitHub <i class="fas fa-arrow-up-right-from-square"></i></a>
+            <a class="navItem" href="https://discord.gg/TQdNwadtE4" target="_blank" rel="noopener">Discord <i class="fas fa-arrow-up-right-from-square"></i></a>
+            <a class="navItem" href="https://x.com/cocktailpeanut" target="_blank" rel="noopener">X <i class="fas fa-arrow-up-right-from-square"></i></a>
+            <a class="navDownload" href="download.html"><i class="fas fa-download"></i> Download</a>
         </div>
     </nav>
     
-    <main class="page homePageLayout">
-        <section class="hero homeHero">
-            <div class="heroLogo">
-                <img src="images/pinokio.png" width="220" height="220" alt="Pinokio mascot">
+    <main class="homeShell">
+        <section class="homeHeroSplit" aria-labelledby="homeTitle">
+            <div class="heroCopy">
+                <p class="heroEyebrow">Localhost platform for humans and AI</p>
+                <h1 id="homeTitle">Launch Anything<span>.</span></h1>
+                <p class="heroSubtitle">Easiest way for humans and AIs to install, launch, and control any app.</p>
+                <div class="heroActions">
+                    <a class="homeButton primary" href="download.html"><i class="fas fa-download"></i> Download</a>
+                    <a class="homeButton secondary" href="docs"><i class="far fa-bookmark"></i> Documentation</a>
+                </div>
+                <div class="platforms" aria-label="Available for macOS, Windows, and Linux">
+                    <span>Available for</span>
+                    <span><i class="fab fa-apple"></i> macOS</span>
+                    <span><i class="fab fa-windows"></i> Windows</span>
+                    <span><i class="fab fa-linux"></i> Linux</span>
+                </div>
             </div>
-            <p class="heroEyebrow">Localhost Platform for Humans and AI</p>
-            <h1>Launch Anything.</h1>
-            <p class="heroSubtitle">Easiest way for humans and AIs to install, launch, and control any app.</p>
-            <div class="heroActions">
-                <a class="pillButton primary" href="download.html">
-                    <i class="fas fa-download"></i> Download
-                </a>
-                <a class="ghostButton" href="docs">
-                    <i class="fas fa-circle-info"></i> Documentation
-                </a>
-                <a class="ghostButton" href="https://pinokiocomputer.substack.com" target="_blank" rel="noopener">
-                    <i class="fas fa-newspaper"></i> Newsletter
-                </a>
-                <div class="heroCaption">Available for macOS, Windows, and Linux</div>
+
+            <figure class="heroWindow heroScreenshot" aria-label="Pinokio localhost app overview">
+                <img src="localhost.png" alt="Pinokio localhost app overview" width="3171" height="1777">
+            </figure>
+        </section>
+
+        <section class="capabilitySection" id="features" aria-label="What you can do with Pinokio">
+            <div class="capabilityGrid">
+                <article class="capabilityCard">
+                    <span class="capabilityIcon"><i class="fas fa-rocket"></i></span>
+                    <div>
+                        <h3>Install and launch apps</h3>
+                        <p>One-click launchers for AI apps, agents, and tools.</p>
+                    </div>
+                </article>
+                <article class="capabilityCard">
+                    <span class="capabilityIcon"><i class="fas fa-shield-halved"></i></span>
+                    <div>
+                        <h3>Run everything locally</h3>
+                        <p>Keep runtimes, logs, and files on your own machine.</p>
+                    </div>
+                </article>
+                <article class="capabilityCard">
+                    <span class="capabilityIcon"><i class="fas fa-robot"></i></span>
+                    <div>
+                        <h3>Automate with agents</h3>
+                        <p>Let agents control apps and workflows without extra setup.</p>
+                    </div>
+                </article>
             </div>
         </section>
 
-        <section class="contentBlock overviewSection" aria-label="Pinokio highlights">
-            <div class="highlightMosaic">
-                <article class="highlightPanel highlightPanelLauncher">
-                    <div class="highlightPanelCopy">
-                        <div class="highlightRowIndex">01</div>
-                        <div class="highlightRowMeta">1-click automation workflows</div>
-                        <h3>App Launcher</h3>
-                        <p>Install, start, and control apps, agents or CLI tools with one-click launchers instead of wiring together setup and automation steps by hand.</p>
-                        <div class="highlightPanelActions">
-                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="https://beta.pinokio.co" target="_blank" rel="noopener">Browse Published Launchers</a>
-                            <a class="highlightPanelButton" href="./docs/#/?id=_1-build-a-1-click-launcher">Build a Launcher</a>
-                        </div>
-                    </div>
-                    <div class="highlightPanelMedia highlightPanelMediaWide">
-                        <img src="./launcher.gif" alt="Launcher screenshot">
-                    </div>
-                </article>
+        <section class="workflowSection" aria-labelledby="workflowTitle">
+            <header class="workflowHeader">
+                <h2 id="workflowTitle">How it works</h2>
+                <p>Three simple ways Pinokio helps you launch, manage, and automate apps locally.</p>
+            </header>
 
-                <article class="highlightPanel highlightPanelAgent">
-                    <div class="highlightPanelCopy">
-                        <div class="highlightRowIndex">02</div>
-                        <div class="highlightRowMeta">Agent-App Interpreter</div>
-                        <h3>Agent Interpreter</h3>
-                        <p>All apps in Pinokio are instantly agent-ready without you doing anything. Any AI agent can automatically launch and control any app in pinokio, with zero config. Works with all agents (Claude, Openclaw, Codex, Gemini, Cursor, and more)</p>
-                        <div class="highlightPanelActions">
-                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_14-agent-interpreter">How it works</a>
-                        </div>
+            <article class="workflowStep">
+                <div class="workflowStepCopy">
+                    <div class="stepHeading">
+                        <span class="stepBadge">1</span>
+                        <h3>Discover and launch apps</h3>
                     </div>
-                    <div class="highlightPanelMedia highlightPanelMediaTall">
-                        <img src="./openclaw.png" alt="Agent screenshot">
-                    </div>
-                </article>
+                    <p>Browse a growing library of one-click launchers for AI apps, agents, and tools. It's like running your own personal web services on your PC.</p>
+                </div>
+                <figure class="workflowMedia">
+                    <img src="launcher.gif" alt="Pinokio Ask AI workflow animation" loading="lazy" decoding="async">
+                </figure>
+            </article>
 
-                <article class="highlightPanel highlightPanelCloud">
-                    <div class="highlightPanelCopy">
-                        <div class="highlightRowIndex">03</div>
-                        <div class="highlightRowMeta">Local runtime platform</div>
-                        <h3>Localhost Cloud</h3>
-                        <p>Run apps, agents, and web services on your own machine with runtimes, package managers, routing, and shell access already built in.</p>
-                        <div class="highlightPanelActions">
-                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_8-lww-lan-wide-web">Localhost Search Engine</a>
-                            <a class="highlightPanelButton" href="./docs/#/?id=_9-instant-https-web-domains">Local App Domains</a>
-                        </div>
+            <article class="workflowStep workflowStepReverse">
+                <div class="workflowStepCopy">
+                    <div class="stepHeading">
+                        <span class="stepBadge">2</span>
+                        <h3>Install and manage multiple versions</h3>
                     </div>
-                    <div class="highlightPanelMedia highlightPanelMediaWide">
-                        <img src="./localhost.png" alt="Localhost Cloud screenshot">
-                    </div>
-                </article>
+                    <p>Install, switch between, and manage multiple copies or versions of the same app side by side.</p>
+                </div>
+                <figure class="workflowMedia">
+                    <img src="multi-install.png" alt="Pinokio Ask AI workflow animation" loading="lazy" decoding="async">
+                </figure>
+            </article>
 
-                <article class="highlightPanel highlightPanelAssistant">
-                    <div class="highlightPanelCopy">
-                        <div class="highlightRowIndex">04</div>
-                        <div class="highlightRowMeta">Contextual app help</div>
-                        <h3>App Assistant</h3>
-                        <p>Launch an app-aware agent inside any Pinokio app to ask questions, fix bugs, and even customize the app without leaving the workflow.</p>
-                        <div class="highlightPanelActions">
-                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_12-ask-ai">How it works</a>
-                        </div>
+            <article class="workflowStep">
+                <div class="workflowStepCopy">
+                    <div class="stepHeading">
+                        <span class="stepBadge">3</span>
+                        <h3>Use agents with your apps</h3>
                     </div>
-                    <div class="highlightPanelMedia highlightPanelMediaWide">
-                      <!--
-                        <img src="./askai.png" alt="App Assistant screenshot">
-                        -->
-                        <img src="./askai2.gif" alt="App Assistant screenshot">
-                    </div>
-                </article>
-
-                <article class="highlightPanel highlightPanelAgentLauncher">
-                    <div class="highlightPanelCopy">
-                        <div class="highlightRowIndex">05</div>
-                        <div class="highlightRowMeta">Task-focused workspaces</div>
-                        <h3>Agent Launcher</h3>
-                        <p>Create task-focused workspaces with custom skills that are guaranteed to trigger, so each agent starts with the right tools, context, and behavior for the job.</p>
-                        <div class="highlightPanelActions">
-                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_15-agent-launcher">How it works</a>
-                        </div>
-                    </div>
-                    <div class="highlightPanelMedia highlightPanelMediaWide">
-                        <img src="./docs/start_agent_modal.png" alt="Agent Launcher screenshot">
-                    </div>
-                </article>
-            </div>
+                    <p>Any AI agent can control your apps, build workflows or apps, or answer questions about your app.</p>
+                </div>
+                <figure class="workflowMedia">
+                    <img src="docs/askai.gif" alt="Pinokio Ask AI workflow animation" loading="lazy" decoding="async">
+                </figure>
+            </article>
         </section>
     </main>
+
+    <footer class="homeFooter">
+        <div class="footerBrand">
+            <a class="logo" href=".">
+                <img src="images/pinokio.png" width="36" height="36" alt="Pinokio logo">
+                <div class="brand">pinokio</div>
+            </a>
+            <p>Pinokio is the localhost platform for humans and AI.</p>
+            <small>© 2025 Pinokio · MIT License</small>
+        </div>
+        <div class="footerLinks">
+            <div>
+                <h2>Product</h2>
+                <a href="#features">Features</a>
+                <a href="https://beta.pinokio.co" target="_blank" rel="noopener">App Directory</a>
+                <a href="docs">Changelog</a>
+            </div>
+            <div>
+                <h2>Resources</h2>
+                <a href="docs">Documentation</a>
+                <a href="./docs/#/?id=_1-build-a-1-click-launcher">Guides</a>
+                <a href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener">Examples</a>
+            </div>
+            <div>
+                <h2>Community</h2>
+                <a href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener">GitHub <i class="fas fa-arrow-up-right-from-square"></i></a>
+                <a href="https://discord.gg/TQdNwadtE4" target="_blank" rel="noopener">Discord <i class="fas fa-arrow-up-right-from-square"></i></a>
+                <a href="https://x.com/cocktailpeanut" target="_blank" rel="noopener">X (Twitter) <i class="fas fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </div>
+    </footer>
 
     <script>
       var page = "index"
