@@ -1786,12 +1786,12 @@ aside .tweet-item {
 
 /* Homepage redesign */
 .homePage {
-  --home-ink: #101217;
-  --home-muted: #626a76;
-  --home-soft: #f6f8fc;
-  --home-line: #e6eaf2;
-  --home-blue: #2563eb;
-  --home-blue-dark: #1d4ed8;
+  --home-ink: #131827;
+  --home-muted: #5b657a;
+  --home-soft: #f5f7ff;
+  --home-line: #dfe6f7;
+  --home-blue: royalblue;
+  --home-blue-dark: #2f52c6;
   --home-green: #16a34a;
   font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
   background: #ffffff;
@@ -2848,17 +2848,17 @@ aside .tweet-item {
 
 /* Homepage reference refinement */
 .homePage {
-  --home-ink: #17191d;
-  --home-muted: #5f6670;
-  --home-soft: #f7f8fa;
-  --home-line: #e4e7ec;
-  --home-accent: #d98213;
-  --home-accent-soft: #fff5e8;
-  --home-action: #1c2024;
-  --home-action-hover: #050607;
+  --home-ink: #131827;
+  --home-muted: #5b657a;
+  --home-soft: #f5f7ff;
+  --home-line: #dfe6f7;
+  --home-accent: royalblue;
+  --home-accent-soft: #eef3ff;
+  --home-action: royalblue;
+  --home-action-hover: #2f52c6;
   --home-green: #16823a;
-  --home-page-max: 1360px;
-  --home-content-max: 1276px;
+  --home-page-max: 1240px;
+  --home-content-max: 1156px;
   --home-page-gutter: clamp(28px, 3vw, 42px);
 }
 
@@ -2881,7 +2881,7 @@ aside .tweet-item {
 }
 
 .homeNav .navItem {
-  color: #22262c;
+  color: #202840;
   font-size: 13px;
 }
 
@@ -2931,13 +2931,13 @@ aside .tweet-item {
 }
 
 .heroCopy h1 span {
-  color: var(--home-accent);
+  color: inherit;
 }
 
 .homePage .heroSubtitle {
   max-width: 430px;
   margin-top: 22px;
-  color: #3e444d;
+  color: #3f485d;
   font-size: 19px;
   line-height: 1.7;
 }
@@ -2966,7 +2966,7 @@ aside .tweet-item {
 }
 
 .homeButton.secondary {
-  border-color: #d9dde4;
+  border-color: #d7def0;
   background: #fff;
 }
 
@@ -3007,7 +3007,7 @@ aside .tweet-item {
 }
 
 .mockApp.active {
-  background: #eef0f3;
+  background: #edf2ff;
 }
 
 .mockApp.active small,
@@ -3039,7 +3039,7 @@ aside .tweet-item {
   grid-template-columns: 62px 1fr;
   gap: 18px;
   padding: 22px 36px;
-  border-color: #e1e4ea;
+  border-color: #dfe6f7;
   border-radius: 8px;
 }
 
@@ -3057,7 +3057,7 @@ aside .tweet-item {
 }
 
 .capabilityCard p {
-  color: #5f6670;
+  color: #5b657a;
   font-size: 14px;
   line-height: 1.55;
 }
@@ -3096,7 +3096,7 @@ aside .tweet-item {
   align-items: center;
   min-height: 232px;
   padding: 16px 14px 16px 14px;
-  border-top: 1px solid #e6e8ed;
+  border-top: 1px solid #dfe6f7;
 }
 
 
@@ -3154,7 +3154,7 @@ aside .tweet-item {
   height: 224px;
   margin: 0;
   overflow: hidden;
-  border: 1px solid #e1e4ea;
+  border: 1px solid #dfe6f7;
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 10px 24px rgba(22,28,45,0.04);
@@ -3374,8 +3374,8 @@ aside .tweet-item {
   margin-left: calc(50% - 50vw);
   width: 100vw;
   padding: 29px var(--home-page-gutter) 22px;
-  background: #f8f9fb;
-  border-top: 1px solid #eef0f3;
+  background: #f5f7ff;
+  border-top: 1px solid #e4eaff;
 }
 
 .workflowHeader {
@@ -3400,10 +3400,26 @@ aside .tweet-item {
 }
 
 .workflowMedia {
-  aspect-ratio: 1036 / 582;
+  aspect-ratio: var(--workflow-media-ratio, 1036 / 582);
   height: auto;
   box-shadow: none;
   background: #fff;
+}
+
+.workflowMediaDiscover {
+  --workflow-media-ratio: 2722 / 1594;
+}
+
+.workflowMediaLauncher {
+  --workflow-media-ratio: 1242 / 696;
+}
+
+.workflowMediaVersions {
+  --workflow-media-ratio: 2422 / 1160;
+}
+
+.workflowMediaAgents {
+  --workflow-media-ratio: 1036 / 582;
 }
 
 .workflowMock {
@@ -3446,8 +3462,8 @@ aside .tweet-item {
 .mockNavList .selected,
 .versionSidebar .selected,
 .agentSidebar .selected {
-  background: #eef0f3;
-  color: #121519;
+  background: #edf2ff;
+  color: #17275f;
 }
 
 .discoverMock {
@@ -3489,8 +3505,8 @@ aside .tweet-item {
 }
 
 .mockDirectoryBar span:first-of-type {
-  background: #f0f1f3;
-  color: #111418;
+  background: #edf2ff;
+  color: #17275f;
 }
 
 .mockDirectoryItem {
@@ -3523,8 +3539,8 @@ aside .tweet-item {
 .mockDirectoryItem em,
 .agentChatTop em {
   border-radius: 5px;
-  background: #eef0f3;
-  color: #68717d;
+  background: #eef3ff;
+  color: #5268a3;
   font-style: normal;
   font-size: 10px;
   font-weight: 700;
@@ -3549,8 +3565,8 @@ aside .tweet-item {
   justify-content: center;
   flex: 0 0 auto;
   border-radius: 6px;
-  background: #eef0f3;
-  color: #111418;
+  background: #edf2ff;
+  color: #17275f;
   font-size: 11px;
   font-weight: 800;
 }
@@ -3745,8 +3761,8 @@ aside .tweet-item {
   max-width: 430px;
   margin: 30px 0 8px 34px;
   border-radius: 8px;
-  background: #f0f1f3;
-  color: #363d47;
+  background: #eef3ff;
+  color: #38445f;
   padding: 9px 12px;
   font-size: 12px;
   line-height: 1.35;
@@ -3803,7 +3819,7 @@ aside .tweet-item {
   position: absolute;
   inset: 0 calc(50% - 50vw);
   z-index: -1;
-  background: #f8f9fb;
+  background: #f5f7ff;
 }
 
 @media (max-width: 1040px) {
@@ -3840,7 +3856,7 @@ aside .tweet-item {
   }
 
   .workflowMedia {
-    aspect-ratio: 1036 / 582;
+    aspect-ratio: var(--workflow-media-ratio, 1036 / 582);
     height: auto;
   }
 
