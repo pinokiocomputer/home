@@ -3385,6 +3385,40 @@ aside .tweet-item {
   margin-bottom: 22px;
 }
 
+.workflowClosing {
+  display: flex;
+  justify-content: flex-end;
+  max-width: var(--home-content-max);
+  margin: 18px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid #dfe6f7;
+}
+
+.workflowDocsLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 0 11px;
+  border-radius: 6px;
+  color: #34405c;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.workflowDocsLink i {
+  color: var(--home-accent);
+  font-size: 9px;
+}
+
+.workflowDocsLink:hover {
+  color: var(--home-action-hover);
+}
+
 .workflowStep {
   grid-template-columns: minmax(300px, 0.38fr) minmax(540px, 0.62fr);
   gap: clamp(38px, 6vw, 78px);
@@ -3902,6 +3936,8 @@ aside .tweet-item {
   }
 
   .workflowSection {
+    margin-left: -18px;
+    width: calc(100% + 36px);
     padding: 28px 18px 20px;
   }
 
