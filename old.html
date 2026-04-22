@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinokio</title>
+    <link rel="icon" href="favicon.ico" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pinokio: Launch Anything" />
+    <meta name="twitter:description" content="Run your own personal Internet on Mac, Windows, and Linux with one click."/>
+    <meta name="twitter:image" content="https://pinokio.co/poster.png" />
+    <meta property="og:url" content="https://pinokio.co" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Pinokio: Launch Anything" />
+    <meta property="og:description" content="Run your own personal Internet on Mac, Windows, and Linux with one click." />
+    <meta property="og:image" content="https://pinokio.co/poster.png" />
+    <link rel="stylesheet" href="styles/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body class="homePage">
+    <nav class="nav clean">
+        <a class="logo" href=".">
+            <img src="images/pinokio.png" width="42" height="42" alt="Pinokio logo">
+            <div class="brand">pinokio</div>
+        </a>
+        <div class="navLinks">
+            <a class="navItem" href="docs"><i class="fas fa-book"></i> Docs</a>
+            <a class="navItem" href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+            <a class="navItem" href="https://discord.gg/TQdNwadtE4" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Discord</a>
+            <a class="navItem" href="https://x.com/cocktailpeanut" target="_blank" rel="noopener"><i class="fa-brands fa-square-x-twitter"></i> X</a>
+        </div>
+    </nav>
+    
+    <main class="page homePageLayout">
+        <section class="hero homeHero">
+            <div class="heroLogo">
+                <img src="images/pinokio.png" width="220" height="220" alt="Pinokio mascot">
+            </div>
+            <p class="heroEyebrow">Localhost Platform for Humans and AI</p>
+            <h1>Launch Anything.</h1>
+            <p class="heroSubtitle">Easiest way for humans and AIs to install, launch, and control any app.</p>
+            <div class="heroActions">
+                <a class="pillButton primary" href="download.html">
+                    <i class="fas fa-download"></i> Download
+                </a>
+                <a class="ghostButton" href="docs">
+                    <i class="fas fa-circle-info"></i> Documentation
+                </a>
+                <a class="ghostButton" href="https://pinokiocomputer.substack.com" target="_blank" rel="noopener">
+                    <i class="fas fa-newspaper"></i> Newsletter
+                </a>
+                <div class="heroCaption">Available for macOS, Windows, and Linux</div>
+            </div>
+        </section>
+
+        <section class="contentBlock overviewSection" aria-label="Pinokio highlights">
+            <div class="highlightMosaic">
+                <article class="highlightPanel highlightPanelLauncher">
+                    <div class="highlightPanelCopy">
+                        <div class="highlightRowIndex">01</div>
+                        <div class="highlightRowMeta">1-click automation workflows</div>
+                        <h3>App Launcher</h3>
+                        <p>Install, start, and control apps, agents or CLI tools with one-click launchers instead of wiring together setup and automation steps by hand.</p>
+                        <div class="highlightPanelActions">
+                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="https://beta.pinokio.co" target="_blank" rel="noopener">Browse Published Launchers</a>
+                            <a class="highlightPanelButton" href="./docs/#/?id=_1-build-a-1-click-launcher">Build a Launcher</a>
+                        </div>
+                    </div>
+                    <div class="highlightPanelMedia highlightPanelMediaWide">
+                        <img src="./launcher.gif" alt="Launcher screenshot">
+                    </div>
+                </article>
+
+                <article class="highlightPanel highlightPanelAgent">
+                    <div class="highlightPanelCopy">
+                        <div class="highlightRowIndex">02</div>
+                        <div class="highlightRowMeta">Agent-App Interpreter</div>
+                        <h3>Agent Interpreter</h3>
+                        <p>All apps in Pinokio are instantly agent-ready without you doing anything. Any AI agent can automatically launch and control any app in pinokio, with zero config. Works with all agents (Claude, Openclaw, Codex, Gemini, Cursor, and more)</p>
+                        <div class="highlightPanelActions">
+                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_14-agent-interpreter">How it works</a>
+                        </div>
+                    </div>
+                    <div class="highlightPanelMedia highlightPanelMediaTall">
+                        <img src="./openclaw.png" alt="Agent screenshot">
+                    </div>
+                </article>
+
+                <article class="highlightPanel highlightPanelCloud">
+                    <div class="highlightPanelCopy">
+                        <div class="highlightRowIndex">03</div>
+                        <div class="highlightRowMeta">Local runtime platform</div>
+                        <h3>Localhost Cloud</h3>
+                        <p>Run apps, agents, and web services on your own machine with runtimes, package managers, routing, and shell access already built in.</p>
+                        <div class="highlightPanelActions">
+                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_8-lww-lan-wide-web">Localhost Search Engine</a>
+                            <a class="highlightPanelButton" href="./docs/#/?id=_9-instant-https-web-domains">Local App Domains</a>
+                        </div>
+                    </div>
+                    <div class="highlightPanelMedia highlightPanelMediaWide">
+                        <img src="./localhost.png" alt="Localhost Cloud screenshot">
+                    </div>
+                </article>
+
+                <article class="highlightPanel highlightPanelAssistant">
+                    <div class="highlightPanelCopy">
+                        <div class="highlightRowIndex">04</div>
+                        <div class="highlightRowMeta">Contextual app help</div>
+                        <h3>App Assistant</h3>
+                        <p>Launch an app-aware agent inside any Pinokio app to ask questions, fix bugs, and even customize the app without leaving the workflow.</p>
+                        <div class="highlightPanelActions">
+                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_12-ask-ai">How it works</a>
+                        </div>
+                    </div>
+                    <div class="highlightPanelMedia highlightPanelMediaWide">
+                      <!--
+                        <img src="./askai.png" alt="App Assistant screenshot">
+                        -->
+                        <img src="./askai2.gif" alt="App Assistant screenshot">
+                    </div>
+                </article>
+
+                <article class="highlightPanel highlightPanelAgentLauncher">
+                    <div class="highlightPanelCopy">
+                        <div class="highlightRowIndex">05</div>
+                        <div class="highlightRowMeta">Task-focused workspaces</div>
+                        <h3>Agent Launcher</h3>
+                        <p>Create task-focused workspaces with custom skills that are guaranteed to trigger, so each agent starts with the right tools, context, and behavior for the job.</p>
+                        <div class="highlightPanelActions">
+                            <a class="highlightPanelButton highlightPanelButtonPrimary" href="./docs/#/?id=_15-agent-launcher">How it works</a>
+                        </div>
+                    </div>
+                    <div class="highlightPanelMedia highlightPanelMediaWide">
+                        <img src="./docs/start_agent_modal.png" alt="Agent Launcher screenshot">
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script>
+      var page = "index"
+    </script>
+    <script src="js/app.js"></script>
+</body>
+</html>
