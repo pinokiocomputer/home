@@ -3,47 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinokio</title>
+    <title>Download Pinokio: Universal One-Click Launcher</title>
+    <meta name="description" content="Download Pinokio for macOS, Windows, or Linux and run open source apps locally with one click." />
     <link rel="icon" href="favicon.ico" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Pinokio: The 1-Click Localhost Cloud" />
-    <meta name="twitter:description" content="Run your own personal Internet on Mac, Windows, and Linux with one click."/>
+    <meta name="twitter:title" content="Download Pinokio: Universal One-Click Launcher" />
+    <meta name="twitter:description" content="Download Pinokio for macOS, Windows, or Linux and run open source apps locally with one click."/>
     <meta name="twitter:image" content="https://pinokio.co/poster.png" />
     <meta property="og:url" content="https://pinokio.co" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Pinokio: The 1-Click Localhost Cloud" />
-    <meta property="og:description" content="Run your own personal Internet on Mac, Windows, and Linux with one click." />
+    <meta property="og:title" content="Download Pinokio: Universal One-Click Launcher" />
+    <meta property="og:description" content="Download Pinokio for macOS, Windows, or Linux and run open source apps locally with one click." />
     <meta property="og:image" content="https://pinokio.co/poster.png" />
     <link rel="stylesheet" href="styles/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
-<body>
-    <nav class="nav clean">
+<body class="homePage downloadPageBody">
+    <nav class="nav clean homeNav">
         <a class="logo" href=".">
             <img src="images/pinokio.png" width="42" height="42" alt="Pinokio logo">
             <div class="brand">pinokio</div>
         </a>
         <div class="navLinks">
-            <a class="navItem" href="docs"><i class="fas fa-book"></i> Docs</a>
-            <a class="navItem" href="https://github.com/pinokiocomputer/pinokio"><i class="fab fa-github"></i> GitHub</a>
-            <a class="navItem" href="https://discord.gg/TQdNwadtE4"><i class="fab fa-discord"></i> Discord</a>
-            <a class="navItem" href="https://x.com/cocktailpeanut"><i class="fa-brands fa-square-x-twitter"></i> X</a>
+            <a class="navItem" href="docs">Docs</a>
+            <a class="navItem" href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener">GitHub <i class="fas fa-arrow-up-right-from-square"></i></a>
+            <a class="navItem" href="https://discord.gg/TQdNwadtE4" target="_blank" rel="noopener">Discord <i class="fas fa-arrow-up-right-from-square"></i></a>
+            <a class="navItem" href="https://x.com/cocktailpeanut" target="_blank" rel="noopener">X <i class="fas fa-arrow-up-right-from-square"></i></a>
+            <a class="navDownload" href="download.html" aria-current="page"><i class="fas fa-download"></i> Download</a>
         </div>
     </nav>
 
-    <main class="downloadPage">
-        <div class="downloadLogo heroLogo">
-            <img src="images/pinokio.png" width="160" height="160" alt="Pinokio mascot">
-        </div>
-        <h1 class="downloadHeroTitle">Download Pinokio</h1>
-        <p class="downloadSubtitle">All links point to the latest stable version.</p>
+    <main class="downloadPage downloadSimplePage" aria-labelledby="downloadTitle">
+        <header class="downloadSimpleHeader">
+            <h1 id="downloadTitle" data-download-title>Download Pinokio</h1>
+            <p><span data-release-channel>Latest stable</span> <span data-release-version></span> <a data-release-notes href="https://github.com/pinokiocomputer/pinokio/releases" target="_blank" rel="noopener">Release notes <i class="fas fa-arrow-up-right-from-square"></i></a></p>
+        </header>
 
-        <div class="downloadOptions">
-            <div class="downloadCard macCard" data-platform="mac" data-label="macOS" data-url="docs/#/?id=install">
+        <section class="downloadOptions" aria-label="Platform downloads">
+            <div class="downloadCard macCard" role="button" tabindex="0" data-platform="mac" data-label="macOS" data-url="docs/#/?id=install">
                 <div class="osHead">
                     <div class="osIcon"><i class="fab fa-apple"></i></div>
-                    <div class="osLabel">macOS</div>
-                    <p class="osNote">Pick your Mac chip. We’ll suggest one.</p>
+                    <div>
+                        <div class="osLabel">macOS</div>
+                        <p class="osNote">Choose Apple Silicon or Intel. Pinokio will suggest one when possible.</p>
+                    </div>
                 </div>
                 <div class="archButtons">
                     <button type="button" class="archButton" data-arch="apple-silicon" data-label="macOS · Apple Silicon" data-url="docs/#/?id=install">
@@ -57,30 +60,74 @@
                 </div>
                 <div class="archHint">We’ll recommend a build based on your browser.</div>
             </div>
-            <div class="downloadCard" data-platform="linux" data-label="Linux" data-url="docs/#/?id=install">
-                <div class="osHead">
-                    <div class="osIcon"><i class="fab fa-linux"></i></div>
-                    <div class="osLabel">Linux</div>
-                    <p class="osNote">Run the AppImage or your distro’s package.</p>
-                </div>
-            </div>
-            <div class="downloadCard" data-platform="windows" data-label="Windows" data-url="docs/#/?id=install">
+
+            <div class="downloadCard" role="button" tabindex="0" data-platform="windows" data-label="Windows" data-url="docs/#/?id=install">
                 <div class="osHead">
                     <div class="osIcon"><i class="fab fa-windows"></i></div>
-                    <div class="osLabel">Windows</div>
-                    <p class="osNote">Download the 64-bit installer.</p>
+                    <div>
+                        <div class="osLabel">Windows</div>
+                        <p class="osNote">Download the 64-bit installer for Windows PCs.</p>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="downloadCard" role="button" tabindex="0" data-platform="linux" data-label="Linux packages" data-url="docs/#/?id=install">
+                <div class="osHead">
+                    <div class="osIcon"><i class="fab fa-linux"></i></div>
+                    <div>
+                        <div class="osLabel">Linux</div>
+                        <p class="osNote">Open the release page for AppImage, DEB, RPM, x64, and ARM64 packages.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="downloadAction">
-            <a class="downloadBtn primaryDownload disabled" href="docs/#/?id=install" aria-disabled="true">Download</a>
-            <div class="downloadHint">Select a platform to get the right download.</div>
+            <a class="downloadBtn primaryDownload disabled" href="docs/#/?id=install" aria-disabled="true"><i class="fas fa-download"></i> Choose a platform</a>
+            <div class="downloadHint">Pick your platform to enable the download button.</div>
         </div>
     </main>
+
+    <footer class="homeFooter">
+        <div class="footerBrand">
+            <a class="logo" href=".">
+                <img src="images/pinokio.png" width="36" height="36" alt="Pinokio logo">
+                <div class="brand">pinokio</div>
+            </a>
+            <p>Pinokio is the localhost platform for humans and AI.</p>
+            <small>© 2026 Pinokio · MIT License</small>
+        </div>
+        <div class="footerLinks">
+            <div>
+                <h2>Product</h2>
+                <a href="./#features">Features</a>
+                <a href="https://beta.pinokio.co" target="_blank" rel="noopener">App Directory</a>
+                <a href="docs">Changelog</a>
+            </div>
+            <div>
+                <h2>Resources</h2>
+                <a href="docs">Documentation</a>
+                <a href="./docs/#/?id=_1-build-a-1-click-launcher">Guides</a>
+                <a href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener">Examples</a>
+            </div>
+            <div>
+                <h2>Community</h2>
+                <a href="https://github.com/pinokiocomputer/pinokio" target="_blank" rel="noopener">GitHub <i class="fas fa-arrow-up-right-from-square"></i></a>
+                <a href="https://discord.gg/TQdNwadtE4" target="_blank" rel="noopener">Discord <i class="fas fa-arrow-up-right-from-square"></i></a>
+                <a href="https://x.com/cocktailpeanut" target="_blank" rel="noopener">X (Twitter) <i class="fas fa-arrow-up-right-from-square"></i></a>
+            </div>
+        </div>
+    </footer>
     <script>
         (function () {
             // Centralize download URLs here for easy editing.
             const downloadLinks = {
+                release: {
+                    product: 'Pinokio',
+                    channel: 'Latest stable',
+                    version: 'v7.2.6',
+                    notes: 'https://github.com/pinokiocomputer/pinokio/releases/tag/v7.2.6'
+                },
                 mac: {
                   silicon: 'https://github.com/pinokiocomputer/pinokio/releases/download/v7.2.6/Pinokio-7.2.6-arm64.dmg',
                   intel: 'https://github.com/pinokiocomputer/pinokio/releases/download/v7.2.6/Pinokio-7.2.6.dmg',
@@ -93,6 +140,28 @@
             const downloadBtn = document.querySelector('.primaryDownload');
             const downloadHint = document.querySelector('.downloadHint');
             const cards = document.querySelectorAll('.downloadCard');
+            const downloadTitle = document.querySelector('[data-download-title]');
+            const releaseChannel = document.querySelector('[data-release-channel]');
+            const releaseVersion = document.querySelector('[data-release-version]');
+            const releaseNotes = document.querySelector('[data-release-notes]');
+
+            const applyReleaseMeta = () => {
+                const release = downloadLinks.release || {};
+                if (downloadTitle && release.product) {
+                    downloadTitle.textContent = `Download ${release.product}`;
+                }
+                if (releaseChannel && release.channel) {
+                    releaseChannel.textContent = release.channel;
+                }
+                if (releaseVersion && release.version) {
+                    releaseVersion.textContent = release.version;
+                }
+                if (releaseNotes && release.notes) {
+                    releaseNotes.href = release.notes;
+                }
+            };
+
+            applyReleaseMeta();
 
             if (!macCard || !downloadBtn || !downloadHint) return;
 
@@ -128,10 +197,11 @@
 
             const updateDownload = (label, url) => {
                 downloadBtn.href = url;
-                downloadBtn.textContent = `Download for ${label}`;
+                const isLinux = label.toLowerCase().includes('linux');
+                downloadBtn.innerHTML = `<i class="fas fa-download" aria-hidden="true"></i> ${isLinux ? 'Open Linux packages' : `Download for ${label}`}`;
                 downloadBtn.classList.remove('disabled');
                 downloadBtn.setAttribute('aria-disabled', 'false');
-                downloadHint.textContent = `Ready to download ${label}.`;
+                downloadHint.textContent = isLinux ? 'Choose AppImage, DEB, RPM, x64, or ARM64 from the release page.' : `Ready to download ${label}.`;
             };
 
             const setRecommended = (target, label) => {
@@ -209,10 +279,15 @@
 
             cards.forEach(card => {
                 if (card.classList.contains('macCard')) {
-                    card.addEventListener('click', () => selectMac(siliconBtn.classList.contains('active') ? siliconBtn : intelBtn));
+                    card.addEventListener('click', () => selectMac(siliconBtn.classList.contains('active') || !intelBtn.classList.contains('active') ? siliconBtn : intelBtn));
                 } else {
                     card.addEventListener('click', () => selectPlatform(card));
                 }
+                card.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    e.preventDefault();
+                    card.click();
+                });
             });
 
             [siliconBtn, intelBtn].forEach(btn => {
