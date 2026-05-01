@@ -5851,6 +5851,8 @@ The `fs.open` api opens a file explorer for a given path
   - `open`: open the file itself at the file path, using the default app.
   - any other command: use the action as a command to open the path. (ex: `cursor`)
 
+To open a protocol URI such as `codex://...`, `vscode://...`, or `mailto:...`, use [`uri.open`](#uriopen) instead.
+
 #### return value
 
 none
@@ -7206,6 +7208,72 @@ Opens the web page for the current script execution path in the top most window 
 ```
 
 Open the web url in a new browser
+
+---
+
+## uri
+
+### uri.open
+
+Open a URI with the operating system's registered handler.
+
+Use `uri.open` for protocol links such as `codex://...`, `vscode://...`, or `mailto:...`. It also works with `http://` and `https://` links, in which case the operating system opens the user's default browser.
+
+This is different from [`web.open`](#webopen): `web.open` opens URLs through Pinokio's browser/tab flow and can resolve Pinokio paths. `uri.open` hands the URI directly to the operating system.
+
+#### syntax
+
+```json
+{
+  "method": "uri.open",
+  "params": {
+    "uri": <uri>,
+    "params": <params>
+  }
+}
+```
+
+- `<uri>`: the URI to open with the operating system's default registered handler
+- `<params>`: (optional) query parameters to append to `<uri>`
+  - `null` and `undefined` values are ignored
+  - array values are repeated as multiple query parameters
+  - object values are JSON encoded
+
+#### return value
+
+Returns the final URI and the operating-system opener result.
+
+The result confirms only the opener process status. It does not guarantee that the target application completed its own launch flow.
+
+#### examples
+
+##### 1. open a deeplink
+
+Open Codex Desktop with an initial prompt and local path:
+
+```json
+{
+  "method": "uri.open",
+  "params": {
+    "uri": "codex://new",
+    "params": {
+      "prompt": "Find and fix the failing tests",
+      "path": "{{cwd}}"
+    }
+  }
+}
+```
+
+##### 2. open a web link with the default browser
+
+```json
+{
+  "method": "uri.open",
+  "params": {
+    "uri": "https://pinokio.computer"
+  }
+}
+```
 
 ---
 
