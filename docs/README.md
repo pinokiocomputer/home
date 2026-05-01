@@ -6774,6 +6774,335 @@ You can display a notification, and launch an external browser when clicked. Jus
 
 ---
 
+## process
+
+- [process.wait](#processwait)
+
+### process.wait
+
+Wait before moving to the next script step.
+
+`process.wait` can wait for a fixed duration, a URL, a `wait-on` resource condition, a desktop app to appear, or indefinitely until the script is stopped.
+
+When `title` or `description` is provided, Pinokio displays a footer loading banner while the wait is active.
+
+#### syntax
+
+Use one wait mode per step. Fields marked `optional` can be omitted.
+
+##### wait for seconds
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "sec": <seconds>,
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+##### wait for minutes
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "min": <minutes>,
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+##### wait indefinitely
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+You can also omit `params` entirely for an indefinite wait without footer text:
+
+```json
+{
+  "method": "process.wait"
+}
+```
+
+##### wait for a URL
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "url": "<url>",
+    "interval": <optional polling interval in seconds>,
+    "message": "<optional terminal retry message>",
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+`uri` can be used instead of `url`:
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "uri": "<url>",
+    "interval": <optional polling interval in seconds>,
+    "message": "<optional terminal retry message>",
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+Use either `url` or `uri`, not both.
+
+##### wait for `wait-on` resources
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "on": {
+      "resources": ["<resource>", "<resource>"],
+      "delay": <optional initial delay in milliseconds>,
+      "interval": <optional polling interval in milliseconds>,
+      "timeout": <optional maximum wait time in milliseconds>,
+      "reverse": <optional boolean>,
+      "simultaneous": <optional maximum concurrent checks>,
+      "tcpTimeout": <optional TCP timeout in milliseconds>,
+      "httpTimeout": <optional HTTP timeout in milliseconds>,
+      "window": <optional file stability window in milliseconds>
+    },
+    "message": "<optional wait modal message>",
+    "menu": <optional wait modal menu array>,
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+In `on` mode, `message` opens the wait modal. `menu` adds buttons to that modal, so it is only useful when `message` is set.
+
+##### wait for a desktop app
+
+Use `id`, `app`, or `name`.
+
+```javascript
+{
+  "method": "process.wait",
+  "params": {
+    "id": "<app id; required if app/name omitted>",
+    "app": "<app name or alias; required if id/name omitted>",
+    "name": "<app name or alias; required if id/app omitted>",
+    "refresh": <optional boolean>,
+    "install": "<optional install URL>",
+    "installTimeout": <optional maximum wait time in milliseconds>,
+    "installTimeoutMs": <optional maximum wait time in milliseconds>,
+    "installPollInterval": <optional polling interval in milliseconds>,
+    "installPollIntervalMs": <optional polling interval in milliseconds>,
+    "title": "<optional footer title>",
+    "description": "<optional footer description>"
+  }
+}
+```
+
+Set one of `id`, `app`, or `name`. `installTimeoutMs` is an alias for `installTimeout`, and `installPollIntervalMs` is an alias for `installPollInterval`.
+
+#### timed wait
+
+Use `sec` to wait for seconds:
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "sec": 5,
+    "title": "Waiting",
+    "description": "Continuing in 5 seconds"
+  }
+}
+```
+
+Use `min` to wait for minutes:
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "min": 2,
+    "title": "Waiting",
+    "description": "Continuing in 2 minutes"
+  }
+}
+```
+
+#### indefinite wait
+
+If no explicit wait condition is provided, `process.wait` waits until the script is stopped or the wait is manually resolved.
+
+This is useful at the end of watch scripts or long-running launch scripts.
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "title": "Launched",
+    "description": "Click the stop button to stop watching file changes"
+  }
+}
+```
+
+#### URL wait
+
+Use `url` or `uri` to wait until an HTTP endpoint responds.
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "url": "http://127.0.0.1:7860",
+    "interval": 1,
+    "message": "Waiting for the web UI...",
+    "title": "Starting server",
+    "description": "Pinokio will continue when the web UI is ready"
+  }
+}
+```
+
+- `url` / `uri`: endpoint to poll.
+- `interval`: optional polling interval in seconds. Defaults to `1`.
+- `message`: optional terminal message printed while retrying.
+
+#### wait-on resources
+
+Use `on` for advanced wait conditions. Pinokio passes this object directly to the [`wait-on`](https://github.com/jeffbski/wait-on) Node API.
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "on": {
+      "resources": ["tcp:127.0.0.1:7860"],
+      "interval": 1000,
+      "timeout": 60000
+    },
+    "title": "Waiting for server",
+    "description": "Pinokio will continue when port 7860 is ready"
+  }
+}
+```
+
+`on.resources` is an array. All listed resources must become available before the step continues.
+
+Common resource formats:
+
+- `file:app/ready.txt`: wait for a file. If no prefix is provided, `wait-on` treats the resource as a file.
+- `http://127.0.0.1:7860`: wait for an HTTP `HEAD` request to return a 2xx response.
+- `http-get://127.0.0.1:7860`: wait for an HTTP `GET` request to return a 2xx response.
+- `https://example.com`: wait for an HTTPS `HEAD` request to return a 2xx response.
+- `https-get://example.com`: wait for an HTTPS `GET` request to return a 2xx response.
+- `tcp:127.0.0.1:7860`: wait for a TCP port to accept connections.
+- `socket:/path/to/socket`: wait for a Unix domain socket.
+
+Useful `on` options:
+
+- `interval`: polling interval in milliseconds. Defaults to `250`.
+- `timeout`: maximum wait time in milliseconds. Defaults to no timeout.
+- `delay`: initial delay in milliseconds before checking.
+- `reverse`: when `true`, wait for resources to become unavailable.
+- `simultaneous`: maximum concurrent checks per resource.
+- `tcpTimeout`: TCP connection timeout in milliseconds.
+- `httpTimeout`: HTTP request timeout in milliseconds.
+- `window`: file stability window in milliseconds.
+
+Example: wait until multiple resources are ready:
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "on": {
+      "resources": [
+        "file:app/ready.txt",
+        "http-get://127.0.0.1:7860"
+      ],
+      "interval": 1000,
+      "timeout": 120000
+    },
+    "title": "Waiting for app",
+    "description": "Checking the ready file and web endpoint"
+  }
+}
+```
+
+Example: wait until a port is closed:
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "on": {
+      "resources": ["tcp:127.0.0.1:7860"],
+      "reverse": true,
+      "interval": 1000,
+      "timeout": 30000
+    },
+    "title": "Stopping server",
+    "description": "Pinokio will continue when the port is closed"
+  }
+}
+```
+
+#### app presence wait
+
+Use `app`, `name`, or `id` to wait until a desktop app is installed or otherwise visible to Pinokio.
+
+```json
+{
+  "method": "process.wait",
+  "params": {
+    "app": "Cursor",
+    "install": "https://cursor.sh/",
+    "installTimeout": 600000,
+    "installPollInterval": 5000,
+    "title": "Waiting for Cursor",
+    "description": "Install Cursor, then Pinokio will continue automatically"
+  }
+}
+```
+
+- `id`: exact app id. Use this when you know the app id.
+- `app`: app name or alias to search for.
+- `name`: same as `app`.
+- `refresh`: optional. When true, force a refresh before checking.
+- `install`: optional URL to open when the app is missing.
+- `installTimeout` / `installTimeoutMs`: optional maximum wait time in milliseconds. Defaults to `300000`.
+- `installPollInterval` / `installPollIntervalMs`: optional polling interval in milliseconds. Defaults to `5000`.
+
+If the app is already present, the step returns immediately.
+
+If the app is missing and `install` is provided, Pinokio shows the install flow and polls until the app is detected.
+
+If the app is missing and `install` is not provided, the step throws an `APP_NOT_FOUND` error.
+
+#### return value
+
+none
+
+---
+
 ## script
 
 - [script.download](#scriptdownload)
