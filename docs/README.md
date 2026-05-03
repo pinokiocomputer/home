@@ -2949,11 +2949,16 @@ In other words:
 
 ## Syntax
 
-A plugin must export plain data and include a `run` array.
+A plugin must export a top-level object and include a `run` action.
 
 Plugins use the same script syntax as launchers. The plugin-specific part is only the top-level shape of the file. Inside `run`, `install`, `uninstall`, and `update`, you still use the normal Pinokio step syntax documented in [Script](#script) and [API](#api).
 
-Unlike launchers, plugins should not export top-level functions. The plugin loader skips plugins that contain function-valued top-level fields.
+Each plugin action can be either:
+
+- an array of normal Pinokio steps
+- an async JavaScript function that returns an array of normal Pinokio steps
+
+Unlike launchers, plugins should not export arbitrary top-level functions. Only action fields such as `run`, `install`, `uninstall`, and `update` may be functions.
 
 ```javascript
 module.exports = {
@@ -2992,6 +2997,31 @@ module.exports = {
 }
 ```
 
+The same actions may also be written as async functions:
+
+```javascript
+module.exports = {
+  path: "plugin",
+  title: "My Dynamic Plugin",
+  launch_type: "terminal",
+
+  run: async (kernel, info) => {
+    const message = kernel.platform === "win32"
+      ? "echo Running on Windows"
+      : "echo Running on macOS or Linux"
+
+    return [{
+      method: "shell.run",
+      params: {
+        message,
+        path: "{{args.cwd}}",
+        input: true
+      }
+    }]
+  }
+}
+```
+
 - `version`: optional script schema version
 - `daemon`: optional daemon mode, same as normal scripts
 - `path`: required for standalone global plugins, and must be set to `"plugin"`. This tells Pinokio to install the launcher under `PINOKIO_HOME/plugin`. Bundled app plugins do not need this field.
@@ -3001,12 +3031,84 @@ module.exports = {
 - `link`: optional homepage or repository link
 - `launch_type`: optional explicit launch mode. Use `"terminal"` to force the plugin into Pinokio's terminal flow, or `"desktop"` to force the plugin into the external desktop flow. If omitted, Pinokio infers the type from the steps: `shell.run` => terminal plugin, `exec` or `app.launch` => desktop plugin.
 - `env`: optional environment prompts using the same syntax as launcher scripts. When a plugin is launched and values are missing, Pinokio asks for them and writes them into the target app or workspace `ENVIRONMENT` file.
-- `run`: required for plugin loading, and used for the main `Open in` action
-- `install`: optional extra action shown on `/plugins`
-- `uninstall`: optional extra action shown on `/plugins`
-- `update`: optional extra action shown on `/plugins`
+- `run`: required for plugin loading, and used for the main `Open in` action. Must be an array or function returning an array.
+- `install`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
+- `uninstall`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
+- `update`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
 
 The action arrays above all use the same normal Pinokio step syntax. That means features such as `when`, `id`, `method`, `params`, templating, `shell.run`, `exec`, `notify`, and `app.launch` work the same way inside plugins.
+
+Action functions are evaluated only when the action is launched, not when Pinokio builds the plugin list. This keeps plugin discovery fast while still allowing launch-time async logic such as probing local services, reading files, checking installed tools, or building dynamic environment variables.
+
+The action function receives the same first arguments as dynamic launcher functions:
+
+```javascript
+run: async (kernel, info, ctx) => {
+  return [
+    // steps
+  ]
+}
+```
+
+- `kernel`: the Pinokio kernel object
+- `info`: runtime/system info when available
+- `ctx`: optional launch context for values specific to the current action
+
+Most plugins only need `kernel`, and can still use normal templates such as `{{args.cwd}}`, `{{dirname}}`, and `{{platform}}` inside the returned steps.
+
+The optional `ctx` object contains the same runtime context available to normal launcher scripts and templates:
+
+- `ctx.kernel`: the Pinokio kernel object
+- `ctx.info`: runtime/system info when available
+- `ctx.action`: the action name, such as `"run"` or `"install"`
+- `ctx.input`: input passed to the current launch
+- `ctx.args`: launch arguments, including `ctx.args.cwd`
+- `ctx.cwd`: the target app or workspace folder
+- `ctx.dirname`: the plugin script folder
+- `ctx.platform`: current platform, such as `"darwin"`, `"win32"`, or `"linux"`
+- `ctx.env` / `ctx.envs`: resolved environment variables
+- `ctx.local`, `ctx.global`, `ctx.key`: Pinokio memory scopes
+- `ctx.exists(...pathParts)`: check for files relative to `ctx.cwd`
+- `ctx.running(...pathParts)`: check whether a script path is running
+- `ctx.self`: the plugin object itself
+- `ctx.port`: an available Pinokio port
+
+The function must return the same kind of step array you would normally put directly in the action.
+
+```javascript
+const discover = require("./discover")
+
+module.exports = {
+  path: "plugin",
+  title: "OpenCode Local",
+  launch_type: "terminal",
+
+  run: async (kernel) => {
+    const discovery = await discover()
+
+    if (!discovery.hasModels) {
+      return [{
+        method: "log",
+        params: {
+          raw: "No local models detected. Start Ollama, LM Studio, or llama.cpp and try again."
+        }
+      }]
+    }
+
+    return [{
+      method: "shell.run",
+      params: {
+        env: {
+          OPENCODE_CONFIG_CONTENT: discovery.config
+        },
+        message: "opencode",
+        path: "{{args.cwd}}",
+        input: true
+      }
+    }]
+  }
+}
+```
 
 When a plugin runs, `args.cwd` is the target app or workspace folder. This is what makes one plugin reusable across many different apps.
 
