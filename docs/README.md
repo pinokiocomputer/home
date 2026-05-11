@@ -766,7 +766,7 @@ Or you can use any external AI agents:
 
 Launch and control Pinokio and all its apps automatically through autonomous agent systems like [Openclaw](https://openclaw.ai/), [Hermes Agent](https://hermes-agent.nousresearch.com/), and more.
 
-Here's an example where I'm using my Discord iPhone app to connect to my desktop at home to generate a video using LTX-2.3 Video model through [WanGP installed in Pinokio](https://beta.pinokio.co/apps/github-com-pinokiofactory-wan):
+Here's an example where I'm using my Discord iPhone app to connect to my desktop at home to generate a video using LTX-2.3 Video model through [WanGP installed in Pinokio](https://pinokio.co/apps/github-com-pinokiofactory-wan):
 
 <video controls playsinline style="width: 100%; max-width: 480px;">
   <source src="./vid.mp4" type="video/mp4">
