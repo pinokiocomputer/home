@@ -7765,8 +7765,6 @@ huggingface-cli download adept/fuyu-8b model-00001-of-00002.safetensors --local-
 
 As a pinokio script gets executed step by step, you can update the memory so it can be used in later steps.
 
-<img src="ram.png" class='fixed'>
-
 ## input
 
 An `input` is a variable that gets passed from one RPC call to the next. Not all RPC APIs have a return value, but the ones that do, will pass down the `input` value to the next step.
