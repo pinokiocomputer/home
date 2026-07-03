@@ -1,5 +1,6 @@
 # Pinokio
 
+![img](android-chrome-192x192.png)
 
 Pinokio is your **Localhost Cloud**: run anything locally—apps, AI, agents, and web servers—on your own machines with a full toolchain built in.
 
@@ -85,632 +86,103 @@ Not covered:
 
 ---
 
-## 3. Tasks
+## 3. Auto-launch
 
-Tasks are saved prompt templates.
-
-Instead of rewriting the same prompt every time, you can save it once as a task, reuse it later, share it with other people, or download tasks they publish.
-
-Tasks are useful when you have a repeatable workflow such as:
-
-- researching repositories in **Ask Pinokio**
-- creating the same kind of app over and over
-- generating similar plugins from a standard prompt
-
-![tasks_library.png](tasks_library.png)
-
-The **Tasks** page is where you browse saved tasks, create new ones, and reopen them later.
-
-### 3.1. Task types
-
-Each task has one type. That type decides where it shows up in Pinokio.
-
-#### 3.1.1. `workspaces`
-
-`workspaces` tasks show up in **Ask Pinokio**.
-
-Use them for open-ended work such as research, coding, planning, or writing, where Pinokio should create a workspace and keep the work there.
-
-#### 3.1.2. `api`
-
-`api` tasks show up in **Create App** through **Use template**.
-
-Use them when the task should help create an app. Pinokio uses the task to fill the prompt, then continues with the normal app creation flow.
-
-#### 3.1.3. `plugin`
-
-`plugin` tasks show up in **Create Plugin** through **Use template**.
-
-Use them when the task should help create a plugin. Pinokio uses the task to fill the prompt, then continues with the normal plugin creation flow.
-
-If you want to build tasks manually or inspect the generated files, see [Building a task](#building-a-task).
-
-### 3.2. Prompt templates and inputs
-
-Tasks can ask for the parts that change, such as a repo URL, a question, a product name, or a tool name.
-
-Pinokio can:
-
-- turn those changing parts into input fields automatically
-- ask for the values before launch
-- keep the reusable prompt structure the same
-- render the final prompt from the values you entered
-
-![task_builder.png](task_builder.png)
-
-### 3.3. Ask Pinokio
-
-`workspaces` tasks have the fullest task flow.
-
-If a workspace task remembers an existing workspace, Ask Pinokio can offer both:
-
-- **Continue** in an existing linked workspace
-- **Start fresh workspace** to create a new one
-
-This is useful when you want a task to feel like an ongoing project instead of a one-off prompt.
-
-![ask_pinokio_task.png](ask_pinokio_task.png)
-
-### 3.4. Create App and Create Plugin
-
-`api` and `plugin` tasks are lighter-weight template flows.
-
-When you choose one from **Use template**, Pinokio fills the prompt from the task and then continues with the normal create flow.
-
-- In **Create App**, only `api` tasks are shown.
-- In **Create Plugin**, only `plugin` tasks are shown.
-- Selecting a task fills the prompt, but you still choose the final folder name yourself.
-
-![create_app_task_template.png](create_app_task_template.png)
-
-![create_plugin_task_template.png](create_plugin_task_template.png)
-
-### 3.5. Run, share, and download
-
-Tasks can also be opened directly from the **Tasks** page.
-
-#### 3.5.1. Run
-
-From the task detail page you can:
-
-- preview the rendered prompt
-- fill task inputs
-- select the tool
-- optionally override the folder name
-- run the task directly
-
-![task_run_page.png](task_run_page.png)
-
-#### 3.5.2. Share
-
-Tasks can be shared too.
-
-- local links such as `/task?id=t15` only work on the current machine
-- once the task is published to GitHub, Pinokio can generate a real share link based on the remote repository
-- the permalink tracks the task and its input values
-- tool choice and folder name stay local and are not encoded into the share link
-
-![task_share_header.png](task_share_header.png)
-
-#### 3.5.3. Download
-
-You can download a shared task directly from the **Ask Pinokio** modal.
-
-Switch the modal into download mode, paste the task's Git URL, and import it.
-
-After downloading, the task appears in your **Tasks** page and in the matching place in Pinokio based on its type.
-
-![ask_pinokio_task_download.png](ask_pinokio_task_download.png)
-
-If you want to author one yourself, see [Building a task](#building-a-task).
-
----
-
-## 4. Universal Interface
-
-Pinokio lets you not only browse websites, but also the backend and your file system, directly in the UI.
-
-### 4.1. Web view
-
-![frontend-browser.gif](frontend-browser.gif)
-
-### 4.2. Console view
-
-![backend-browser.gif](backend-browser.gif)
-
-### 4.3. Interactive web terminal view
-
-![interactive-terminal.gif](interactive-terminal.gif)
-
-### 4.4. CLI app in web terminal view
-
-![cli-agent.gif](cli-agent.gif)
-
-### 4.5. Web editor view
-
-![editor.gif](editor.gif)
-
-
----
-
-## 5. CLI Server
-
-Pionkio lets you use any CLI app or agent over web UI. No need to enter any command, just run the CLI apps like you surf the web.
-
-### 5.1. Web terminal
-
-Pinokio automatically turns any CLI app into a server process so you can use them like web surfing.
-
-![web-terminal.gif](web-terminal.gif)
-
-You can also access them from any web browser since it's just a web page after all.
-
-![open-in-browser.gif](open-in-browser.gif)
-
-### 5.2. Multitask
-
-Each agent is a tab. Spin up as many tabs as you want for the same project.
-
-![multitask.gif](multitask.gif)
-
-
-### 5.3. Push notification
-
-Agents sends you push notifications when they're done, just like an instant messenger.
-
-All you need to do is just open the CLI agents in Pinokio, and you INSTANTLY get push notifications when they are done, REGARDLESS of which CLI agent.
-
-No more worrying about when the agents are done working. They literally message you.
-
-![push.gif](push.gif)
-
-### 5.4. 1-Click launcher
-
-Create a project AND kick off the agent with 1-click.
-
-![1click-create.gif](1click-create.gif)
-
-
-
-### 5.5. X-Ray mode
-
-The built-in browser lets you copy and paste any region into CLI.
-
-The best part is, it works for ANY CLI agent.
-
-![xray-mode.gif](xray-mode.gif)
-
-### 5.6. Remote control
-
-![build-from-phone.gif](build-from-phone.gif)
-
-You can connect to the machine from a remote device, such as your phone, and work on building, without ever touching your PC keyboard.
-
-### 5.7. Realtime collaboration
-
-The terminal can be opened by simply entering the URL and anyone can jump in and collaborate on the same terminal simultaneously.
-
-![collaborate.gif](collaborate.gif)
-
-
-### 5.8. Any CLI support
-
-It's very simple to create your own gateway.
-
-First, just create a folder under `~/pinokio/plugin` like this:
-
-```
-~/pinokio/plugin
-└── crush
-    ├── pinokio.js
-    └── crush.png
-```
-
-Next, write a `pinokio.js` file like this:
-
-```js
-module.exports = {
-  // display title
-  title: "Crush",
-  // display icon (relative path)
-  icon: "crush.png",
-  // external link
-  link: "https://github.com/charmbracelet/crush",
-  run: [{
-    method: "shell.run",
-    params: {
-      // The command to launch
-      message: "npx -y @charmland/crush",
-      // The path to launch the command from
-      path: "{{args.cwd}}",
-      // buffer size (default: 256)
-      buffer: 1024,
-      // allow input if input: true. otherwise an automated shell execution
-      input: true
-    }
-  }]
-}
-```
-
-
-```js
-module.exports = {
-  title: "Crush",
-  icon: "crush.png",
-  run: [{
-    method: "shell.run",
-    params: {
-      message: "npx -y @charmland/crush",
-      path: "{{args.cwd}}",
-      input: true
-    }
-  }]
-}
-```
-
-That's all! Now you should:
-
-1. The CLI app should show up in the 1-click launcher
-2. The CLI app should show up in dev mode, so you can launch them inside each project
-
-
----
-
-## 6. Universal Agent Memory
-
-Built-in memory for ALL AI agents. No complicated infrastructure. All based on flat files. No setup required. Everything just works, automatically.
-
-### 6.1. Every terminal event logged
-
-![logs.png](logs.png)
-
-
-Everything that happens in terminals is stored in memory. This includes:
-
-1. `/logs/api`: Automated script logs (Install script logs, launch script logs, etc.). The launch script logs contains the actual application execution logs.
-2. `/logs/dev`: CLI agent logs. All the conversation history with AI agents like codex, claude code, gemini cli, etc.
-3. `/logs/shell`: Actual shell usage. All user interaction with the terminal is logged.
-
-
-### 6.2. Agent agnostic
-
-![shared-memory.png](shared-memory.png)
-
-Everything is stored as files. No database. No API. Just flat files. This means there is no extra infra needed, and ANY AI agent can access the memory simply by reading the files.
-
-- CLI Agents: Codex CLI, Claude Code, Gemini CLI, etc.
-- Standalone Agents: Cursor, Windsurf, etc.
-
-### 6.3. Portable
-
-Everything is stored as files under the `logs` folder inside the project folder. This means you can just copy the entire project folder to another machine and pick up where you left off.
-
-![portable.png](portable.png)
-
-
-
-### 6.4. 1-click fix
-
-Since the agents are instructed to automatically reference the logs, debugging is as easy as saying "Fix". No need to paste error messages--the agents should just figure out by accessing the memory. It just works.
-
-![fix.gif](fix.gif)
-
-### 6.5. Cross-session memory
-
-Since everything is logged, every session can access the old history. This means you can start a new session and resume where you left off last session by asking the agent to first recall what happened so far.
-
-![session.gif](session.gif)
-
-
-
-### 6.6. Multi agent communication
-
-All agents can access the same memory, since the "memory" is simply a bunch of log files.
-
-This makes it easy to make multiple agents collaborate on tasks using the same memory, for example:
-
-1. Start codex CLI and ask it to write down a detailed plan.
-2. Start claude code and review plan from codex, and if nothing is wrong, build it.
-
-![communication.gif](communication.gif)
-
-
----
-
-## 7. Publish to Localhost
-
-- Launchers: Publish apps to run locally
-- AI-Generated Launchers: Launchers are automatically generated when you build your apps in pinokio folders
-
-### 7.1. Package cloud apps to run locally
-
-![package.png](package.png)
-
-Pinokio makes it easy to package any cloud app into a pack that can run locally.
-
-1. Package an app in a launcher
-2. Publish the packed repository to git hosting services
-3. 1-Click download, install, and run.
-
-### 7.2. Automatic packaging with AI agents
-
-
-![automatic-packaging.png](automatic-packaging.png)
-
-While you can manually write the scripts that package the application, it's much simpler to just let an AI agent do it.
-
-And Pinokio has this agent built-in. All you need to do is build apps inside the Pinokio folder
-
-The Pinokio Packaging Agent seamlessly works with ANY AI coding agent:
-
-- CLI Agents: Claude code, Codex CLI, Gemini CLI, etc.
-- Standalone Applications: Cursor, Windsurf, etc.
-
-### 7.3. 1-Click Publish to GitHub
-
-Thanks to the "login with localhost" feature, it is as easy as 1 click to create github repositories and publish to them, which instantly makes your packaged apps available for download by other people.
-
-![git.gif](git.gif)
-
----
-
-## 8. Cell
-Adaptive container elements that can become anything - AI, terminals, apps, remote machines.
-
-### 8.1. 1-click create
-
-Spin up a new cell with 1 click.
-
-![cell.gif](cell.gif)
-
-### 8.2. Parallel Browsing
-
-You can spin up multiple windows side by side. This lets you do all kinds of powerful things. For example,
-
-Talk to AI agent on one cell, watch the generated app on another cell:
-
-![agent-web.png](agent-web.png).
-
-Run an app on one cell, watch its backend logs on another cell:
-
-![console-web.png](console-web.png)
-
-Run an app while monitoring processes with terminal apps (like top, htop, etc.)
-
-![top.gif](top.gif)
-
-
-### 8.3. No limits
-
-You can keep creating as many cells as you want, each cell is independent from each other.
-
-![grid.gif](grid.gif)
-
-
-
----
-
-## 9. 1-Click Version Control
-
-One click version control 
-
-### 9.1. Jump across versions
-
-Switch to any past version you prefer.
-
-![git_switch.gif](git_switch.gif)
-
-### 9.2. Save versions
-
-You can make git commits (save version) with one click
-
-![git_commit.gif](git_commit.gif)
-
-### 9.3. Create a repository on Github
-
-Create your own repository on Github with 1-click.
-
-![git_create.gif](git_create.gif)
-
-
-### 9.4. Publish to Github with 1-click
-
-Publish your project to github with one click.
-
-![git_publish.gif](git_publish.gif)
-
-
-
-### 9.5. Automatic Version Control
-
-Simply by creating a project in Pinokio folders, you get version control out of the box.
-
-
----
-
-## 10. LWW (LAN-Wide-Web)
-
-Pinokio automatically creates a private web made up of all the machines on your office/home network (LAN --- Local Area Network)
-
-
-### 10.1. Automatic Localhost Discovery
-
-
-![localhost_discovery.gif](localhost_discovery.gif)
-
-Pinokio automatically discovers ALL servers running on your machine (localhost), regardless of whether it was launched by Pinokio or not.
-
-For example, external applications that operate based on a server will be instantly accessible for surfing from Pinokio. Some examples:
-
-- ComfyUI Desktop
-- LMStudio
-- Ollama
-- Any Docker Container
-
-
-
-### 10.2. Private web made up of PCs
-
-![lww.gif](lww.gif)
-
-
-Instantly discover and surf every machine on your LAN as if it's public web.
-
-
-
----
-
-## 11. Instant HTTPS Web Domains
-Instant HTTPS URLs for all your localhost apps, like https://comfyui.localhost
-
-
-### 11.1. Custom Domains
-
-![custom_domain.png](custom_domain.png)
-
-Custom domains in pinokio is super simple---the folder names are the domain names. That's it.
-
-Give memorable domain names for locally installed apps. No more localhost URLs with ever-changing PORTs.
-
-Regardless of which port the apps launch from, they will ALWAYS have the fixed HTTPS domain.
-
-### 11.2. Automatic HTTPS for External Apps
-
-![instant_https.png](instant_https.png)
-
-**Simply by keeping Pinokio on,** ALL apps running on your machine (even external 3rd party apps like Ollama, LMStudio, etc) gets an HTTPS url.
-
-The convention is:
-
-```
-http://localhost:<PORT>
-```
-
-becomes
-
-```
-https://<PORT>.localhost
-```
-
-Examples:
-
-1. **Ollama:** which runs on http://localhost:11434 automatically gets the url: https://11434.localhost
-2. **LM Studio:** which runs on http://localhost:1234 automatically gets the url: https://1234.localhost
-3. **ComfyUI Desktop:** which runs on http://localhost:8188 automatically gets the url: https://8188.localhost
-
-### 11.3. Custom Domains for External Apps
-
-
-What if you want to get custom domains for ANY web server running on your machine? Even the ones that have NOTHING to do with Pinokio? (Llamabarn, Ollama, LM Studio, ComfyUI Desktop, etc.) Simple, simply create a folder with the custom name and connect a port.
-
-Here's an example where I instantly get a local web domain for a locally running LlamaBarn server (https://github.com/ggml-org/LlamaBarn):
-
-![llamalocalhost.gif](llamalocalhost.gif)
-
-1. Go to the network page
-2. Find the server you want
-3. Click "Get .localhost domain"
-4. Enter the domain and wait
-5. That's it! You can now start using `https://WHATEVER.localhost` directly in any browser.
-
-
-### 11.4. Auto-launch
-
-Running web applications locally usually means dealing with a frustrating workflow: launch the server, wait for it to start up, then finally begin working. You can't leave everything running indefinitely, so this tedious cycle repeats every time you need the app.
+Running web applications locally usually means dealing with a repetitive workflow: launch the server, wait for it to start up, then begin working. You can't leave everything running indefinitely, so this cycle repeats every time you need the app.
 Public web apps solve this perfectly—just open a URL and start working instantly. The server is always ready.
 
 What if we could have this exact experience for localhost apps? ---- If the app is not already running, automatically launch, and then redirect after launching when you enter the URL.
 
 And that's what Auto-launch does!
 
-#### When the app is not running
+### Start with Pinokio
+
+Any installed app can be configured to start automatically when Pinokio starts.
+
+![Autolaunch toggle](media/8.0.0/autolaunch_toggle.gif)
+
+Once you enable startup launch, Pinokio starts the selected apps when Pinokio launches.
+
+![Startup autolaunch](media/8.0.0/autolaunch.gif)
+
+### When the app is not running
 
 When the app is not running already, it will automatically launch the app, and then redirect you it after launching.
 
 ![autolaunch_before.gif](autolaunch_before.gif)
 
-#### When the app is already running
+### When the app is already running
 
 When the app is already running, it will just work.
 
 ![autolaunch_after.gif](autolaunch_after.gif)
 
+### Management page
+
+The `/autolaunch` page lets you search installed apps, pick a launch script, toggle startup, disable startup globally, and manage launch dependencies from one screen.
+
+![Autolaunch management page](media/8.0.0/autolaunch_page.gif)
+
+Enabled apps sort to the top. The detail panel shows the current script, menu-discovered scripts, local script files, manual relative paths, and dependencies.
+
+### Launch script settings
+
+Pinokio stores app auto-launch settings in the app `ENVIRONMENT` file:
+
+```text
+PINOKIO_SCRIPT_AUTOLAUNCH=start.js
+PINOKIO_SCRIPT_AUTOLAUNCH_ENABLED=true
+```
+
+- `PINOKIO_SCRIPT_AUTOLAUNCH`: the script Pinokio should launch for the app.
+- `PINOKIO_SCRIPT_AUTOLAUNCH_ENABLED`: whether the script should run automatically when Pinokio starts. If the flag is omitted for an app with an auto-launch script, Pinokio treats it as enabled. Use `false`, `0`, `no`, or `off` to disable startup launch.
+
+## 4. Orchestration
+
+Orchestration lets an app declare other apps that must launch first. This is useful when one app depends on another local server, such as an Ideogrammar launcher that requires ComfyUI, or an app that needs Ollama running before it starts.
+
+### 4.1. Launch in order
+
+Let's say we just installed an app named Ideogrammar. Ideogrammar requires ComfyUI to be running before it launches. We can say:
+
+1. Ideogrammar **requires** ComfyUI
+2. When you launch Ideogrammar, you want it to trigger the launch of ComfyUI first, wait until it's ready, and only then, launch itself.
+
+![Dependency-aware launch orchestration](media/8.0.0/orchestration-overview.png)
+
+In this case, you can go into the app's Autolaunch setting (at the bottom left corner), click **Add dependency** and choose the required app (ComfyUI).
+
+![Add dependency](media/8.0.0/add_dependency.gif)
+
+Pinokio stores launch dependencies in the app `ENVIRONMENT` file:
+
+```text
+PINOKIO_SCRIPT_REQUIRES=comfyui.git,ollama
+```
+
+- `PINOKIO_SCRIPT_REQUIRES`: optional comma-separated app folder names that must be ready before the selected launch script continues.
+
+When you launch an app with dependencies, Pinokio starts missing requirement scripts first, waits until they are ready, then continues the target script.
+
+![Dependency launch](media/8.0.0/dependency_launch.gif)
+
+### 4.2. Recursive dependency
+
+Launch requirements are resolved recursively. For example, if A depends on B, and B depends on C and D, Pinokio launches C and D, waits until both are ready, launches B, waits until B is ready, then launches A.
+
+![Recursive dependencies](media/8.0.0/recursive-dependencies.png)
+
+### 4.3. Autolaunch + Orchestration
+
+This applies to both startup autolaunch and manual app launches. Dependencies do not need to be enabled for startup auto-launch, and Pinokio blocks missing scripts or dependency cycles instead of launching a partial graph.
+
+![Autolaunch and manual launch dependencies](media/8.0.0/autolaunch-dependencies-combined.png)
+
+A required app is considered ready when its launch script reaches the same Pinokio ready state used by [`ready()`](#ready). If a dependency is a server app, make its launch workflow wait for a concrete readiness signal before it completes, such as a `process.wait` URL check or a `shell.run` parser that waits until the app prints its serving URL.
+
 ---
 
-## 12. Login with localhost
-
-![login.png](login.png)
-
-Pinokio lets you log into online services like Hugging Face, GitHub, X.com, etc. from Localhost apps.
-
-This means your localhost app can:
-
-1. Utilize online identity in the app logic (Example: Display the logged in user's profile and profile information in the web UI)
-2. Access online resources that require authentication (Example: Download HuggingFace models that require login, Clone private GitHub repositories, etc.)
-3. Publish to online from localhost apps: 1-Click publish a trained model to HuggingFace, 1-Click publish to github.)
-4. and more
-
-### 12.1. Huggingface
-
-When you log into Huggingface from Pinokio, all your apps that run in Pinokio will automatically have `HF_TOKEN` environment set when launching. This means it's possible to:
-
-1. Download private models from huggingface
-2. Publish to huggingface
-
-
-### 12.2. Github
-
-When you log into GitHub from Pinokio, without having to authenticate, you can simply run `git` commands or `gh` commands ([Github CLI](https://cli.github.com/)) to do things like:
-
-1. Create repos on github
-2. Clone private github repos
-3. Publish to github
-
---- 
-
-## 13. Background Mode
-
-Pinokio can run in two different modes:
-
-1. **Desktop mode:** The default pinokio desktop app.
-2. **Background mode:** Launch Pinokio as a background process. Displays the Pinokio icon on the menubar, and opens the app in a regular browser.
-
-You can switch back and forth from the settings page:
-
-![background_mode.png](background_mode.png)
-
-When you switch to background mode, Pinokio will relaunch as a menubar item (No desktop app) and open a localhost URL at http://localhost:42000
-
-![menubar.png](menubar.png)
-
-
----
-
-## 14. Ask AI
-
-![askai.gif](askai.gif)
-
-Ask AI is a drawer on every app's **Run** page.
-
-It lets you open installed tools against the current app folder without leaving the app page.
-
-Ask AI groups the available tools into 2 categories:
-
-- **Terminal Plugins:** start an interactive session inside Pinokio
-- **Desktop Plugins:** open an external desktop app or IDE pointed at the current app folder
-
-
-## 15. Community
-
-Community is a drawer on the app page that loads Pinokio's community/registry view without leaving the current app.
-
-This makes it possible to browse community context while staying inside the current workspace.
-
-When an app does not have a live community feed available yet, the drawer still exists and shows a load screen until the community view is loaded.
-
-![community_drawer.png](community_drawer.png)
-
-## 16. Agent Interpreter
+## 5. Agent Interpreter
 
 > Install once, talk to any agent.
 
@@ -720,7 +192,7 @@ Zero work required. Pinokio **automatically** figures out how your app works, an
 
 ![agent_interpreter.png](agent_interpreter.png)
 
-### 16.1. What is it?
+### 5.1. What is it?
 
 <video controls playsinline style="width: 100%; max-width: 960px;">
   <source src="./agentspeak.mp4" type="video/mp4">
@@ -745,7 +217,7 @@ Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gem
 2. Use that skill and try asking anything that can be solved by any app in your pinokio. (Example: "Generate a speech audio of 'hello, how are you?'")
 3. And watch your AI agent automatically discover Pinokio, ask Pinokio which apps to use, pick an app, launch if not already running, and make a request, to finally give you the result you were looking for.
 
-### 16.2. Works with any agent
+### 5.2. Works with any agent
 
 It works with any AI agent. You can use the built-in CLI agents in pinokio:
 
@@ -762,7 +234,7 @@ Or you can use any external AI agents:
 - Cursor
 - Anything else
 
-### 16.3. Example
+### 5.3. Example
 
 Launch and control Pinokio and all its apps automatically through autonomous agent systems like [Openclaw](https://openclaw.ai/), [Hermes Agent](https://hermes-agent.nousresearch.com/), and more.
 
@@ -774,7 +246,7 @@ Here's an example where I'm using my Discord iPhone app to connect to my desktop
 
 > This is purely through the agent, WITHOUT touching Pinokio at all. This means you can use any 3rd party messaging apps like Discord, Whatsapp, Telegram, etc. to control Pinokio and installed apps.
 
-### 16.4. How does it work?
+### 5.4. How does it work?
 
 Pinokio includes a built-in interpreter layer that lets all your apps talk to AI agents **without you having to do anything**.
 
@@ -794,7 +266,7 @@ Even if an agent does not support the `~/.agents/skills` standard (for example C
 
 ![downloadskill.png](downloadskill.png)
 
-### 16.5. Pinokio skill
+### 5.5. Pinokio skill
 
 The built-in `pinokio` skill is the main interpreter between agents and installed apps.
 
@@ -818,7 +290,7 @@ That preference data is stored at:
 
 `PINOKIO_HOME/cache/apps/preferences.json`
 
-### 16.6. Gepeto skill
+### 5.6. Gepeto skill
 
 ![gepetoskill.png](gepetoskill.png)
 
@@ -827,14 +299,14 @@ The built-in `gepeto` skill is the companion interpreter for building Pinokio la
 In other words, Pinokio can be used both to **run apps with agents** and to **build new launchers with agents**.
 
 
-### 16.7. Automatic skill discovery
+### 5.7. Automatic skill discovery
 
 Pinokio automatically places the `gepeto` and `pinokio` skills inside `~/.agents/skills` folder when you run pinokio, which means most AI agents (The ones that automatically look up that path for skill discovery) will find them automatically. They will **"just work"**.
 
 Such agents, which auto-discover skills this way are: **Codex CLI**, **Codex Desktop**, **Gemini CLI**, **Openclaw**, etc. For these agents, you do NOT need to do anything. The skills will just be there, and automatically work.
 
 
-### 16.8. Manual skill discovery
+### 5.8. Manual skill discovery
 
 Unlike the agents mentioned in the previous section, there are some agents that do NOT automatically discover skills from pre-defined locations, and you have to manually import the skills.
 
@@ -851,7 +323,7 @@ For example on Manus desktop:
 
 ![manus.png](manus.png)
 
-### 16.9. Skills should automaticallly work
+### 5.9. Skills should automaticallly work
 
 In most cases, the `pinokio` and `gepeto` skill will automatically trigger whenever you ask for something that requires some complex app usage, such as local video ai generation, etc.
 
@@ -861,7 +333,7 @@ For example, if you simply say:
 
 it will automatically trigger the `pinokio` skill and look for available apps on pinokio, then launch, and then actually run the prompt. All automatically.
 
-### 16.10. Manually activating the skills
+### 5.10. Manually activating the skills
 
 But if you do NOT want to rely on the skills being automatically triggered based on your prompt, and force the skill to always trigger, you can explicitly activate them. For example in Codex desktop you can start typing `/pinokio` and it will let you select the pinokio skill:
 
@@ -871,71 +343,396 @@ Here's an example where I activate the `pinokio` skill in Claude code by typing 
 
 ![claude_code_skill.gif](claude_code_skill.gif)
 
+### 5.11. Manage skills
 
-## 17. Agent Launcher
+Pinokio ships managed skills that can be synced into local agent skill folders. The Skills page shows the source library, sync targets, validity, conflicts, and ON/OFF state for each managed skill.
 
-The **Agent Launcher** is a persistent workspace and session manager for AI agents.
+![Managed skills](media/8.0.0/skills-management.png)
 
-It automatically discovers workspaces you have already used with agents, shows the session history for each workspace, and lets you resume old sessions instead of starting from scratch every time.
+Built-in `pinokio` and `gepeto` skills can be disabled without deleting their source copies, and additional skills can be downloaded from a Git URL.
 
-This is not limited to workspaces created inside Pinokio. It also aggregates external project folders outside Pinokio as long as you have used Claude, Codex, or Gemini in those folders.
+---
 
-### 17.1. Agent Aggregator
+## 6. Live resource usage display
 
-The Agents tab automatically crawls the workspaces you have already used with agents and indexes the session history for each workspace.
+App pages show live resource usage for the current app workspace, including disk, RAM, CPU, and VRAM when the platform can report it.
 
-This includes both:
+![App info bar](media/8.0.0/infobar.png)
 
-- Pinokio sandboxes under `PINOKIO_HOME/workspaces`
-- external folders outside Pinokio where you have used Claude, Codex, or Gemini
+You can configure what gets displayed by clicking the info bar, which will display a dropdown:
 
-This gives you a searchable view of:
+![Resource usage](media/8.0.0/app-resource-usage.png)
 
-- workspaces you have already worked on
-- every saved session inside each workspace
-- sessions you can resume later instead of restarting
+What it looks like:
 
-![agent_aggregator.png](agent_aggregator.png)
+![Usage](media/8.0.0/usage.gif)
 
-### 17.2. Sandboxes
+---
 
-Agent workspaces are stored under `PINOKIO_HOME/workspaces`.
+## 7. Instant HTTPS Web Domains
+Instant HTTPS URLs for all your localhost apps, like https://comfyui.localhost
 
-These workspaces are persistent. Once a session is created, you can keep coming back to the same workspace and continue where you left off.
 
-You can also create a brand new workspace directly from the Agents tab:
+### 7.1. Custom Domains
 
-![create_sandbox_modal.png](create_sandbox_modal.png)
+![custom_domain.png](custom_domain.png)
 
-### 17.3. Start chat
+Custom domains in pinokio is super simple---the folder names are the domain names. That's it.
 
-After selecting a workspace, click **Start chat** to open the session launcher.
+Give memorable domain names for locally installed apps. No more localhost URLs with ever-changing PORTs.
 
-From here you can choose:
+Regardless of which port the apps launch from, they will ALWAYS have the fixed HTTPS domain.
 
-1. the agent provider
-2. the execution mode
-3. optional skills
-4. optional files to inject into the session
+### 7.2. Automatic HTTPS for External Apps
 
-Pinokio currently exposes 2 execution modes:
+![instant_https.png](instant_https.png)
 
-- **Guarded:** provider default approval/sandbox behavior
-- **YOLO:** run without approvals
+**Simply by keeping Pinokio on,** ALL apps running on your machine (even external 3rd party apps like Ollama, LMStudio, etc) gets an HTTPS url.
 
-![start_agent_modal.png](start_agent_modal.png)
+The convention is:
 
-### 17.4. Skill Sandbox
+```
+http://localhost:<PORT>
+```
 
-A **skill sandbox** is a deterministic workspace started with selected skills.
+becomes
 
-When you start one, Pinokio writes the selected skill context into the provider's native instruction files for that workspace.
+```
+https://<PORT>.localhost
+```
 
-Depending on the provider, this may include files such as `AGENTS.md`, `.agents/skills/pinokio-selected/SKILL.md`, `CLAUDE.md`, or `GEMINI.md`.
+Examples:
 
-This is what makes the workspace deterministic instead of relying on the agent to notice and enable the right skills on its own, and it is why the same workspace can be reopened later with the same skill behavior still active.
+1. **Ollama:** which runs on http://localhost:11434 automatically gets the url: https://11434.localhost
+2. **LM Studio:** which runs on http://localhost:1234 automatically gets the url: https://1234.localhost
+3. **ComfyUI Desktop:** which runs on http://localhost:8188 automatically gets the url: https://8188.localhost
 
-![skill_sandbox.png](skill_sandbox.png)
+### 7.3. Custom Domains for External Apps
+
+
+What if you want to get custom domains for ANY web server running on your machine? Even the ones that have NOTHING to do with Pinokio? (Llamabarn, Ollama, LM Studio, ComfyUI Desktop, etc.) Simple, simply create a folder with the custom name and connect a port.
+
+Here's an example where I instantly get a local web domain for a locally running LlamaBarn server (https://github.com/ggml-org/LlamaBarn):
+
+![llamalocalhost.gif](llamalocalhost.gif)
+
+1. Go to the network page
+2. Find the server you want
+3. Click "Get .localhost domain"
+4. Enter the domain and wait
+5. That's it! You can now start using `https://WHATEVER.localhost` directly in any browser.
+
+
+---
+
+## 8. Login with localhost
+
+![login.png](login.png)
+
+Pinokio lets you log into online services like Hugging Face, GitHub, X.com, etc. from Localhost apps.
+
+This means your localhost app can:
+
+1. Utilize online identity in the app logic (Example: Display the logged in user's profile and profile information in the web UI)
+2. Access online resources that require authentication (Example: Download Hugging Face models that require login, Clone private GitHub repositories, etc.)
+3. Publish online from localhost apps: 1-Click publish a trained model to Hugging Face, 1-Click publish to GitHub.
+4. and more
+
+### 8.1. Hugging Face
+
+When you log into Hugging Face from Pinokio, Pinokio uses a native device-authorization flow and stores the token in a shared token file.
+
+![Hugging Face native login](media/8.0.0/huggingface-login.png)
+
+Apps launched through Pinokio automatically receive `HF_TOKEN_PATH`, which points to that shared token file. By default this is:
+
+```text
+PINOKIO_HOME/cache/HF_AUTH/token
+```
+
+Because the token path is separate from `HF_HOME`, each app can keep its own model/cache folder while still using the same logged-in Hugging Face account. This makes it possible to:
+
+1. Download private models from Hugging Face
+2. Publish to Hugging Face
+
+
+### 8.2. GitHub
+
+When you log into GitHub from Pinokio, Pinokio uses a managed Git Credential Manager path. After login, you can run `git` commands or `gh` commands ([GitHub CLI](https://cli.github.com/)) to do things like:
+
+1. Create repos on GitHub
+2. Clone private GitHub repos
+3. Publish to GitHub
+
+---
+
+## 9. Universal Agent Memory
+
+Built-in memory for ALL AI agents. No complicated infrastructure. All based on flat files. No setup required. Everything just works, automatically.
+
+### 9.1. Every terminal event logged
+
+![logs.png](logs.png)
+
+
+Everything that happens in terminals is stored in memory. This includes:
+
+1. `/logs/api`: Automated script logs (Install script logs, launch script logs, etc.). The launch script logs contain the actual application execution logs.
+2. `/logs/dev`: CLI agent logs. All the conversation history with AI agents like codex, claude code, gemini cli, etc.
+3. `/logs/shell`: Actual shell usage. All user interaction with the terminal is logged.
+
+App script logs are also grouped into launch sessions. Each app stores a session index at `logs/sessions/index.json`, and each session has a manifest at `logs/sessions/<session-id>.json` listing the scripts that ran and the log files they produced. Related app runs, such as an install script that launches helper scripts and then starts the default launch script, can be grouped into one session so the logs can be reviewed together.
+
+The Logs page can build a shareable app issue report from the latest session by default. Pinokio tails the relevant logs from that session, includes the app/system context, redacts common secrets and local paths, and can open the report in Ask AI, post it to the community, or package it as a zip.
+
+You can also switch between previous launch sessions and post or inspect the logs for a specific session instead of only using the latest `LATEST` log pointer.
+
+Raw top-level log files can be reviewed with the **Redact** action before generating the zip. Reviewed `.json`, `.log`, and `.txt` files are written into the zip with the reviewed redactions applied; nested files and unsupported file types are not accepted as redaction overrides.
+
+
+### 9.3. Agent agnostic
+
+![shared-memory.png](shared-memory.png)
+
+Everything is stored as files. No database. No API. Just flat files. This means there is no extra infra needed, and ANY AI agent can access the memory simply by reading the files.
+
+- CLI Agents: Codex CLI, Claude Code, Gemini CLI, etc.
+- Standalone Agents: Cursor, Windsurf, etc.
+
+### 9.3. Portable
+
+Everything is stored as files under the `logs` folder inside the project folder. This means you can just copy the entire project folder to another machine and pick up where you left off.
+
+![portable.png](portable.png)
+
+
+
+### 9.4. 1-click fix
+
+Since the agents are instructed to automatically reference the logs, debugging is as easy as saying "Fix". No need to paste error messages--the agents should just figure out by accessing the memory. It just works.
+
+![fix.gif](fix.gif)
+
+### 9.5. Cross-session memory
+
+Since everything is logged, every session can access the old history. This means you can start a new session and resume where you left off last session by asking the agent to first recall what happened so far.
+
+![session.gif](session.gif)
+
+
+
+### 9.6. Multi agent communication
+
+All agents can access the same memory, since the "memory" is simply a bunch of log files.
+
+This makes it easy to make multiple agents collaborate on tasks using the same memory, for example:
+
+1. Start codex CLI and ask it to write down a detailed plan.
+2. Start claude code and review plan from codex, and if nothing is wrong, build it.
+
+![communication.gif](communication.gif)
+
+
+---
+
+## 10. Get Help
+
+
+### 10.1. Ask the Community
+
+The Logs surface includes a **Get Help** workflow for app workspaces. It can build a Markdown report from the current app's recent logs, show which files are included, estimate the report size, run privacy review, and hand the result to an AI agent or Pinokio Community.
+
+![Get Help report](media/8.0.0/logs-help-report.png)
+
+When you need community help, the report can be posted with the selected session logs attached.
+
+![Ask Community from Get Help](media/8.0.0/askcommunity_help.gif)
+
+### 10.2. Ask AI Agent
+
+When you want a local agent to fix the app, the same report can be opened in Ask AI with the app code, docs, usage context, and selected logs available.
+
+![Ask AI from Get Help](media/8.0.0/askai_help.gif)
+
+When an app run fails, Pinokio can guide you directly to Get Help from the error state.
+
+![Auto help](media/8.0.0/autohelp.gif)
+
+You can also quick-access the agent sidebar by clicking the "Ask AI" button on the nav bar.
+
+It lets you open installed tools against the current app folder without leaving the app page.
+
+Ask AI groups the available tools into 2 categories:
+
+- **Terminal Plugins:** start an interactive session inside Pinokio
+- **Desktop Plugins:** open an external desktop app or IDE pointed at the current app folder
+
+The drawer can search terminal agents, desktop agents, and project shells from the current app context.
+
+![Ask AI drawer](media/8.0.0/app-ask-ai-drawer.png)
+
+
+---
+
+## 11. Publish Launchers
+
+- Launchers: Publish apps to run locally
+- AI-Generated Launchers: Launchers are automatically generated when you build your apps in pinokio folders
+
+### 11.1. Package cloud apps to run locally
+
+![package.png](package.png)
+
+Pinokio makes it easy to package any cloud app into a pack that can run locally.
+
+1. Package an app in a launcher
+2. Publish the packed repository to git hosting services
+3. 1-Click download, install, and run.
+
+### 11.2. Automatic packaging with AI agents
+
+
+![automatic-packaging.png](automatic-packaging.png)
+
+While you can manually write the scripts that package the application, it's much simpler to just let an AI agent do it.
+
+And Pinokio has this agent built-in. All you need to do is build apps inside the Pinokio folder
+
+The Pinokio Packaging Agent seamlessly works with ANY AI coding agent:
+
+- CLI Agents: Claude code, Codex CLI, Gemini CLI, etc.
+- Standalone Applications: Cursor, Windsurf, etc.
+
+### 11.3. 1-Click Publish to GitHub
+
+Thanks to the "login with localhost" feature, it is as easy as 1 click to create github repositories and publish to them, which instantly makes your packaged apps available for download by other people.
+
+![git.gif](git.gif)
+
+---
+
+## 12. LWW (LAN-Wide-Web)
+
+Pinokio automatically creates a private web made up of all the machines on your office/home network (LAN --- Local Area Network)
+
+
+### 12.1. Automatic Localhost Discovery
+
+
+![localhost_discovery.gif](localhost_discovery.gif)
+
+Pinokio automatically discovers ALL servers running on your machine (localhost), regardless of whether it was launched by Pinokio or not.
+
+For example, external applications that operate based on a server will be instantly accessible for surfing from Pinokio. Some examples:
+
+- ComfyUI Desktop
+- LMStudio
+- Ollama
+- Any Docker Container
+
+
+
+### 12.2. Private web made up of PCs
+
+![lww.gif](lww.gif)
+
+
+Instantly discover and surf every machine on your LAN as if it's public web.
+
+
+
+---
+
+## 13. Cell
+Adaptive container elements that can become anything - AI, terminals, apps, remote machines.
+
+### 13.1. 1-click create
+
+Spin up a new cell with 1 click.
+
+![cell.gif](cell.gif)
+
+### 13.2. Parallel Browsing
+
+You can spin up multiple windows side by side. This lets you do all kinds of powerful things. For example,
+
+Talk to AI agent on one cell, watch the generated app on another cell:
+
+![agent-web.png](agent-web.png).
+
+Run an app on one cell, watch its backend logs on another cell:
+
+![console-web.png](console-web.png)
+
+Run an app while monitoring processes with terminal apps (like top, htop, etc.)
+
+![top.gif](top.gif)
+
+
+### 13.3. No limits
+
+You can keep creating as many cells as you want, each cell is independent from each other.
+
+![grid.gif](grid.gif)
+
+
+
+---
+
+## 14. 1-Click Version Control
+
+One click version control 
+
+### 14.1. Jump across versions
+
+Switch to any past version you prefer.
+
+![git_switch.gif](git_switch.gif)
+
+### 14.2. Save versions
+
+You can make git commits (save version) with one click
+
+![git_commit.gif](git_commit.gif)
+
+### 14.3. Create a repository on GitHub
+
+Create your own repository on GitHub with 1-click.
+
+![git_create.gif](git_create.gif)
+
+
+### 14.4. Publish to GitHub with 1-click
+
+Publish your project to GitHub with one click.
+
+![git_publish.gif](git_publish.gif)
+
+
+
+### 15.5. Automatic Version Control
+
+Simply by creating a project in Pinokio folders, you get version control out of the box.
+
+
+--- 
+
+## 16. Background Mode
+
+Pinokio can run in two different modes:
+
+1. **Desktop mode:** The default pinokio desktop app.
+2. **Background mode:** Launch Pinokio as a background process. Displays the Pinokio icon on the menubar, and opens the app in a regular browser.
+
+You can switch back and forth from the settings page:
+
+![background_mode.png](background_mode.png)
+
+When you switch to background mode, Pinokio will relaunch as a menubar item (No desktop app) and open a localhost URL at http://localhost:42000
+
+![menubar.png](menubar.png)
+
+
 
 
 ---
@@ -1199,7 +996,7 @@ Just by setting the `"links"` array, you can display as many links as you want:
 ```json
 {
   "links": [{
-    "title": "Github",
+    "title": "GitHub",
     "value": "https://github.com/ai-anchorite"
   }]
 }
@@ -1218,7 +1015,7 @@ Sometimes you want to add some structure to the links by creating multiple secti
       "title": "X",
       "value": "https://x.com/deepbeepmeep"
     }, {
-      "title": "Github",
+      "title": "GitHub",
       "value": "https://github.com/deepbeepmeep"
     }]
   }, {
@@ -1227,7 +1024,7 @@ Sometimes you want to add some structure to the links by creating multiple secti
       "title": "X",
       "value": "https://x.com/cocktailpeanut"
     }, {
-      "title": "Github",
+      "title": "GitHub",
       "value": "https://github.com/cocktailpeanut"
     }, {
       "title": "Discord",
@@ -1321,7 +1118,7 @@ Run scripts can have 3 attributes:
 }
 ```
 
-- `<schema_version>`: script schema version (current version is `6.0.0`)
+- `<schema_version>`: script schema version (current version is `8.0.0`)
 - `<step>`: The `run` array contains multiple `<step>` items. Each `<step>` is executed one by one, with each step passing down its return value to the next step.
 - `<daemon>`: whether to keep the script running after all `<step>` items have finished executing. For example, when you have a script that starts a web server, if you do not set `"daemon": true`, the script will terminate and kill the server at the end. Required for all apps that needs to keep running. Not needed for one off apps that run and return immediately.
 - `<prerequisite_env>`: prerequisite environment variable declaration. A lot of apps require setting some environment variables (such as `OPENAI_API_KEY`) before running. The `<prerequisite_env>` declaration lets you declare the environment variables that need to be set before running a script.
@@ -1650,7 +1447,7 @@ Here's an example script:
       "id": "cuda",
       "method": "shell.run",
       "params": {
-        "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+        "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
       }
     }
   ]
@@ -1689,7 +1486,7 @@ Instruction 3:
   "id": "cuda",
   "method": "shell.run",
   "params": {
-    "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+    "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
   }
 }
 ```
@@ -1739,7 +1536,7 @@ The `id` attribute can be used to mark an instruction, so it can be referenced f
     "id": "cuda",
     "method": "shell.run",
     "params": {
-      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
     }
   }]
 }
@@ -1747,7 +1544,7 @@ The `id` attribute can be used to mark an instruction, so it can be referenced f
 
 In above example, when the script starts running it encounters a `jump`.
 
-1. If the `gpu === 'nvidia'`, it jumps to the instruction marked as `cuda` (the third instruction in the `run` array)
+1. If `gpu === 'nvidia'`, it jumps to the instruction marked as `cuda` (the third instruction in the `run` array)
 2. If otherwise, it jumps to the instruction marked as `cpu` (the second instruction in the `run` array)
 
 ##### when
@@ -1767,14 +1564,14 @@ The `when` attribute can be used to conditionally run instructions (or skip) dep
     "when": "{{gpu === 'nvidia'}}",
     "method": "shell.run",
     "params": {
-      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
     }
   }]
 }
 ```
 
-- `run[0]` is run if the gpu is NOT nvidia. (In nvidia GPU machines, this step is ignored and goes to the next step immediately)
-- `run[1]` is run if the gpu is nvidia.
+- `run[0]` is run if the selected GPU is not NVIDIA. (On NVIDIA machines, this step is ignored and goes to the next step immediately)
+- `run[1]` is run if the selected GPU is NVIDIA.
 
 ##### method
 
@@ -1811,7 +1608,7 @@ Here's an example:
       "when": "{{gpu === 'nvidia'}}",
       "method": "shell.run",
       "params": {
-        "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+        "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
       },
       "next": "install"
     },
@@ -1948,7 +1745,7 @@ Here's an example script with 3 steps:
     "id": "cuda",
     "method": "shell.run",
     "params": {
-      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
     }
   }]
 }
@@ -1965,7 +1762,7 @@ Here's the step 1:
 }
 ```
 
-Let's say the gpu is NVIDIA. Then the instantiated JSON-RPC object will be:
+Let's say the selected GPU is NVIDIA. Then the instantiated JSON-RPC object will be:
 
 
 ```json
@@ -1984,7 +1781,7 @@ This calls the `jump` API method, which jumps to the step labled as `"id": "cuda
   "id": "cuda",
   "method": "shell.run",
   "params": {
-    "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121"
+    "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128"
   }
 }
 ```
@@ -2395,7 +2192,7 @@ module.exports = {
 }
 ```
 
-- `<script_schema_version>`: The schema version used (**the latest version is `"6.0.0"`**)
+- `<script_schema_version>`: The schema version used (**the latest version is `"8.0.0"`**)
 - `<pre>`: (optional) Prerequisites. In case the script requires installation of 3rd party programs that cannot be easily installed through the script, you may specify a `pre` array to provide download links to the user before the installation starts. Each item in the `pre` array may have the following attributes:
     - `text`: The text to display for the item.
     - `icon`: The icon file path to display for the item.
@@ -2446,7 +2243,7 @@ We can direct the user to install Ollama before installing the app, using the `<
 
 ```javascript
 module.exports = {
-  version: "6.0.0",
+  version: "8.0.0",
   title: "LLM App",
   pre: [{
     icon: "ollama.png",
@@ -2470,7 +2267,7 @@ Here's a UI script for generating a minimal launcher UI:
 
 ```javascript
 module.exports = {
-  version: "6.0.0",
+  version: "8.0.0",
   title: "Test Launcher",
   description: "This is for testing a test launcher",
   icon: "icon.png",
@@ -2598,7 +2395,7 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
     - **string:** the `<conda_config>` is interpreted as the path in which the conda environment is stored. (Ex: if `"conda": "conda_env"`, the shell will activate the conda environment at the `conda_env` path).
     - **object:** In some cases you may want more advanced ways of creating/activating the conda environments declaratively. When the `<conda_config> is an **object** type instead of **string**, the following rules apply:
       - `path`: Same as when the `<conda_config>` is a string. Interpreted as the path in which the conda environment is stored. (Ex: if `"conda": "conda_env"`, the shell will activate the conda environment at the `conda_env` path).
-      - `name`: the conda environment **name** to activate. Unlike activation by path, the environments created/activated this way are centrally stored under the `PINOKIO_HOME/bin/miniconda` folder.
+      - `name`: the conda environment **name** to activate. Unlike activation by path, the environments created/activated this way are centrally stored under the `PINOKIO_HOME/bin/miniforge` folder.
       - `skip`: if set to `true`, do NOT activate ANY environment (By default this is set to `false`, and therefore every shell activates the Pinokio-global `base` conda environment every time unless you specify with the `params.conda` attribute.
       - `python`: The python version to install inside the environment (The default is `python=3.10` if not specified)
 
@@ -2639,6 +2436,7 @@ You can use the `info` variable to get various types of status information about
 
 - `info.local(filepath)`: get the local variable object of a script running at `filepath`.
 - `info.running(filepath)`: get the running status of a script at `filepath`.
+- `info.ready(filepath)`: check whether a script at `filepath` has reached Pinokio's ready state. Supports relative paths, absolute paths, `~/...` paths under Pinokio home, and installed git repository URIs. See [`ready`](#ready) for what ready means.
 - `info.exists(filepath)`: check if a file exists at `filepath`.
 - `info.path(filepath)`: get the absolute path of a `fileapth`.
 
@@ -2648,19 +2446,19 @@ Check out an example below, where it makes use of the `info` API to determine wh
 ```javascript
 const path = require("path")
 module.exports = {
-  version: "6.0.0",
+  version: "8.0.0",
   title: "InvokeAI",
   description: "Generative AI for Professional Creatives",
   icon: "icon.jpeg",
   menu: async (kernel, info) => {
     /**********************************************************************************************
-      info has 4 methods (where `filepath` may be a relative path or an absolute path.):
+      info has 5 methods (where `filepath` may be a relative path or an absolute path; info.ready also supports Pinokio script URI forms.):
         - info.local(filepath): get the local variable object of a script running at `filepath`.
         - info.running(filepath): get the running status of a script at `filepath`.
+        - info.ready(filepath): check whether a script at `filepath` has reached Pinokio's ready state.
         - info.exists(filepath): check if a file exists at `filepath`.
         - info.path(filepath): get the absolute path of a `fileapth`.
     **********************************************************************************************/
-    let installing = info.running("install.json")
     let installing = info.running("install.json")
     let installed = info.exists("app/env")
     if (installing) {
@@ -2669,7 +2467,7 @@ module.exports = {
       let running = info.running("start.json")
       if (running) {
         let memory = info.local("start.json")
-        if (memory && memory.url) {
+        if (info.ready("start.json") && memory && memory.url) {
           return [
             { icon: "fa-solid fa-rocket", text: "Web UI", href: memory.url },
             { icon: "fa-solid fa-terminal", text: "Terminal", href: "start.json" },
@@ -2708,7 +2506,8 @@ Based on the determined app status, the dynamic `menu` function can generate men
 
 1. check whether a file/folder exists at a path: `info.exists()`
 2. check if a script at a specified path is running: `info.running()`
-3. get the local variables object for a script at specified path: `info.local()`
+3. check if a script at a specified path is ready: `info.ready()`
+4. get the local variables object for a script at specified path: `info.local()`
 
 ---
 
@@ -2757,7 +2556,7 @@ For example, let's say we want the following behavior:
 
 ```javascript
 module.exports = {
-  version: "6.0.0",
+  version: "8.0.0",
   title: "Auto Launcher",
   icon: "icon.png",
   menu: async (kernel, info) => {
@@ -2958,7 +2757,7 @@ Each plugin action can be either:
 - an array of normal Pinokio steps
 - an async JavaScript function that returns an array of normal Pinokio steps
 
-Unlike launchers, plugins should not export arbitrary top-level functions. Only action fields such as `run`, `install`, `uninstall`, and `update` may be functions.
+Unlike launchers, plugins should not export arbitrary top-level functions. Only action fields such as `run`, `install`, `uninstall`, `update`, and the `installed` check may be functions.
 
 ```javascript
 module.exports = {
@@ -2993,7 +2792,10 @@ module.exports = {
     <step>,
     <step>,
     ...
-  ]
+  ],
+  installed: async (kernel, info, ctx) => {
+    return <boolean>
+  }
 }
 ```
 
@@ -3035,10 +2837,13 @@ module.exports = {
 - `install`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
 - `uninstall`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
 - `update`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
+- `installed`: optional install-state check for installable plugins. Must be an async function returning `true` or `false`.
 
 The action arrays above all use the same normal Pinokio step syntax. That means features such as `when`, `id`, `method`, `params`, templating, `shell.run`, `exec`, `notify`, and `app.launch` work the same way inside plugins.
 
 Action functions are evaluated only when the action is launched, not when Pinokio builds the plugin list. This keeps plugin discovery fast while still allowing launch-time async logic such as probing local services, reading files, checking installed tools, or building dynamic environment variables.
+
+When `run` is launched for a plugin that also defines `install`, Pinokio calls `installed` first when it exists. If `installed` returns `false`, Pinokio shows an install prompt instead of running the plugin action.
 
 The action function receives the same first arguments as dynamic launcher functions:
 
@@ -3069,7 +2874,8 @@ The optional `ctx` object contains the same runtime context available to normal 
 - `ctx.env` / `ctx.envs`: resolved environment variables
 - `ctx.local`, `ctx.global`, `ctx.key`: Pinokio memory scopes
 - `ctx.exists(...pathParts)`: check for files relative to `ctx.cwd`
-- `ctx.running(...pathParts)`: check whether a script path is running
+- `ctx.running(...pathParts)`: check whether a script path relative to `ctx.cwd` is running
+- `ctx.ready(...pathParts)`: check whether a script path relative to `ctx.cwd` has reached Pinokio's ready state. See [`ready`](#ready) for what ready means.
 - `ctx.self`: the plugin object itself
 - `ctx.port`: an available Pinokio port
 
@@ -3137,7 +2943,7 @@ Standalone global plugins should include `path: "plugin"` in their `pinokio.js`:
 
 ```javascript
 module.exports = {
-  version: "6.0",
+  version: "8.0.0",
   path: "plugin",
   title: "My Plugin",
   icon: "icon.png",
@@ -3162,7 +2968,7 @@ These plugins are still standalone global plugins, so they still live under `PIN
 
 ```javascript
 module.exports = {
-  version: "6.0",
+  version: "8.0.0",
   path: "plugin",
   title: "OpenAI Codex",
   icon: "openai.webp",
@@ -3172,7 +2978,7 @@ module.exports = {
     id: "run",
     method: "shell.run",
     params: {
-      shell: "{{kernel.path('bin/miniconda/Library/bin/bash.exe')}}",
+      shell: "{{kernel.path('bin/miniforge/Library/bin/bash.exe')}}",
       conda: {
         skip: true
       },
@@ -3201,7 +3007,7 @@ Use this pattern when the plugin needs to install or manage a shared CLI, runtim
 
 ```javascript
 module.exports = {
-  version: "6.0",
+  version: "8.0.0",
   path: "plugin",
   title: "Opencode",
   icon: "icon.svg",
@@ -3212,7 +3018,16 @@ module.exports = {
     params: {
       message: "npm install -g opencode-ai@latest"
     }
+  }, {
+    method: "fs.write",
+    params: {
+      path: "{{dirname}}/.installed",
+      text: "ok"
+    }
   }],
+  installed: async (kernel, info, ctx) => {
+    return await kernel.exists(ctx.dirname, ".installed")
+  },
   uninstall: [{
     method: "shell.run",
     params: {
@@ -3260,7 +3075,7 @@ module.exports = {
 }
 ```
 
-The built-in example plugins are typically downloaded into `PINOKIO_HOME/plugin/code`.
+Pinokio also includes built-in plugins that ship with Pinokio itself. They appear in the same plugin UI, but they are not downloaded into `PINOKIO_HOME/plugin`.
 
 ## App Plugins
 
@@ -3404,410 +3219,26 @@ On `/plugins`, each plugin gets an **Open in** button so you can run it against 
 
 ![plugins_page.png](plugins_page.png)
 
+Plugins are grouped by how they launch. Terminal plugins run inside Pinokio, while desktop plugins open external tools pointed at the selected app or workspace.
+
+![Plugins grouped as tools](media/8.0.0/plugins-agent-tools.png)
+
 Current built-in plugins mostly focus on AI tools, but plugins are not limited to agents. A plugin can launch any reusable workflow that should run inside another app, including IDEs, editors, terminal tools, and helper scripts.
 
+Plugin descriptions also appear in app Dev mode so users can choose the right terminal or desktop tool from the current app context.
+
+![Dev page plugin descriptions](media/8.0.0/dev_detail.png)
+
+The plugin page refreshes after plugin install, update, uninstall, and other tasks so the visible state matches the completed action.
+
+![Plugin update flow](media/8.0.0/pluginupdate.gif)
+
+Pinokio also bundles managed tool entries such as OpenAI Codex, Claude Code, Antigravity CLI, VS Code, Cursor, Codex Desktop, and Claude Desktop.
+
+![Antigravity plugin](media/8.0.0/antigravity.png)
+
 ---
 
-# Building a web extension
-
-Web extensions let you inject JavaScript into any web page loaded from a Pinokio launcher.
-
-Use them when you want to augment an embedded web app with Pinokio-specific behavior such as DOM automation, event interception, desktop integration, and triggering launcher scripts from inside the page.
-
-## Inject local scripts
-
-Use `inject` on a launcher menu item when you open a web app and want Pinokio to load one or more local extension scripts into that page.
-
-```javascript
-module.exports = {
-  menu: [{
-    default: true,
-    icon: "fa-solid fa-rocket",
-    text: "Open Web UI",
-    href: "http://127.0.0.1:8188",
-    inject: ["extension.js"]
-  }]
-}
-```
-
-The shorthand form above is normalized to:
-
-```javascript
-inject: [{
-  src: "extension.js",
-  match: ["*"],
-  world: "main",
-  when: "idle",
-  frame: "self"
-}]
-```
-
-In other words, `inject: ["extension.js"]` means "inject `extension.js` into the opened page with no explicit URL restriction, in the main world, after the page settles, on the current frame only".
-
-## Structured inject descriptors
-
-`inject` also supports a full descriptor syntax.
-
-The accepted outer forms are:
-
-- a single string: `inject: "extension.js"`
-- a comma-separated string: `inject: "extension.js,analytics.js"`
-- an array of strings: `inject: ["extension.js", "analytics.js"]`
-- an array of descriptor objects
-
-Example:
-
-```javascript
-module.exports = {
-  menu: [{
-    default: true,
-    icon: "fa-solid fa-rocket",
-    text: "Open Web UI",
-    href: "http://127.0.0.1:8188",
-    inject: [{
-      src: "extension.js",
-      match: ["http://127.0.0.1:8188/*"],
-      world: "main",
-      when: "idle",
-      frame: "self"
-    }]
-  }]
-}
-```
-
-Each inject descriptor supports the following attributes:
-
-- `src`: local script path to inject
-- `match`: one or more URL match rules. Default is `["*"]`
-- `world`: `"main"` or `"isolated"`. Default is `"main"`
-- `when`: `"start"`, `"end"`, or `"idle"`. Default is `"idle"`
-- `frame`: `"self"`, `"all"`, or `"top"`. Default is `"self"`
-
-### match
-
-`match` decides which page URLs receive the extension script.
-
-Accepted input forms:
-
-- a single string:
-
-```javascript
-match: "http://127.0.0.1:8188/*"
-```
-
-- a comma-separated string:
-
-```javascript
-match: "http://127.0.0.1:8188/*,https://example.com/*"
-```
-
-- an array of strings:
-
-```javascript
-match: [
-  "http://127.0.0.1:8188/*",
-  "https://example.com/*"
-]
-```
-
-Normalization rules:
-
-- strings are trimmed
-- comma-separated strings are split into multiple entries
-- empty items are discarded
-- non-string items are ignored
-- duplicate entries are removed
-- entries longer than 1024 characters are ignored
-- if nothing remains after normalization, Pinokio falls back to `["*"]`
-
-Practical meaning:
-
-- `match: ["*"]` means "do not restrict by URL"
-- any other value narrows injection to URLs matching one of the listed rules
-- use fully-qualified patterns whenever possible, for example `http://127.0.0.1:8188/*`
-- Pinokio currently exposes positive matching only. There is no separate `exclude_matches` field in launcher syntax
-
-### world
-
-`world` decides which JavaScript world the extension runs in.
-
-- `main`:
-  - default
-  - runs in the same JavaScript world as the page
-  - use this when you need to read or patch page-owned globals, call app functions already attached to `window`, or integrate deeply with the target app
-- `isolated`:
-  - runs in a separate JavaScript world
-  - use this when you mainly need DOM access, event listeners, and a lower risk of colliding with the page's own scripts
-
-In short:
-
-- choose `main` for deep page integration
-- choose `isolated` for safer DOM-level augmentation
-
-### when
-
-`when` decides when the extension is injected.
-
-- `start`:
-  - inject as early as possible
-  - use this when you must install hooks before the page finishes booting
-- `end`:
-  - inject after the initial document has been parsed
-  - use this when you need the DOM tree to exist, but do not need to wait for the page to fully settle
-- `idle`:
-  - default
-  - inject after the page is further along in loading
-  - use this when you want the most stable default for UI automation and event wiring
-
-In short:
-
-- choose `start` for early hooks
-- choose `end` for DOM-ready hooks
-- choose `idle` for the safest general-purpose default
-
-### frame
-
-`frame` decides which frames receive the extension.
-
-- `self`:
-  - default
-  - inject into the current matched frame only
-- `all`:
-  - inject into all frames for the page instead of just the current one
-  - use this when the target UI renders important controls inside nested iframes
-- `top`:
-  - accepted as input
-  - currently normalized by Pinokio to `self`
-  - this is an alias, not a separate runtime behavior
-
-If you do not know which one to choose, start with `self`, and switch to `all` only when the target page actually uses nested frames.
-
-## Injected script syntax
-
-Current web extension examples use `window.$pinokio.inject(...)`:
-
-```javascript
-window.$pinokio.inject({
-  mount(ctx) {
-    const onClick = (event) => {
-      const link = event.target && typeof event.target.closest === "function"
-        ? event.target.closest("a[href]")
-        : null
-      if (!link) return
-
-      const text = (link.textContent || "").trim().toLowerCase()
-      if (!text.includes("download")) return
-
-      event.preventDefault()
-      event.stopPropagation()
-      event.stopImmediatePropagation()
-
-      ctx.trigger("download", {
-        url: link.href,
-        text: (link.textContent || "").trim()
-      }, {
-        source: "extension.js"
-      })
-    }
-
-    document.addEventListener("click", onClick, true)
-
-    return () => {
-      document.removeEventListener("click", onClick, true)
-    }
-  }
-})
-```
-
-What this does:
-
-- `window.$pinokio.inject(...)` registers the extension
-- `mount(ctx)` is where you install listeners, observers, or any other page logic
-- `ctx.trigger(eventName, payload, context)` emits an event back to the launcher
-- returning a cleanup function lets the extension remove listeners when it is torn down
-
-The payload mapping is:
-
-- if `payload` is an object, its keys become `input.<key>` in the handler script
-- if `payload` is an array, it becomes `input._`
-- the event name and context metadata are exposed under `input.event`
-
-For example, this call:
-
-```javascript
-ctx.trigger("download", {
-  url: link.href,
-  text: "Download"
-}, {
-  source: "extension.js"
-})
-```
-
-produces handler input shaped like:
-
-```javascript
-input.url === link.href
-input.text === "Download"
-input.event.name === "download"
-input.event.source === "extension.js"
-```
-
-## Trigger Pinokio scripts
-
-You can combine `menu[].inject` with launcher-level `on` handlers to make any embedded web app trigger Pinokio scripts.
-
-Launcher file (`pinokio.js`):
-
-```javascript
-module.exports = {
-  on: {
-    "trigger-download": {
-      ui: {
-        mode: "bottom",
-        title: "Downloading model",
-        closeOnSuccess: true,
-        refreshOnClose: "source"
-      },
-      href: "downloader.json"
-    }
-  },
-  menu: [{
-    default: true,
-    icon: "fa-solid fa-rocket",
-    text: "Open Web UI",
-    href: "http://127.0.0.1:8188",
-    inject: [{
-      src: "extension.js",
-      match: ["http://127.0.0.1:8188/*"],
-      world: "main",
-      when: "idle",
-      frame: "self"
-    }]
-  }]
-}
-```
-
-Injected browser script (`extension.js`):
-
-```javascript
-window.$pinokio.inject({
-  mount(ctx) {
-    const onClick = (event) => {
-      const button = event.target && typeof event.target.closest === "function"
-        ? event.target.closest("[data-download-url]")
-        : null
-      if (!button) return
-
-      event.preventDefault()
-      event.stopPropagation()
-      event.stopImmediatePropagation()
-
-      ctx.trigger("trigger-download", {
-        url: button.dataset.downloadUrl,
-        savePath: button.dataset.savePath,
-        filename: button.dataset.filename
-      }, {
-        source: "extension.js"
-      })
-    }
-
-    document.addEventListener("click", onClick, true)
-
-    return () => {
-      document.removeEventListener("click", onClick, true)
-    }
-  }
-})
-```
-
-Event handler script (`downloader.json`):
-
-```javascript
-{
-  "run": [
-    {
-      "method": "fs.download",
-      "params": {
-        "url": "{{input.url}}",
-        "path": "app/models/{{input.savePath}}/{{input.filename}}"
-      }
-    }
-  ]
-}
-```
-
-How it works:
-
-1. Pinokio opens the web tab and resolves the `inject` descriptors.
-2. `extension.js` is loaded into the matching page or frame.
-3. The extension watches the DOM and calls `ctx.trigger("trigger-download", ...)`.
-4. The launcher `on["trigger-download"]` handler resolves to `downloader.json`.
-5. The emitted payload becomes `input`, and the emitted metadata becomes `input.event`.
-
-For the example above, the handler script receives:
-
-```javascript
-input.url === "<value from data-download-url>"
-input.savePath === "<value from data-save-path>"
-input.filename === "<value from data-filename>"
-input.event.name === "trigger-download"
-input.event.source === "extension.js"
-```
-
-This pattern keeps the desktop bridge minimal:
-
-- the web app decides when to emit
-- the launcher decides what script to run
-- the handler script stays declarative
-
-## Inject external scripts
-
-If a browser library normally works by adding a tag such as `<script src="https://cdn.example.com/library.js"></script>`, keep `inject` pointed at a local extension file and let that file append the external script tag.
-
-Launcher file (`pinokio.js`):
-
-```javascript
-module.exports = {
-  menu: [{
-    default: true,
-    icon: "fa-solid fa-rocket",
-    text: "Open Web UI",
-    href: "http://127.0.0.1:8188",
-    inject: [{
-      src: "load-library.js",
-      match: ["http://127.0.0.1:8188/*"],
-      world: "main",
-      when: "start",
-      frame: "self"
-    }]
-  }]
-}
-```
-
-Injected browser script (`load-library.js`):
-
-```javascript
-window.$pinokio.inject({
-  mount() {
-    const src = "https://cdn.example.com/library.js"
-    if (document.querySelector(`script[data-pinokio-external="${src}"]`)) {
-      return
-    }
-
-    const script = document.createElement("script")
-    script.src = src
-    script.crossOrigin = "anonymous"
-    script.dataset.pinokioExternal = src
-    document.head.appendChild(script)
-  }
-})
-```
-
-Use `world: "main"` when the external library expects to behave like a normal page script and attach globals to `window`.
-
-Note that `crossorigin="true"` is not the usual browser value. In JavaScript, use `script.crossOrigin = "anonymous"` or `script.crossOrigin = "use-credentials"` depending on the library.
-
----
 
 # API
 
@@ -3862,7 +3293,7 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
   - **when specified:** raw terminal output, keyboard input, and `on` event parsing still happen live, but the reconstructed terminal `state` is refreshed at most once per interval.
   - Useful for fullscreen TUIs and other CLI apps that repaint frequently.
   - Shell completion, detach, and kill still force one final fresh state sync.
-- `<message>`: The message to enter into the shell. May be a string, or an array.
+- `<message>`: The message to enter into the shell. May be a string, an array, or a structured object.
   - **string** => enters the message.
   - **array** => enters the messages in the array sequentially.
     - For example `"message": ["pip install -r requirements.txt", "pip install torch"]` will internally run: `pip install -r requirements.txt && pip install torch`
@@ -3882,7 +3313,7 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
     - **string:** the `<conda_config>` is interpreted as the path in which the conda environment is stored. (Ex: if `"conda": "conda_env"`, the shell will activate the conda environment at the `conda_env` path).
     - **object:** In some cases you may want more advanced ways of creating/activating the conda environments declaratively. When the `<conda_config> is an **object** type instead of **string**, the following rules apply:
       - `path`: Same as when the `<conda_config>` is a string. Interpreted as the path in which the conda environment is stored. (Ex: if `"conda": "conda_env"`, the shell will activate the conda environment at the `conda_env` path).
-      - `name`: the conda environment **name** to activate. Unlike activation by path, the environments created/activated this way are centrally stored under the `PINOKIO_HOME/bin/miniconda` folder.
+      - `name`: the conda environment **name** to activate. Unlike activation by path, the environments created/activated this way are centrally stored under the `PINOKIO_HOME/bin/miniforge` folder.
       - `skip`: if set to `true`, do NOT activate ANY environment (By default this is set to `false`, and therefore every shell activates the Pinokio-global `base` conda environment every time unless you specify with the `params.conda` attribute.
       - `python`: The python version to install inside the environment (The default is `python=3.10` if not specified)
 
@@ -4075,6 +3506,10 @@ If the `message` attribute is an object, Pinokio treats it as a structured comma
 - unresolved pure-template values such as `{{args.prompt}}` are omitted in this structured mode
 - each argument is escaped automatically for the selected shell
 
+When a structured argument renders to multiple lines, Pinokio stores it in a generated `PINOKIO_ARG_*` environment variable and references that variable safely for the active shell. For example, a multiline `python -c` value may become `PINOKIO_ARG_0`, then be referenced as `$PINOKIO_ARG_0`, `${env:PINOKIO_ARG_0}`, or `!PINOKIO_ARG_0!` depending on the platform shell.
+
+Generated `PINOKIO_ARG_*` values are summarized in terminal previews so large prompts or reports do not flood the logs, while the actual process still receives the full value.
+
 ```json
 {
   "run": [{
@@ -4216,7 +3651,7 @@ By default if you do not specify any `conda` attribute in `shell.run`, it will a
 
 > Even if you have a globally installed conda, it will NOT use your system-wide base environment, but use Pinokio's own base environment. This is to ensure everything works exactly the same for every user in every system.
 
-For example the following will automatically activate the Pinokio `base` environment before starting the shell (which you can find in `/PINOKIO_HOME/bin/miniconda`):
+For example the following will automatically activate the Pinokio `base` environment before starting the shell (which you can find in `/PINOKIO_HOME/bin/miniforge`):
 
 ```json
 {
@@ -4257,7 +3692,7 @@ Above script will:
 
 You can also create/activate a conda environment by name. In this case you will need to use the `object` syntax instead of using `string`.
 
-The difference is, instead of storing the conda environment at a specific path, the environment will be stored inside `/PINOKIO_HOME/bin/miniconda`.
+The difference is, instead of storing the conda environment at a specific path, the environment will be stored inside `/PINOKIO_HOME/bin/miniforge`.
 
 ```json
 {
@@ -6886,7 +6321,7 @@ Wait before moving to the next script step.
 
 `process.wait` can wait for a fixed duration, a URL, a `wait-on` resource condition, a desktop app to appear, or indefinitely until the script is stopped.
 
-When `title` or `description` is provided, Pinokio displays a footer loading banner while the wait is active.
+When `title` or `description` is provided, Pinokio displays a footer loading banner while the wait is active. If the terminal or editor is opened again while the wait is still active, the footer is restored.
 
 #### syntax
 
@@ -6930,7 +6365,7 @@ Use one wait mode per step. Fields marked `optional` can be omitted.
 }
 ```
 
-You can also omit `params` entirely for an indefinite wait without footer text:
+You can also omit `params` entirely. In that case, Pinokio waits indefinitely and displays a default footer:
 
 ```json
 {
@@ -7055,6 +6490,8 @@ Use `min` to wait for minutes:
 If no explicit wait condition is provided, `process.wait` waits until the script is stopped or the wait is manually resolved.
 
 This is useful at the end of watch scripts or long-running launch scripts.
+
+If `title` and `description` are omitted, Pinokio shows a default footer with the title `Waiting`.
 
 ```json
 {
@@ -7708,9 +7145,167 @@ Open Codex Desktop with an initial prompt and local path:
 
 ---
 
+## github
+
+APIs for publishing the current app or workspace through the GitHub account connected to Pinokio.
+
+### github.create
+
+Create a GitHub repository for the current folder and push the current branch.
+
+#### syntax
+
+```json
+{
+  "method": "github.create",
+  "params": {
+    "path": <repository folder path>,
+    "name": <repo name or owner/repo>,
+    "visibility": <public/private/internal>
+  }
+}
+```
+
+- `<repository folder path>`: **(optional)** local git repository folder. Defaults to the current script folder.
+- `<repo name or owner/repo>`: **(optional)** repository name. If omitted, Pinokio uses the local folder name. Use `owner/repo` to create under a specific authenticated owner or organization.
+- `<public/private/internal>`: **(optional)** repository visibility. Defaults to `public`.
+
+If the repository has no `origin` remote, Pinokio adds the newly created GitHub repository as `origin`. If `origin` already points somewhere else, Pinokio stops instead of replacing it.
+
+#### example
+
+```json
+{
+  "method": "github.create",
+  "params": {
+    "path": "{{cwd}}",
+    "name": "my-launcher",
+    "visibility": "public"
+  }
+}
+```
+
+---
+
+### github.fork
+
+Fork the GitHub repository for the current folder and add a remote for the fork.
+
+#### syntax
+
+```json
+{
+  "method": "github.fork",
+  "params": {
+    "path": <repository folder path>,
+    "name": <fork repo name>,
+    "org": <organization>
+  }
+}
+```
+
+- `<repository folder path>`: **(optional)** local git repository folder. Defaults to the current script folder.
+- `<fork repo name>`: **(optional)** fork repository name.
+- `<organization>`: **(optional)** organization to fork into.
+
+Pinokio uses the folder's `upstream` remote when present, otherwise `origin`. If the folder already has an `origin` remote for the fork, Pinokio keeps it. Otherwise it adds a fork remote without replacing the upstream remote.
+
+#### example
+
+```json
+{
+  "method": "github.fork",
+  "params": {
+    "path": "{{cwd}}"
+  }
+}
+```
+
+---
+
 ## hf
 
-An API to access [huggingface-cli](https://huggingface.co/docs/huggingface_hub/en/guides/cli)
+An API to access the [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/en/guides/cli)
+
+### hf.login
+
+Log into Hugging Face through Pinokio's managed login flow.
+
+#### syntax
+
+```json
+{
+  "method": "hf.login",
+  "params": {
+    "force": <force new login>,
+    "open": <open browser>,
+    "modal": <show modal>,
+    "clipboard": <copy code>,
+    "wait": <wait for token>,
+    "timeout": <timeout ms>,
+    "interval": <poll interval ms>
+  }
+}
+```
+
+- `<force new login>`: **(optional)** if `true`, start a new login even when a Hugging Face token already exists. Defaults to `false`.
+- `<open browser>`: **(optional)** open the Hugging Face authorization page. Defaults to `true`.
+- `<show modal>`: **(optional)** show Pinokio's login modal when the script is running in the app. Defaults to `true`.
+- `<copy code>`: **(optional)** copy the device code to the clipboard. Defaults to `true`.
+- `<wait for token>`: **(optional)** wait until login completes. Defaults to `true`.
+- `<timeout ms>`: **(optional)** login timeout. Defaults to `120000`.
+- `<poll interval ms>`: **(optional)** token polling interval. Defaults to `2000`.
+
+#### return value
+
+Returns the login status and token path. The token itself is not returned.
+
+The token path is the same path exposed to Pinokio shells as `HF_TOKEN_PATH`. By default this is `PINOKIO_HOME/cache/HF_AUTH/token`, unless the system `ENVIRONMENT` overrides `HF_TOKEN_PATH`.
+
+#### example
+
+Default login flow:
+
+```json
+{
+  "method": "hf.login"
+}
+```
+
+Wait explicitly for login completion:
+
+```json
+{
+  "method": "hf.login",
+  "params": {
+    "wait": true
+  }
+}
+```
+
+---
+
+### hf.logout
+
+Log out of Hugging Face for Pinokio-managed Hugging Face authentication.
+
+#### syntax
+
+```json
+{
+  "method": "hf.logout"
+}
+```
+
+#### return value
+
+```json
+{
+  "status": "success"
+}
+```
+
+---
 
 ### hf.download
 
@@ -7734,7 +7329,7 @@ Download files from huggingface
 This is equivalent to:
 
 ```
-huggingface-cli download <arg1> <arg2> --<kwarg1> <val1> --<kwarg2> <val2>
+hf download <arg1> <arg2> --<kwarg1> <val1> --<kwarg2> <val2>
 ```
 
 #### example
@@ -7754,7 +7349,49 @@ Above script is equivalent to:
 
 
 ```
-huggingface-cli download adept/fuyu-8b model-00001-of-00002.safetensors --local-dir fuyu
+hf download adept/fuyu-8b model-00001-of-00002.safetensors --local-dir fuyu
+```
+
+---
+
+### hf.upload
+
+Upload files to Hugging Face using the `hf upload` command through Pinokio.
+
+#### syntax
+
+```json
+{
+  "method": "hf.upload",
+  "params": {
+    "path": <executing folder path (default is the current path)>,
+    "_": [<arg1>, <arg2>, ...],
+    <kwarg1>: <val1>,
+    <kwarg2>: <val2>,
+    ...
+  }
+}
+```
+
+This is equivalent to:
+
+```
+hf upload <arg1> <arg2> --<kwarg1> <val1> --<kwarg2> <val2>
+```
+
+#### example
+
+```json
+{
+  "method": "hf.upload",
+  "params": {
+    "path": "output",
+    "_": ["username/my-dataset", "./output", "."],
+    "repo-type": "dataset",
+    "private": true,
+    "commit-message": "initial upload"
+  }
+}
 ```
 
 
@@ -8002,24 +7639,104 @@ The current system architecture. May be one of the following:
 
 ## gpus
 
-An array of available GPUs on the machine
+An array of detected GPU controller summaries.
+
+Each item contains:
+
+- `name`: GPU vendor name, normalized to lowercase
+- `model`: GPU model name, normalized to lowercase
+- `driver`: detected GPU driver version, or `null` when unavailable
 
 Example:
 
 ```json
-["apple"]
+[
+  {
+    "name": "advanced micro devices, inc.",
+    "model": "amd radeon rx 7900 xtx",
+    "driver": "24.30.31.03"
+  }
+]
 ```
 
 ---
 
 ## gpu
 
-The first available GPU
+The selected GPU vendor for launcher logic.
+
+Pinokio prefers NVIDIA, then AMD, then Apple. If none of those are detected, it uses the first detected GPU vendor. If no GPU is detected, this is `none`.
+
+For AMD machines with both integrated and discrete AMD GPUs, Pinokio selects the AMD controller with the highest reported VRAM.
 
 Example:
 
+```text
+amd
+```
+
+---
+
+## gpu_model
+
+The selected GPU model, normalized to lowercase.
+
+Example:
+
+```text
+amd radeon rx 7900 xtx
+```
+
+---
+
+## gpu_driver
+
+The detected driver version for the selected GPU.
+
+This is a string when Pinokio can read the driver version, or `null` when the driver version is unavailable.
+
+Use `gpu_driver` for driver-version gates, such as selecting a CUDA wheel family for NVIDIA.
+
+Example:
+
+```text
+565.90
+```
+
+Example NVIDIA package selection:
+
 ```json
-apple
+{
+  "run": [{
+    "when": "{{gpu === 'nvidia'}}",
+    "method": "shell.run",
+    "params": {
+      "message": "pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/{{Number.parseFloat(gpu_driver || '0') >= 580 ? 'cu130' : 'cu128'}}"
+    }
+  }]
+}
+```
+
+---
+
+## gpu_target
+
+The selected GPU architecture target for launcher routing.
+
+Possible formats:
+
+- NVIDIA: `sm_<compute capability without dot>`, such as `sm_89`
+- AMD: `gfx*`, such as `gfx1100`
+- `null`: no architecture target was resolved for the selected GPU
+
+Pinokio resolves NVIDIA targets from `nvidia-smi` compute capability and AMD targets from its built-in ROCm target map. It does not require PyTorch, ROCm, or CUDA to already be installed.
+
+Use `gpu_target` when choosing architecture-specific packages or flags. Use `gpu` and `gpu_model` when you only need the hardware identity.
+
+Example:
+
+```text
+gfx1100
 ```
 
 ---
@@ -8038,7 +7755,9 @@ Example:
 
 ## vram
 
-Total GPU VRAM in GB
+VRAM for the selected GPU in GB, rounded to the nearest whole number.
+
+If VRAM is unavailable, this is `0`.
 
 Example (NVIDIA 4090):
 
@@ -8189,7 +7908,7 @@ Check whether a command exists (can be run in a terminal), and if so, return the
 
 ## exists
 
-Check whether a file or folder exists at the specified relative path
+Check whether a file or folder exists at the specified relative path.
 
 ```json
 {
@@ -8207,12 +7926,85 @@ Check whether a file or folder exists at the specified relative path
 
 ## running
 
-Check whether a script file at the specified relative path is currently running
+Check whether a script file at the specified relative path is currently running.
 
 ```json
 {
   "run": [{
     "when": "{{!running('start.js')}}", // start the script if not already running
+    "method": "script.start",
+    "params": {
+      "uri": "start.js"
+    }
+  }]
+}
+```
+
+---
+
+## ready
+
+Check whether a script file has reached Pinokio's ready state.
+
+Arguments are resolved relative to the current script folder.
+
+A script becomes **ready** when Pinokio has successfully completed that script's launch workflow and stored the script lifecycle state as `ready`.
+
+This is different from [`running`](#running):
+
+- `running("start.js")` means the script currently has an active Pinokio run.
+- `ready("start.js")` means the script completed its launch workflow successfully.
+- A daemon script can be both running and ready.
+- A finished non-daemon script can be ready even if it is no longer running.
+
+`ready()` is an in-memory lifecycle state. Once a script becomes ready, it stays ready until that script is started again, stopped, failed, or Pinokio restarts.
+
+For server apps, `ready()` does not continuously verify that the server is reachable. Make the launch workflow wait for a concrete readiness signal before it completes if ready should mean the app was available at launch time.
+
+For example, wait for the URL:
+
+```json
+{
+  "run": [{
+    "method": "shell.run",
+    "params": {
+      "message": "python app.py"
+    }
+  }, {
+    "method": "process.wait",
+    "params": {
+      "url": "http://127.0.0.1:7860"
+    }
+  }]
+}
+```
+
+Or wait until the app prints a serving URL:
+
+```json
+{
+  "run": [{
+    "method": "shell.run",
+    "params": {
+      "message": "python app.py",
+      "on": [{
+        "event": "/http:\/\/[0-9.:]+/",
+        "done": true
+      }]
+    }
+  }, {
+    "method": "local.set",
+    "params": {
+      "url": "{{input.event[0]}}"
+    }
+  }]
+}
+```
+
+```json
+{
+  "run": [{
+    "when": "{{!ready('start.js')}}",
     "method": "script.start",
     "params": {
       "uri": "start.js"
@@ -8230,7 +8022,7 @@ The kernel JavaScript API. Not intended for usage inside template expressions. O
 - `kernel.which()`: same as the [which](#which) in template expressions but can be used in javascript. return the absolute path of any given command. if the command doesn't exist under PATH, returns null.
 - `kernel.exists()`: check if a path exists
 - `kernel.path()`: given a relative path within pinokio, resolve its absolute path
-- `kernel.script.running()`: check if a script at specified path is currently running
+- `kernel.script.running()`: check if a script at specified path is currently running from JavaScript. In template expressions, prefer [`running()`](#running).
 - `kernel.script.local()`: get the local variables of a script (if running)
 
 
@@ -8282,7 +8074,7 @@ module.exports = async (kernel) => {
     env.PHONEMIZER_ESPEAK_PATH = espeakRoot
     env.PHONEMIZER_ESPEAK_LIBRARY = path.resolve(espeakRoot, "libespeak-ng.dll")
     env.ESPEAK_DATA_PATH = path.resolve(espeakRoot, "espeak-ng-data")
-    let LIBPATH = kernel.bin.path("miniconda/libs")
+    let LIBPATH = kernel.bin.path("miniforge/libs")
     env.LINK = `/LIBPATH:${LIBPATH}`
   }
   return {
@@ -8449,7 +8241,7 @@ module.exports = {
 
     // Step 1.
     // Get the `local.url` variable inside the script "start.js"
-    let url = kernel.local(__dirname, "app", "start.js").url
+    let url = kernel.script.local(__dirname, "app", "start.js").url
 
     // Step 2.
     // If there's a local variable "url", display the "web UI" tab,
@@ -8487,7 +8279,9 @@ kernel.script.running(...pathChunks)
 
 #### examples
 
-##### 
+##### template expression
+
+When used inside a script template expression, use the native [`running()`](#running) helper instead of `kernel.script.running(...)`.
 
 ```json
 {
@@ -8499,14 +8293,14 @@ kernel.script.running(...pathChunks)
   }, {
     "method": "log",
     "params": {
-      "text": "{{kernel.script.running(cwd, 'install.js')}}"
+      "text": "{{running(cwd, 'install.js')}}"
     }
   }]
 }
 ```
 
 1. First it will start the `install.js` script using the `script.start` API.
-2. Then in the second step, it checks if the `install.js` script is running. In this case we have to pass both the `cwd` (current directory) and the `install.js` so they can be merged to result in an absolute path.
+2. Then in the second step, it checks if the `install.js` script is running.
 
 ##### inside pinokio.js
 
@@ -8521,7 +8315,7 @@ module.exports = {
 
     // Step 1.
     // Get the `local.url` variable inside the script "start.js"
-    let url = kernel.local(__dirname, "app", "start.js").url
+    let url = kernel.script.local(__dirname, "app", "start.js").url
 
     // Step 2.
     // If there's a local variable "url", display the "web UI" tab,
@@ -8773,7 +8567,7 @@ The top level folders under the Pinokio home directory look like the following
     /brushnet.git
     ...
   /bin
-    /miniconda
+    /miniforge
     /homebrew
     /bun
     /npm
@@ -8790,7 +8584,7 @@ The top level folders under the Pinokio home directory look like the following
   /logs
 ```
 
-Actual contents of `/bin` vary by platform and by which setup bundles/tools you have installed. Many shared tools live inside prefixes such as `/miniconda`, `/homebrew`, `/bun`, `/npm`, and `/py` rather than getting their own top-level folder.
+Actual contents of `/bin` vary by platform and by which setup bundles/tools you have installed. Many shared tools live inside prefixes such as `/miniforge`, `/homebrew`, `/bun`, `/npm`, and `/py` rather than getting their own top-level folder.
 
 
 
@@ -8806,12 +8600,14 @@ The `api` folder is where the downloaded app repositories are stored. An API fol
 
 The `bin` folder stores the shared runtimes, package managers, and tools commonly used by Pinokio apps and agents.
 
-- **miniconda:** for the isolated conda environment and conda-installed tools such as `ffmpeg`, `uv`, and `tmux` on macOS/Linux
+- **miniforge:** for the isolated conda environment and conda-installed tools such as `ffmpeg`, `uv`, and `tmux` on macOS/Linux
 - **brew:** for dealing with Homebrew on macOS
 - **bun:** for the Bun runtime, package manager, and Bun-installed tools
 - **py:** for Pinokio's shared Python-side tooling
 - **npm:** for global npm-installed tools used with the shared Node.js runtime, such as `pterm`
 - etc.
+
+Some upgraded installs may also contain a legacy `/bin/miniconda` compatibility alias that points to `/bin/miniforge`. New scripts should use `/bin/miniforge`.
 
 Things installed into the `/bin` folder can be shared across multiple apps in the `/api` folder.
 
@@ -8826,7 +8622,7 @@ The `drive` folder stores virtual drives, used for deduplicating redundant files
 The `plugin` folder stores standalone reusable plugins.
 
 - Every plugin is a single `pinokio.js` file inside its own folder
-- Built-in examples are typically downloaded into `plugin/code`
+- Built-in plugins ship with Pinokio and are listed alongside standalone plugins, but are not stored in this folder
 - Standalone plugins automatically show up in `/plugins`, **Ask AI**, and `/p/:name/dev`
 - Apps may also ship bundled plugins inside `/api/<app>/...` by declaring `plugins` in the app launcher `pinokio.js`
 
@@ -8844,7 +8640,7 @@ The `tasks` folder stores reusable task packages.
 
 ### /cache
 
-The `cache` folder stores cache files programmatically downloaded or generated by apps (through `pip`, `torch`, `huggingface-cli`, etc.)
+The `cache` folder stores cache files programmatically downloaded or generated by apps (through `pip`, `torch`, the Hugging Face `hf` CLI, etc.)
 
 It also stores app preference metadata used by the home page and the Pinokio skill:
 
