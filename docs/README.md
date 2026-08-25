@@ -6223,7 +6223,7 @@ let response = await axios({
 
 ## notify
 
-Programmatically display a push notification popup.
+Programmatically display an in-app notification popup. Notifications play a chime by default; set `silent` to `true` to disable it.
 
 #### syntax
 
@@ -6233,7 +6233,9 @@ Programmatically display a push notification popup.
   "params": {
     "html": <html>,
     "href": <href>,
-    "target": <target>
+    "target": <target>,
+    "type": <type>,
+    "silent": <silent>
   }
 }
 ```
@@ -6241,6 +6243,8 @@ Programmatically display a push notification popup.
 - `<html>`: The html content to display in the notification popup. Can be any HTML
 - `<href>`: a url to open. can be an external website or a script url
 - `<target>`: **optional** opens in the current window if not specified. If set to `_blank`, opens an external browser
+- `<type>`: **optional** notification style, such as `info`, `success`, `warning`, or `error`
+- `<silent>`: **optional** set to `true` to disable the notification chime. The default is `false`
 
 #### return value
 
@@ -6271,6 +6275,23 @@ You can even include full HTML elements, such as images
     "method": "notify",
     "params": {
       "html": "<div><img src='https://www.reactiongifs.com/r/2012/06/homer_lurking.gif'/><p>This is an example</p></div>"
+    }
+  }]
+}
+```
+
+##### Silent notification
+
+Set `silent` to `true` to display the notification without playing a sound.
+
+```json
+{
+  "run": [{
+    "method": "notify",
+    "params": {
+      "html": "Task complete",
+      "type": "success",
+      "silent": true
     }
   }]
 }
