@@ -1,7 +1,5 @@
 # Pinokio
 
-![img](android-chrome-192x192.png)
-
 Pinokio is your **Localhost Cloud**: run anything locally—apps, AI, agents, and web servers—on your own machines with a full toolchain built in.
 
 ## 1. The Localhost Cloud
@@ -710,9 +708,39 @@ Publish your project to GitHub with one click.
 
 
 
-### 15.5. Automatic Version Control
+### 14.5. Automatic Version Control
 
 Simply by creating a project in Pinokio folders, you get version control out of the box.
+
+
+## 15. Disk Saver
+
+<video controls playsinline preload="metadata" poster="media/disk-saver/universal-disk-saver.png" data-docs-poster="/docs/media/disk-saver/universal-disk-saver.png" width="1920" height="1080" aria-label="Pinokio Disk Saver demonstration">
+  <source src="media/disk-saver/disk-saver-demo.mp4" data-docs-src="/docs/media/disk-saver/disk-saver-demo.mp4" type="video/mp4">
+  Your browser does not support embedded video. <a href="media/disk-saver/disk-saver-demo.mp4">Open the Disk Saver demonstration</a>.
+</video>
+
+AI apps often download their own copies of the same models, runtimes, libraries, and other large files. Disk Saver finds files with identical contents and lets them share physical storage while every app keeps the file name and location it expects.
+
+Using the Disk Saver feature, you can free up A LOT of your disk space by simply deduplicating redundant files on your disk. Here's an example of how much I personally saved on my own machine:
+
+![Example Disk Saver summary showing storage already saved and additional potential savings](media/disk-saver/storage-summary.png)
+
+*The totals above are an example. Your files and potential savings will be different.*
+
+- **Scan safely:** Scanning is read-only. It does not link, replace, or delete files.
+- **Keep app folders intact:** Deduplication saves space without moving files into a central library or changing their paths.
+- **Stay in control:** Use **Make separate** to give a deduplicated path its own physical copy again.
+- **Remove abandoned data:** When no app path uses managed data anymore, it can appear in **Trash** for review. **Empty Trash** permanently removes that unused data after safety checks.
+- **Scan beyond Pinokio:** Add model libraries, caches, old Pinokio Homes, project folders, and other locations on compatible drives.
+
+<a class="docs-guide-card" data-docs-route="/disk-saver" href="disk-saver.md">
+  <span class="docs-guide-card-copy">
+    <strong class="docs-guide-card-title">Complete Disk Saver guide</strong>
+    <span class="docs-guide-card-description">Scanning, result views, deduplication, Trash, safety, and troubleshooting.</span>
+  </span>
+  <span class="docs-guide-card-icon" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+</a>
 
 
 --- 
@@ -799,6 +827,10 @@ If you have an app or an online service that you use often but want to run local
 1. Click "create"
 2. Enter "a clone of the app at `app URL`". Feel free to make it as detailed as possible.
 3. All projects created inside Pinokio will automatically have a built-in 1-click launcher, so just switch to "run" mode after you finish building.
+
+## 5. Save space across local apps
+
+When several apps contain byte-identical models, runtimes, or dependencies, Disk Saver can reuse the underlying storage without changing their independent folder structures. [Learn how Disk Saver works](disk-saver.md).
 
 
 ---
@@ -8538,6 +8570,8 @@ Pinokio is a self-contained platform that lets you install apps in an isolated m
 2. **Batteries Included:** no need to manually install required programs just to install something. Pinokio already comes with bundled tools such as **ffmpeg**, **node.js**, **bun**, **tmux** (macOS/Linux), **visual studio**, **conda**, **python**, **pip**, etc., depending on platform.
 
 To achieve this, Pinokio **stores everything under a single isolated folder ("pinokio home")**, so it never has to rely on your system-wide configs and programs but runs everything in a self-contained manner.
+
+When apps contain byte-identical models, runtimes, or other large files, [Disk Saver](disk-saver.md) can reduce redundant storage while keeping those files in their existing app folders.
 
 You can set the **pinokio home** folder when you first set up Pinokio, as well as later change it to a new location from the **settings** tab.
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://desktop.pinokio.co/docs/sitemap.xml

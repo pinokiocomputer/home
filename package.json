@@ -1,0 +1,8 @@
+{
+  "name": "pinokio-homepage",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/docs-pages.mjs build",
+    "dev": "node scripts/docs-pages.mjs dev"
+  }
+}

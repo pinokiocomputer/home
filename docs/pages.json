@@ -1,0 +1,16 @@
+{
+  "siteUrl": "https://desktop.pinokio.co",
+  "pages": [
+    {
+      "slug": "disk-saver",
+      "source": "disk-saver.md",
+      "title": "Disk Saver — Pinokio Manual",
+      "headline": "Disk Saver",
+      "description": "Pinokio Disk Saver finds byte-identical files across apps and lets them share physical storage, reclaiming disk space without changing their paths.",
+      "ogImage": "/docs/media/disk-saver/universal-disk-saver.png",
+      "ogImageWidth": 1920,
+      "ogImageHeight": 1080,
+      "ogImageAlt": "Pinokio Disk Saver works across AI apps, package ecosystems, and operating systems"
+    }
+  ]
+}

@@ -3147,6 +3147,31 @@ aside .tweet-item {
   line-height: 1.72;
 }
 
+.workflowStepLink {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0 72px;
+  color: var(--home-action);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.workflowStepLink i {
+  font-size: 10px;
+  transition: transform 160ms ease-out;
+}
+
+.workflowStepLink:hover {
+  color: var(--home-action-hover);
+}
+
+.workflowStepLink:hover i {
+  transform: translateX(3px);
+}
+
 .workflowMedia {
   min-width: 0;
   height: 224px;
@@ -3452,6 +3477,10 @@ aside .tweet-item {
 
 .workflowMediaAgents {
   --workflow-media-ratio: 1036 / 582;
+}
+
+.workflowMediaDiskSaver {
+  --workflow-media-ratio: 16 / 9;
 }
 
 .workflowMock {
@@ -3940,6 +3969,10 @@ aside .tweet-item {
   }
 
   .workflowStepCopy p {
+    margin-left: 54px;
+  }
+
+  .workflowStepLink {
     margin-left: 54px;
   }
 
