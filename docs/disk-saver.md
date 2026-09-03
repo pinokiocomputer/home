@@ -9,8 +9,6 @@
 
 Disk Saver finds large files with identical contents and lets them share physical storage. Apps keep their normal files, names, and folder structures, so they do not need a central model library or Disk Saver-specific configuration.
 
-> **Screenshot note:** Some screenshots below show the former **Unused files** label. In current Pinokio, that view is **Trash** and its removal action is **Empty Trash**; the workflow is otherwise the same.
-
 > **Scan is read-only.** **Deduplicate**, **Make separate**, and **Empty Trash** change files on disk. Disk Saver saves local storage; it is not a backup.
 
 ## Overview
