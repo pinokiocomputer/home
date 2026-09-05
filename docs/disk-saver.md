@@ -11,7 +11,9 @@ Disk Saver finds large files with identical contents and lets them share physica
 
 > **Scan is read-only.** **Deduplicate**, **Make separate**, and **Empty Trash** change files on disk. Disk Saver saves local storage; it is not a backup.
 
-![Tweets from Pinokio users sharing Disk Saver results, including screenshots of reclaimed disk space](media/disk-saver/tweets.png)
+## What users are saying
+
+![Tweets from Pinokio users sharing Disk Saver results, including screenshots of reclaimed disk space](media/disk-saver/tweets.png ':class=docs-tweets-image :size=1080x1763')
 
 ## Overview
 

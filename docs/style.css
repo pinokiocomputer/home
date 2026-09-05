@@ -916,6 +916,14 @@ body.close .content {
   object-fit: contain;
 }
 
+.markdown-section img.docs-tweets-image {
+  width: 100%;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 .markdown-section .docs-media-block > img,
 .markdown-section .docs-media-block > video,
 .markdown-section .docs-media-block > a > img,
