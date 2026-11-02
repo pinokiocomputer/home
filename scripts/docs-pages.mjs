@@ -191,13 +191,13 @@ async function renderPage(template, page) {
   html = replaceOnce(html, '<a href="README.md">Read the Markdown source instead.</a>', `<a href="../${escapeHtml(page.source)}">Read the Markdown source instead.</a>`, "noscript source link");
   html = replaceOnce(
     html,
-    '      homepage: "README.md?v=20260826-1",',
+    '      homepage: "README.md?v=20261030-1",',
     `      basePath: "/docs/",\n      homepage: "${page.source}?v=${cacheKey}",`,
     "Docsify homepage"
   );
-  html = replaceOnce(html, '        paths: ["/", "/disk-saver"],', `        paths: ["/${page.slug}"],`, "search paths");
+  html = replaceOnce(html, '        paths: ["/", "/disk-saver", "/remote"],', `        paths: ["/${page.slug}"],`, "search paths");
   html = replaceOnce(html, '        placeholder: "Search the manual",', `        placeholder: "Search ${page.headline}",`, "search placeholder");
-  html = replaceOnce(html, '        namespace: "pinokio-manual-v3"', `        namespace: "pinokio-${page.slug}-v1"`, "search namespace");
+  html = replaceOnce(html, '        namespace: "pinokio-manual-v4"', `        namespace: "pinokio-${page.slug}-v1"`, "search namespace");
   html = replaceOnce(html, /src="companion-pages\.js([^"]*)"/, 'src="../companion-pages.js$1"', "companion route script");
   html = replaceOnce(html, /src="plugin\.js([^"]*)"/, 'src="../plugin.js$1"', "site plugin");
   html = html.replace(/src="vendor\//g, 'src="../vendor/');

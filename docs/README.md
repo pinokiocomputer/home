@@ -765,6 +765,41 @@ When you switch to background mode, Pinokio will relaunch as a menubar item (No 
 
 ---
 
+## 17. Remote
+
+**A personal portal to the apps installed on your computers.** Open the **Remote** tab at [pinokio.co](https://pinokio.co/connect) from your phone, tablet, or another computer. Connect your Pinokio computers, and their installed apps appear together in one place.
+
+The Remote tab is available to everyone, without a pinokio.co account or login. Your apps stay on your own computers. Powered by Tailscale, Remote connects your devices privately, without exposing those apps to the public internet.
+
+<video controls playsinline preload="metadata" poster="media/remote/remote-poster.png" data-docs-poster="/docs/media/remote/remote-poster.png" width="1920" height="1080" aria-label="Pinokio Remote demonstration">
+  <source src="media/remote/remote-demo.mp4" data-docs-src="/docs/media/remote/remote-demo.mp4" type="video/mp4">
+  Your browser does not support embedded video. <a href="/docs/media/remote/remote-demo.mp4">Open the Remote demonstration</a>.
+</video>
+
+<a href="/docs/media/remote/overview.svg" target="_blank" rel="noopener" aria-label="Open diagram at full size">
+  <picture>
+    <source media="(max-width: 600px)" srcset="/docs/media/remote/overview-mobile.svg">
+    <img src="/docs/media/remote/overview.svg" alt="Open pinokio.co Remote for the app directory. Your devices connect privately to the computers running those apps.">
+  </picture>
+</a>
+
+- **Use your apps across devices:** open a desktop's video generator from your phone, or use its GPU from your laptop's browser.
+- **Bring your computers together:** apps from multiple computers share the same portal. A laptop can both use another computer's apps and serve its own.
+- **Keep the connections private:** reach your computers over your Tailscale network, including from a different Wi-Fi network or mobile connection.
+
+Start by browsing the [app catalog](https://pinokio.co/apps) and installing apps on your computer with one click. Then enable Remote in Pinokio on the computer serving your apps. Scan its QR code from your phone or open its connection link on another computer, and follow the Tailscale setup instructions. The guide below covers both sides of setup.
+
+<a class="docs-guide-card" data-docs-route="/remote" href="remote.md">
+  <span class="docs-guide-card-copy">
+    <strong class="docs-guide-card-title">Complete Remote guide</strong>
+    <span class="docs-guide-card-description">Connect your devices, launch apps, add computers, and understand privacy and troubleshooting.</span>
+  </span>
+  <span class="docs-guide-card-icon" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+</a>
+
+
+---
+
 # Use Cases
 
 ## 1. Build a 1-click launcher

@@ -11,6 +11,17 @@
       "ogImageWidth": 1920,
       "ogImageHeight": 1080,
       "ogImageAlt": "Pinokio Disk Saver works across AI apps, package ecosystems, and operating systems"
+    },
+    {
+      "slug": "remote",
+      "source": "remote.md",
+      "title": "Remote — Pinokio Manual",
+      "headline": "Remote",
+      "description": "Use apps installed on your own computers from your phone, tablet, or laptop through the Remote tab at pinokio.co, with private connections powered by Tailscale.",
+      "ogImage": "/docs/media/remote/remote-poster.png",
+      "ogImageWidth": 1920,
+      "ogImageHeight": 1080,
+      "ogImageAlt": "Pinokio Remote at pinokio.co, open on a phone, tablet, and laptop"
     }
   ]
 }
