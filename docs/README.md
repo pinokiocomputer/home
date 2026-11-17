@@ -2934,7 +2934,7 @@ The optional `ctx` object contains the same runtime context available to normal 
 - `ctx.info`: runtime/system info when available
 - `ctx.action`: the action name, such as `"run"` or `"install"`
 - `ctx.input`: input passed to the current launch
-- `ctx.args`: launch arguments, including `ctx.args.cwd`
+- `ctx.args`: launch arguments: `ctx.args.cwd`, and `ctx.args.prompt` when the user typed a request
 - `ctx.cwd`: the target app or workspace folder
 - `ctx.dirname`: the plugin script folder
 - `ctx.platform`: current platform, such as `"darwin"`, `"win32"`, or `"linux"`
@@ -2974,7 +2974,7 @@ module.exports = {
         env: {
           OPENCODE_CONFIG_CONTENT: discovery.config
         },
-        message: "opencode",
+        message: { _: ["opencode"], prompt: "{{args.prompt || undefined}}" },
         path: "{{args.cwd}}",
         input: true
       }
@@ -2991,6 +2991,43 @@ When a plugin runs, `args.cwd` is the target app or workspace folder. This is wh
 So if a plugin needs to run in the selected app or workspace, use `{{args.cwd}}` as the working directory in the step params.
 
 If a plugin also needs files that belong to the plugin itself, use `{{dirname}}` to refer to the plugin script directory. This is useful for plugin-owned virtual environments, helper scripts, and relative assets.
+
+## Launch arguments
+
+When Pinokio launches a plugin it passes two arguments. A plugin that is meant to be used from the agent bar has to handle both.
+
+### `args.cwd` is required
+
+`args.cwd` is the folder the user wants the plugin to work in. Every `run` step must set `path: "{{args.cwd}}"`. A plugin that does not is not a valid plugin: it runs in its own folder instead of the user's.
+
+### `args.prompt` must be passed whenever the tool can take it
+
+`args.prompt` is what the user typed in the agent bar. It is absent when the plugin is launched without a request, for example through **Open in**.
+
+Pinokio does not deliver the request any other way. If your command does not include `args.prompt`, the tool opens empty and the user's request is lost.
+
+So if the tool has any way to start with a first message, use it.
+
+As the last argument:
+
+```javascript
+message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] }
+```
+
+As a flag:
+
+```javascript
+message: { _: ["opencode"], prompt: "{{args.prompt || undefined}}" }
+```
+
+The structured form is the safest way to write it. Pinokio escapes the request for the shell, and with `|| undefined` the argument is left out when there is no request, so one command works both with and without one.
+
+If the tool has no way to take a first message, such as a desktop editor, leave it out and say so in the plugin's `description`. The plugin still works through **Open in**, but an Ask sent to it from the agent bar will not carry the request.
+
+Before publishing, launch the plugin twice:
+
+1. With a request: the tool opens in the chosen folder with the request already sent.
+2. Without a request: the tool opens in the chosen folder and waits.
 
 ## Global Plugins
 
@@ -3018,7 +3055,7 @@ module.exports = {
     method: "shell.run",
     params: {
       path: "{{args.cwd}}",
-      message: "my-plugin",
+      message: { _: ["my-plugin", "{{args.prompt || undefined}}"] },
       input: true
     }
   }]
@@ -3181,7 +3218,7 @@ module.exports = {
         PYTHONUTF8: "1",
         PYTHONIOENCODING: "utf-8"
       },
-      message: "hermes",
+      message: { _: ["hermes", "chat"], query: "{{args.prompt || undefined}}" },
       input: true
     }
   }]
@@ -3226,7 +3263,7 @@ module.exports = {
       conda: {
         skip: true
       },
-      message: "npx -y @openai/codex@latest",
+      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
       path: "{{args.cwd}}",
       input: true
     }
@@ -3235,7 +3272,7 @@ module.exports = {
     id: "run",
     method: "shell.run",
     params: {
-      message: "npx -y @openai/codex@latest",
+      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
       path: "{{args.cwd}}",
       input: true
     }
