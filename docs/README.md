@@ -2424,7 +2424,7 @@ The `shell` syntax is a subset of the attributes available in the [shell.run API
   - **When specified:** Pinokio launches the command with the specified shell instead.
   - The value can be a command name such as `bash` or `cmd.exe`, or an absolute path. When you pass a command name, Pinokio first tries to resolve it against its managed environment before launching the shell.
   - If that lookup succeeds, Pinokio launches the resolved executable path. If it does not, Pinokio passes the original value through to the shell launcher.
-  - This is especially useful on Windows when a CLI expects Bash semantics. For example, `shell: "bash"` will resolve to Pinokio's bundled Bash. If you want the resolved path explicitly, you can also use `{{which('bash')}}`.
+  - This is especially useful on Windows when a CLI expects Bash semantics. For example, `shell: "bash"` will resolve to Pinokio's bundled Bash. Write the name: a full path or `{{which('bash')}}` is not needed there.
 - `<input>`: **(optional)** Whether the shell is interactive or not (whether the user can enter keystrokes into the shell)
   - **when `true`**: the shell launches in input mode. The user can enter keys. Useful for launching CLI Apps that require user interaction.
   - **when `false` (or not specified):** the shell launches in non-interactive mode. Useful for automated shell execution that should not allow user interaction.
@@ -2815,16 +2815,16 @@ In other words:
 
 ## Syntax
 
-A plugin must export a top-level object and include a `run` action.
+A plugin must export a top-level object and include a `run` action. It must also include a `job` action whenever its tool can work once and exit; see [Jobs](#jobs).
 
-Plugins use the same script syntax as launchers. The plugin-specific part is only the top-level shape of the file. Inside `run`, `install`, `uninstall`, and `update`, you still use the normal Pinokio step syntax documented in [Script](#script) and [API](#api).
+Plugins use the same script syntax as launchers. The plugin-specific part is only the top-level shape of the file. Inside `run`, `job`, `install`, `uninstall`, and `update`, you still use the normal Pinokio step syntax documented in [Script](#script) and [API](#api).
 
 Each plugin action can be either:
 
 - an array of normal Pinokio steps
 - an async JavaScript function that returns an array of normal Pinokio steps
 
-Unlike launchers, plugins should not export arbitrary top-level functions. Only action fields such as `run`, `install`, `uninstall`, `update`, and the `installed` check may be functions.
+Unlike launchers, plugins should not export arbitrary top-level functions. Only action fields such as `run`, `job`, `install`, `uninstall`, `update`, and the `installed` check may be functions.
 
 ```javascript
 module.exports = {
@@ -2841,6 +2841,11 @@ module.exports = {
     ...
   ],
   run: [
+    <step>,
+    <step>,
+    ...
+  ],
+  job: [
     <step>,
     <step>,
     ...
@@ -2901,6 +2906,7 @@ module.exports = {
 - `launch_type`: optional explicit launch mode. Use `"terminal"` to force the plugin into Pinokio's terminal flow, or `"desktop"` to force the plugin into the external desktop flow. If omitted, Pinokio infers the type from the steps: `shell.run` => terminal plugin, `exec` or `app.launch` => desktop plugin.
 - `env`: optional environment prompts using the same syntax as launcher scripts. When a plugin is launched and values are missing, Pinokio asks for them and writes them into the target app or workspace `ENVIRONMENT` file.
 - `run`: required for plugin loading, and used for the main `Open in` action. Must be an array or function returning an array.
+- `job`: required whenever the tool can work once and exit. The same tool working once in the background, with nobody to answer it. Without it Pinokio cannot use the plugin for background work. See [Jobs](#jobs). Must be an array or function returning an array.
 - `install`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
 - `uninstall`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
 - `update`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
@@ -2932,9 +2938,9 @@ The optional `ctx` object contains the same runtime context available to normal 
 
 - `ctx.kernel`: the Pinokio kernel object
 - `ctx.info`: runtime/system info when available
-- `ctx.action`: the action name, such as `"run"` or `"install"`
+- `ctx.action`: the action name, such as `"run"`, `"job"` or `"install"`
 - `ctx.input`: input passed to the current launch
-- `ctx.args`: launch arguments: `ctx.args.cwd`, and `ctx.args.prompt` when the user typed a request
+- `ctx.args`: launch arguments: `ctx.args.cwd`, and `ctx.args.prompt` when there is a request
 - `ctx.cwd`: the target app or workspace folder
 - `ctx.dirname`: the plugin script folder
 - `ctx.platform`: current platform, such as `"darwin"`, `"win32"`, or `"linux"`
@@ -2979,6 +2985,30 @@ module.exports = {
         input: true
       }
     }]
+  },
+
+  job: async (kernel) => {
+    const discovery = await discover()
+
+    if (!discovery.hasModels) {
+      return [{
+        method: "log",
+        params: {
+          raw: "No local models detected. Start Ollama, LM Studio, or llama.cpp and try again."
+        }
+      }]
+    }
+
+    return [{
+      method: "shell.run",
+      params: {
+        env: {
+          OPENCODE_CONFIG_CONTENT: discovery.config
+        },
+        message: { _: ["opencode", "run", "{{args.prompt}}"], auto: true },
+        path: "{{args.cwd}}"
+      }
+    }]
   }
 }
 ```
@@ -3002,7 +3032,13 @@ When Pinokio launches a plugin it passes two arguments. A plugin that is meant t
 
 ### `args.prompt` must be passed whenever the tool can take it
 
-`args.prompt` is what the user typed in the agent bar. It is absent when the plugin is launched without a request, for example through **Open in**.
+`args.prompt` is one line that points to the user's request. Pinokio keeps the request itself (the words, the attached files, and where to save output) in a file inside the folder the tool starts in, and passes this line in its place:
+
+```
+My message is in <file>. Read it and respond as if I had typed it here.
+```
+
+Pass the line to the tool unchanged, as its first message. It is absent when the plugin is launched without a request, for example through **Open in**.
 
 Pinokio does not deliver the request any other way. If your command does not include `args.prompt`, the tool opens empty and the user's request is lost.
 
@@ -3028,6 +3064,54 @@ Before publishing, launch the plugin twice:
 
 1. With a request: the tool opens in the chosen folder with the request already sent.
 2. Without a request: the tool opens in the chosen folder and waits.
+
+## Jobs
+
+Every plugin whose tool can work once and exit must include a `job` action next to `run`. "Work once and exit" means the tool takes one request, carries it out without asking anything, and ends. Most terminal agents have such a mode: look for it in the tool's documentation and `--help`, for example `-p`, `--print`, `exec` or `run`.
+
+`job` is the same tool working in the background: no terminal is on screen and nobody is there to answer it. Pinokio runs `job` in place of `run` when a request is carried out without a person watching. A plugin without `job` cannot be used for that.
+
+`job` is written exactly like `run`, as an array of steps or a function returning one. It holds the tool's one-off command in place of its interactive one:
+
+```javascript
+module.exports = {
+  path: "plugin",
+  title: "Codex",
+  run: [{
+    method: "shell.run",
+    params: {
+      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }],
+  job: [{
+    method: "shell.run",
+    params: {
+      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
+      path: "{{args.cwd}}"
+    }
+  }]
+}
+```
+
+A `job` holds only the tool's one-off command: it takes the request, does the work and ends. Do not set `input: true`.
+
+A one-off command can only do what it is allowed to do when it starts, because nobody is there to allow more. Without that, the tool ends without doing the work: it cannot write a file or run a command. So give the tool the permission its work needs in the command itself, as the examples above do.
+
+Before a job, Pinokio makes the plugin's `installed` check by the same rule as before `run`: a plugin that has an `install` action and reports that it is not installed is not started. A job has no page for the notice, so its output says that the plugin is not installed.
+
+A job ends when its steps are over. `daemon` keeps a plugin's `run` going after its steps, but it does not apply to `job`. A job's steps also cannot start another of the plugin's actions with `trigger`.
+
+A `job` receives the same two launch arguments as `run`, and must use both: every step sets `path: "{{args.cwd}}"` and passes `{{args.prompt}}` to the tool. A job always has a request, so `args.prompt` is always there and needs no `|| undefined`.
+
+A `job` returns nothing. Pinokio notices that its steps have ended and keeps what they printed. It does not read an answer from them: what counts is what the tool did. So do not write an answer to a file or print it in a special format.
+
+Elsewhere a `shell.run` step stops as failed when `error:` appears in what it prints. In a job's steps it does not, because that text is the tool's own. A handler you add yourself with `on` still applies.
+
+Leave `job` out only when the tool has no one-off mode at all, such as a desktop editor. Such a plugin still works through **Open in** and the agent bar.
+
+Before publishing, run the one-off command once in a terminal and confirm it finishes and returns to the shell prompt without waiting for a key.
 
 ## Global Plugins
 
@@ -3058,6 +3142,14 @@ module.exports = {
       message: { _: ["my-plugin", "{{args.prompt || undefined}}"] },
       input: true
     }
+  }],
+  // the same tool working once and exiting: see "Jobs"
+  job: [{
+    method: "shell.run",
+    params: {
+      path: "{{args.cwd}}",
+      message: { _: ["my-plugin", "--print", "{{args.prompt}}"] }
+    }
   }]
 }
 ```
@@ -3082,7 +3174,7 @@ module.exports = {
     id: "run",
     method: "shell.run",
     params: {
-      shell: "{{kernel.path('bin/miniforge/Library/bin/bash.exe')}}",
+      shell: "bash",
       conda: {
         skip: true
       },
@@ -3098,6 +3190,25 @@ module.exports = {
       message: "npx -y @openai/codex@latest {{args.prompt ? JSON.stringify(args.prompt) : ''}}",
       path: "{{args.cwd}}",
       input: true
+    }
+  }],
+  job: [{
+    when: "{{platform === 'win32'}}",
+    method: "shell.run",
+    params: {
+      shell: "bash",
+      conda: {
+        skip: true
+      },
+      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
+      path: "{{args.cwd}}"
+    }
+  }, {
+    when: "{{platform !== 'win32'}}",
+    method: "shell.run",
+    params: {
+      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
+      path: "{{args.cwd}}"
     }
   }]
 }
@@ -3174,6 +3285,95 @@ module.exports = {
       path: "{{args.cwd}}",
       input: true,
       buffer: 1024
+    }
+  }],
+  job: [{
+    when: "{{platform === 'win32'}}",
+    method: "shell.run",
+    params: {
+      shell: "bash",
+      message: { _: ["opencode", "run", "{{args.prompt}}"], auto: true },
+      path: "{{args.cwd}}"
+    }
+  }, {
+    when: "{{platform !== 'win32'}}",
+    method: "shell.run",
+    params: {
+      message: { _: ["opencode", "run", "{{args.prompt}}"], auto: true },
+      path: "{{args.cwd}}"
+    }
+  }]
+}
+```
+
+#### Tools that come as a binary
+
+Some tools are not installed with `npm` or `pip`. They come as a program file, usually through the vendor's own installer. Where the installer allows it, install such a tool into the plugin's own folder instead of onto the user's computer:
+
+- **Prefer a folder inside the plugin**, such as `runtime`, when the installer has an option for choosing where to install, such as `--dir`.
+- **Where the installer offers it, skip its changes to `PATH` and shell profiles.** If it has no such option, you can point the folders it writes to (`HOME` on macOS and Linux, `LOCALAPPDATA` on Windows) at the plugin's folder for that step, but only if the tool still installs and runs correctly that way.
+- **If the installer cannot do these things, use it as it is.** Do not rewrite or patch the installer, move its files afterwards, or build a workaround. A normal install that works is better than a contained one that is fragile. Say in the plugin's `description` that the tool is installed system-wide.
+- **`installed` checks for the program itself**, wherever it was installed. No marker file is needed.
+- **`run` and `job` call the program where it is**: by its full path when it is in the plugin's folder, by its name when the installer put it on `PATH`.
+- **`update` uses the tool's own updater when it has one. `uninstall` removes what the plugin installed.**
+- **A failed install should fail the step.** A `shell.run` step stops as failed when `error:` appears in what it prints. So print a line that starts with `Error:` when the installer fails, and put that text together from two pieces, as below. Written in one piece, the command itself would contain it and the step would fail as soon as the shell shows the command.
+
+When the tool is in the plugin's folder, removing the plugin removes the tool, and nothing else on the computer changes.
+
+```javascript
+const runtime = "{{path.resolve(dirname, 'runtime')}}"
+const agy = "{{path.resolve(dirname, 'runtime', platform === 'win32' ? 'agy.exe' : 'agy')}}"
+
+module.exports = {
+  version: "8.0.0",
+  path: "plugin",
+  title: "Antigravity CLI",
+  description: "Antigravity agents in the terminal.",
+  link: "https://antigravity.google/product/antigravity-cli",
+  installed: async (kernel, info, ctx) => {
+    return await kernel.exists(ctx.dirname, "runtime", kernel.platform === "win32" ? "agy.exe" : "agy")
+  },
+  install: [{
+    when: "{{platform !== 'win32'}}",
+    method: "shell.run",
+    params: {
+      path: runtime,
+      conda: { skip: true },
+      env: { HOME: runtime, ZDOTDIR: runtime },
+      message: { _: ["bash", "-o", "pipefail", "-c",
+        'curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --dir "$PWD" || { printf "Error%s\\n" ": Antigravity install failed" >&2; exit 1; }'
+      ] }
+    }
+  }, {
+    when: "{{platform === 'win32'}}",
+    method: "shell.run",
+    params: {
+      path: runtime,
+      conda: { skip: true },
+      env: { LOCALAPPDATA: runtime },
+      message: { _: ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
+        "$ErrorActionPreference = 'Stop'\ntry { & ([ScriptBlock]::Create((Invoke-RestMethod 'https://antigravity.google/cli/install.ps1'))) '--dir' $PWD.Path '--skip-path' '--skip-aliases' } catch { Write-Host ('Error' + ': Antigravity install failed'); throw }"
+      ] }
+    }
+  }],
+  update: [{
+    method: "shell.run",
+    params: { message: "git pull" }
+  }, {
+    method: "shell.run",
+    params: { path: runtime, conda: { skip: true }, message: { _: [agy, "update"] } }
+  }],
+  uninstall: [{
+    method: "fs.rm",
+    params: { path: "." }
+  }],
+  run: [{
+    method: "shell.run",
+    params: {
+      conda: { skip: true },
+      message: { _: [agy], "prompt-interactive": "{{args.prompt || undefined}}" },
+      path: "{{args.cwd}}",
+      input: true
     }
   }]
 }
@@ -3276,6 +3476,25 @@ module.exports = {
       path: "{{args.cwd}}",
       input: true
     }
+  }],
+  job: [{
+    when: "{{platform === 'win32'}}",
+    method: "shell.run",
+    params: {
+      shell: "bash",
+      conda: {
+        skip: true
+      },
+      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
+      path: "{{args.cwd}}"
+    }
+  }, {
+    when: "{{platform !== 'win32'}}",
+    method: "shell.run",
+    params: {
+      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
+      path: "{{args.cwd}}"
+    }
   }]
 }
 ```
@@ -3310,6 +3529,8 @@ module.exports = {
   }]
 }
 ```
+
+A desktop plugin has no `job`: an editor has no way to work once and exit.
 
 ## Plugin UI
 
@@ -3388,7 +3609,7 @@ The `shell.run` command starts an instant shell, runs the specified commands, an
   - **When specified:** Pinokio launches the command with the specified shell instead.
   - The value can be a command name such as `bash` or `cmd.exe`, or an absolute path. When you pass a command name, Pinokio first tries to resolve it against its managed environment before launching the shell.
   - If that lookup succeeds, Pinokio launches the resolved executable path. If it does not, Pinokio passes the original value through to the shell launcher.
-  - This is especially useful on Windows when a CLI expects Bash semantics. For example, `shell: "bash"` will resolve to Pinokio's bundled Bash. If you want the resolved path explicitly, you can also use `{{which('bash')}}`.
+  - This is especially useful on Windows when a CLI expects Bash semantics. For example, `shell: "bash"` will resolve to Pinokio's bundled Bash. Write the name: a full path or `{{which('bash')}}` is not needed there.
 - `<input>`: **(optional)** Whether the shell is interactive or not (whether the user can enter keystrokes into the shell)
   - **when `true`**: the shell launches in input mode. The user can enter keys. Useful for launching CLI Apps that require user interaction.
   - **when `false` (or not specified):** the shell launches in non-interactive mode. Useful for automated shell execution that should not allow user interaction.
