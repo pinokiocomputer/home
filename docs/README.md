@@ -2251,10 +2251,6 @@ module.exports = {
   "version": <script_schema_version>,
   "pre": <pre>,
   "on": <event_handlers>,
-  "plugins": [
-    <plugin_script_path>,
-    ...
-  ],
   "menu": <menu>,
 }
 ```
@@ -2278,12 +2274,6 @@ module.exports = {
       - `open`: `"auto"` or `"manual"`.
       - `closeOnSuccess`: If `true`, automatically closes the event panel when the launched script finishes successfully.
       - `refreshOnClose`: If set, refreshes another frame when the panel closes. Supported values are `"source"`, `"root"`, and `"active"`.
-- `<plugins>`: (optional) An array of bundled plugin script paths such as `"plugins/no-gateway/pinokio.js"`.
-  - Each path is resolved relative to the launcher root.
-  - If the launcher is at `/api/my_app/pinokio.js`, the root is `/api/my_app`.
-  - If the launcher is at `/api/my_app/pinokio/pinokio.js`, the root is `/api/my_app/pinokio`.
-  - Each referenced file must be a normal plugin `pinokio.js`.
-  - Bundled plugins are discovered alongside standalone plugins and appear in `/plugins`, **Ask AI**, and `/p/:name/dev`.
 - `<menu>`: An **array** of tab items, or an **async function** that takes `kernel` and `info` as arguments and returns the same tab items array. Each item in the array may have the following attributes:
     - `text`: The text to display on the tab.
     - `icon`: The fontawesome class name to display for the tab---Use the built-in [fontawesome](https://fontawesome.com/search?ic=free) class (example: `"fa-solid fa-house"`).
@@ -2804,33 +2794,74 @@ For the user-facing task workflow, see [Tasks](#tasks).
 
 # Building a plugin
 
-A plugin is a reusable script written as a single `pinokio.js` file.
+A plugin is a tool you can open in any app or folder: a coding agent, an editor, a helper command.
 
-Unlike a launcher, a plugin is not a multi-file app package. It is one script that runs **inside** another app or workspace.
-
-In other words:
+It is one `pinokio.js` file in its own folder.
 
 - a **launcher** controls and organizes one app
-- a **plugin** is a reusable action you can run across many apps and workspaces
+- a **plugin** is a reusable action you can run in any app or folder
+
+## Where a plugin lives
+
+Plugins are stored under `PINOKIO_HOME/plugin`, one folder each:
+
+```text
+~/pinokio
+  /plugin
+    /my_plugin
+      pinokio.js
+      icon.png
+```
+
+Two rules:
+
+- **Every plugin sets `path: "plugin"`.** Pinokio does not list a plugin without it. It is also what sends the plugin to the right place: the **Install** link on pinokio.co carries it, so the download goes into `PINOKIO_HOME/plugin` and not into the app folder.
+- **A plugin stands on its own.** Everything it needs is in its own folder. It never loads a file from another plugin's folder, even to reuse the same steps: write them out again. A plugin folder can then be copied, shared or removed by itself.
+
+Pinokio also comes with built-in plugins: Claude Code, OpenAI Codex, Opencode, Grok Build and Antigravity CLI, each with an "Auto" variant that skips the tool's permission prompts, and VS Code, Cursor, Claude Desktop and Codex Desktop. They appear in the same places as your own plugins, but they are not stored in this folder.
+
+## A minimal plugin
+
+```javascript
+module.exports = {
+  path: "plugin",
+  title: "My Plugin",
+  icon: "icon.png",
+  run: [{
+    method: "shell.run",
+    params: {
+      message: { _: ["my-tool", "{{args.prompt || undefined}}"] },
+      path: "{{args.cwd}}",
+      input: true
+    }
+  }],
+  job: [{
+    method: "shell.run",
+    params: {
+      message: { _: ["my-tool", "--print", "{{args.prompt}}"] },
+      path: "{{args.cwd}}"
+    }
+  }]
+}
+```
+
+That is a whole plugin. It does three things, and each has its own section below:
+
+1. `run` opens the tool in the folder the user chose (`args.cwd`).
+2. `run` hands the tool the user's request (`args.prompt`) when there is one.
+3. `job` is the same tool working once and exiting, for work nobody is watching.
 
 ## Syntax
 
 A plugin must export a top-level object and include a `run` action. It must also include a `job` action whenever its tool can work once and exit; see [Jobs](#jobs).
 
-Plugins use the same script syntax as launchers. The plugin-specific part is only the top-level shape of the file. Inside `run`, `job`, `install`, `uninstall`, and `update`, you still use the normal Pinokio step syntax documented in [Script](#script) and [API](#api).
-
-Each plugin action can be either:
-
-- an array of normal Pinokio steps
-- an async JavaScript function that returns an array of normal Pinokio steps
-
-Unlike launchers, plugins should not export arbitrary top-level functions. Only action fields such as `run`, `job`, `install`, `uninstall`, `update`, and the `installed` check may be functions.
+Plugins use the same script syntax as launchers. Inside `run`, `job`, `install`, `uninstall`, and `update`, you use the normal Pinokio step syntax documented in [Script](#script) and [API](#api): `when`, `id`, `method`, `params`, templating, `shell.run`, `exec`, `notify`, `app.launch` and the rest work the same way.
 
 ```javascript
 module.exports = {
   version: <schema_version>,
   daemon: <daemon>,
-  path: <path>, // use "plugin" for standalone global plugins
+  path: "plugin",
   title: <title>,
   icon: <icon>,
   description: <description>,
@@ -2842,185 +2873,45 @@ module.exports = {
   ],
   run: [
     <step>,
-    <step>,
     ...
   ],
   job: [
-    <step>,
     <step>,
     ...
   ],
   install: [
     <step>,
-    <step>,
     ...
   ],
   uninstall: [
-    <step>,
     <step>,
     ...
   ],
   update: [
     <step>,
-    <step>,
     ...
   ],
-  installed: async (kernel, info, ctx) => {
+  installed: async (kernel, info) => {
     return <boolean>
   }
 }
 ```
 
-The same actions may also be written as async functions:
-
-```javascript
-module.exports = {
-  path: "plugin",
-  title: "My Dynamic Plugin",
-  launch_type: "terminal",
-
-  run: async (kernel, info) => {
-    const message = kernel.platform === "win32"
-      ? "echo Running on Windows"
-      : "echo Running on macOS or Linux"
-
-    return [{
-      method: "shell.run",
-      params: {
-        message,
-        path: "{{args.cwd}}",
-        input: true
-      }
-    }]
-  }
-}
-```
-
-- `version`: optional script schema version
-- `daemon`: optional daemon mode, same as normal scripts
-- `path`: required for standalone global plugins, and must be set to `"plugin"`. This tells Pinokio to install the launcher under `PINOKIO_HOME/plugin`. Bundled app plugins do not need this field.
+- `path`: required, and always `"plugin"`.
 - `title`: display name for the plugin
 - `icon`: icon file path relative to the plugin folder
 - `description`: optional description shown in plugin listings
 - `link`: optional homepage or repository link
-- `launch_type`: optional explicit launch mode. Use `"terminal"` to force the plugin into Pinokio's terminal flow, or `"desktop"` to force the plugin into the external desktop flow. If omitted, Pinokio infers the type from the steps: `shell.run` => terminal plugin, `exec` or `app.launch` => desktop plugin.
-- `env`: optional environment prompts using the same syntax as launcher scripts. When a plugin is launched and values are missing, Pinokio asks for them and writes them into the target app or workspace `ENVIRONMENT` file.
-- `run`: required for plugin loading, and used for the main `Open in` action. Must be an array or function returning an array.
-- `job`: required whenever the tool can work once and exit. The same tool working once in the background, with nobody to answer it. Without it Pinokio cannot use the plugin for background work. See [Jobs](#jobs). Must be an array or function returning an array.
-- `install`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
-- `uninstall`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
-- `update`: optional extra action shown on `/plugins`. Must be an array or function returning an array.
-- `installed`: optional install-state check for installable plugins. Must be an async function returning `true` or `false`.
+- `run`: required. What happens when the plugin is opened. Must be an array or function returning an array.
+- `job`: required whenever the tool can work once and exit. The same tool working once in the background, with nobody to answer it. See [Jobs](#jobs). Must be an array or function returning an array.
+- `install`, `uninstall`, `update`: optional actions shown on the plugin's page. See [Plugins that install their tool](#plugins-that-install-their-tool). Each must be an array or function returning an array.
+- `installed`: optional check for a plugin that has `install`. Must be an async function returning `true` or `false`. Pinokio also calls it to show the plugin's state in its lists, and there it passes only `kernel` and `info`, so do not rely on a third argument.
+- `launch_type`: optional. `"terminal"` for a tool that runs inside Pinokio, `"desktop"` for one that opens outside it. If omitted, Pinokio infers the type from the steps: `shell.run` => terminal plugin, `exec` or `app.launch` => desktop plugin.
+- `env`: optional environment prompts using the same syntax as launcher scripts. When a plugin is launched and values are missing, Pinokio asks for them and writes them into the `ENVIRONMENT` file of the folder it was opened in.
+- `version`: optional script schema version
+- `daemon`: optional daemon mode for `run`, same as normal scripts. It does not apply to `job`.
 
-The action arrays above all use the same normal Pinokio step syntax. That means features such as `when`, `id`, `method`, `params`, templating, `shell.run`, `exec`, `notify`, and `app.launch` work the same way inside plugins.
-
-Action functions are evaluated only when the action is launched, not when Pinokio builds the plugin list. This keeps plugin discovery fast while still allowing launch-time async logic such as probing local services, reading files, checking installed tools, or building dynamic environment variables.
-
-When `run` is launched for a plugin that also defines `install`, Pinokio calls `installed` first when it exists. If `installed` returns `false`, Pinokio shows an install prompt instead of running the plugin action.
-
-The action function receives the same first arguments as dynamic launcher functions:
-
-```javascript
-run: async (kernel, info, ctx) => {
-  return [
-    // steps
-  ]
-}
-```
-
-- `kernel`: the Pinokio kernel object
-- `info`: runtime/system info when available
-- `ctx`: optional launch context for values specific to the current action
-
-Most plugins only need `kernel`, and can still use normal templates such as `{{args.cwd}}`, `{{dirname}}`, and `{{platform}}` inside the returned steps.
-
-The optional `ctx` object contains the same runtime context available to normal launcher scripts and templates:
-
-- `ctx.kernel`: the Pinokio kernel object
-- `ctx.info`: runtime/system info when available
-- `ctx.action`: the action name, such as `"run"`, `"job"` or `"install"`
-- `ctx.input`: input passed to the current launch
-- `ctx.args`: launch arguments: `ctx.args.cwd`, and `ctx.args.prompt` when there is a request
-- `ctx.cwd`: the target app or workspace folder
-- `ctx.dirname`: the plugin script folder
-- `ctx.platform`: current platform, such as `"darwin"`, `"win32"`, or `"linux"`
-- `ctx.env` / `ctx.envs`: resolved environment variables
-- `ctx.local`, `ctx.global`, `ctx.key`: Pinokio memory scopes
-- `ctx.exists(...pathParts)`: check for files relative to `ctx.cwd`
-- `ctx.running(...pathParts)`: check whether a script path relative to `ctx.cwd` is running
-- `ctx.ready(...pathParts)`: check whether a script path relative to `ctx.cwd` has reached Pinokio's ready state. See [`ready`](#ready) for what ready means.
-- `ctx.self`: the plugin object itself
-- `ctx.port`: an available Pinokio port
-
-The function must return the same kind of step array you would normally put directly in the action.
-
-```javascript
-const discover = require("./discover")
-
-module.exports = {
-  path: "plugin",
-  title: "OpenCode Local",
-  launch_type: "terminal",
-
-  run: async (kernel) => {
-    const discovery = await discover()
-
-    if (!discovery.hasModels) {
-      return [{
-        method: "log",
-        params: {
-          raw: "No local models detected. Start Ollama, LM Studio, or llama.cpp and try again."
-        }
-      }]
-    }
-
-    return [{
-      method: "shell.run",
-      params: {
-        env: {
-          OPENCODE_CONFIG_CONTENT: discovery.config
-        },
-        message: { _: ["opencode"], prompt: "{{args.prompt || undefined}}" },
-        path: "{{args.cwd}}",
-        input: true
-      }
-    }]
-  },
-
-  job: async (kernel) => {
-    const discovery = await discover()
-
-    if (!discovery.hasModels) {
-      return [{
-        method: "log",
-        params: {
-          raw: "No local models detected. Start Ollama, LM Studio, or llama.cpp and try again."
-        }
-      }]
-    }
-
-    return [{
-      method: "shell.run",
-      params: {
-        env: {
-          OPENCODE_CONFIG_CONTENT: discovery.config
-        },
-        message: { _: ["opencode", "run", "{{args.prompt}}"], auto: true },
-        path: "{{args.cwd}}"
-      }
-    }]
-  }
-}
-```
-
-When a plugin runs, `args.cwd` is the target app or workspace folder. This is what makes one plugin reusable across many different apps.
-
-- on `/plugins`, the user chooses the target folder through **Open in**
-- in **Ask AI** and `/p/:name/dev`, Pinokio automatically uses the current app folder
-
-So if a plugin needs to run in the selected app or workspace, use `{{args.cwd}}` as the working directory in the step params.
-
-If a plugin also needs files that belong to the plugin itself, use `{{dirname}}` to refer to the plugin script directory. This is useful for plugin-owned virtual environments, helper scripts, and relative assets.
+Unlike launchers, plugins should not export arbitrary top-level functions. Only the actions (`run`, `job`, `install`, `uninstall`, `update`) and the `installed` check may be functions.
 
 ## Launch arguments
 
@@ -3028,7 +2919,7 @@ When Pinokio launches a plugin it passes two arguments. A plugin that is meant t
 
 ### `args.cwd` is required
 
-`args.cwd` is the folder the user wants the plugin to work in. Every `run` step must set `path: "{{args.cwd}}"`. A plugin that does not is not a valid plugin: it runs in its own folder instead of the user's.
+`args.cwd` is the folder the user wants the plugin to work in. Every `run` step must set `path: "{{args.cwd}}"`. A plugin that does not runs in its own folder instead of the user's.
 
 ### `args.prompt` must be passed whenever the tool can take it
 
@@ -3074,30 +2965,18 @@ Every plugin whose tool can work once and exit must include a `job` action next 
 `job` is written exactly like `run`, as an array of steps or a function returning one. It holds the tool's one-off command in place of its interactive one:
 
 ```javascript
-module.exports = {
-  path: "plugin",
-  title: "Codex",
-  run: [{
-    method: "shell.run",
-    params: {
-      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
-      path: "{{args.cwd}}",
-      input: true
-    }
-  }],
-  job: [{
-    method: "shell.run",
-    params: {
-      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
-      path: "{{args.cwd}}"
-    }
-  }]
-}
+job: [{
+  method: "shell.run",
+  params: {
+    message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
+    path: "{{args.cwd}}"
+  }
+}]
 ```
 
 A `job` holds only the tool's one-off command: it takes the request, does the work and ends. Do not set `input: true`.
 
-A one-off command can only do what it is allowed to do when it starts, because nobody is there to allow more. Without that, the tool ends without doing the work: it cannot write a file or run a command. So give the tool the permission its work needs in the command itself, as the examples above do.
+A one-off command can only do what it is allowed to do when it starts, because nobody is there to allow more. Without that, the tool ends without doing the work: it cannot write a file or run a command. So give the tool the permission its work needs in the command itself, as the example above does.
 
 Before a job, Pinokio makes the plugin's `installed` check by the same rule as before `run`: a plugin that has an `install` action and reports that it is not installed is not started. A job has no page for the notice, so its output says that the plugin is not installed.
 
@@ -3113,58 +2992,14 @@ Leave `job` out only when the tool has no one-off mode at all, such as a desktop
 
 Before publishing, run the one-off command once in a terminal and confirm it finishes and returns to the shell prompt without waiting for a key.
 
-## Global Plugins
+## Windows
 
-Global plugins are stored under `PINOKIO_HOME/plugin`.
+A command written for Bash does not run in the default Windows shell. Give such a plugin two steps, one for Windows that sets `shell: "bash"` and one for everything else. Pinokio resolves the name to its bundled Bash. Write the name, not a full path.
 
-Each plugin lives in its own folder and is implemented as a single `pinokio.js` file:
-
-```text
-~/pinokio
-  /plugin
-    /my_plugin
-      pinokio.js
-      icon.png
-```
-
-Standalone global plugins should include `path: "plugin"` in their `pinokio.js`:
+This is the complete Codex plugin, with both steps in `run` and in `job`:
 
 ```javascript
 module.exports = {
-  version: "8.0.0",
-  path: "plugin",
-  title: "My Plugin",
-  icon: "icon.png",
-  run: [{
-    method: "shell.run",
-    params: {
-      path: "{{args.cwd}}",
-      message: { _: ["my-plugin", "{{args.prompt || undefined}}"] },
-      input: true
-    }
-  }],
-  // the same tool working once and exiting: see "Jobs"
-  job: [{
-    method: "shell.run",
-    params: {
-      path: "{{args.cwd}}",
-      message: { _: ["my-plugin", "--print", "{{args.prompt}}"] }
-    }
-  }]
-}
-```
-
-This is required for the generic Pinokio download/install flow so the launcher is installed into `PINOKIO_HOME/plugin` instead of the default app location under `PINOKIO_HOME/api`.
-
-### Instant Plugins
-
-Instant plugins can be launched immediately without a separate setup step.
-
-These plugins are still standalone global plugins, so they still live under `PINOKIO_HOME/plugin/<name>` and should still set `path: "plugin"`. They usually only define `run` and optional metadata such as `title`, `icon`, `description`, `link`, and `env`.
-
-```javascript
-module.exports = {
-  version: "8.0.0",
   path: "plugin",
   title: "OpenAI Codex",
   icon: "openai.webp",
@@ -3178,7 +3013,7 @@ module.exports = {
       conda: {
         skip: true
       },
-      message: "npx -y @openai/codex@latest {{args.prompt ? JSON.stringify(args.prompt) : ''}}",
+      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
       path: "{{args.cwd}}",
       input: true
     }
@@ -3187,7 +3022,7 @@ module.exports = {
     id: "run",
     method: "shell.run",
     params: {
-      message: "npx -y @openai/codex@latest {{args.prompt ? JSON.stringify(args.prompt) : ''}}",
+      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
       path: "{{args.cwd}}",
       input: true
     }
@@ -3214,35 +3049,31 @@ module.exports = {
 }
 ```
 
-### Installable Plugins
+## Plugins that install their tool
 
-Installable plugins add lifecycle actions such as `install`, `update`, and `uninstall`.
+The Codex plugin above needs no setup: `npx` fetches the tool each time. A plugin whose tool has to be installed first adds four things:
 
-Use this pattern when the plugin needs to install or manage a shared CLI, runtime, or tool before it can be launched. These plugins are also standalone global plugins, so they should set `path: "plugin"`.
+- `install`: the steps that install the tool. Pinokio shows an **Install** button on the plugin's page.
+- `installed`: tells Pinokio whether the tool is there. When a plugin has `install` and `installed` returns `false`, Pinokio does not start it: `run` shows an install prompt, and a job says so in its output.
+- `update`: the steps that update the plugin and the tool.
+- `uninstall`: the steps that remove the tool and then the plugin's own folder.
 
 ```javascript
 module.exports = {
-  version: "8.0.0",
   path: "plugin",
   title: "Opencode",
-  icon: "icon.svg",
-  description: "The open source AI coding agent for the terminal.",
-  link: "https://github.com/anomalyco/opencode",
+  icon: "icon.png",
+  description: "The AI coding agent built for the terminal.",
+  link: "https://opencode.ai/",
+  installed: async (kernel) => {
+    return Boolean(kernel.which("opencode"))
+  },
   install: [{
     method: "shell.run",
     params: {
       message: "npm install -g opencode-ai@latest"
     }
-  }, {
-    method: "fs.write",
-    params: {
-      path: "{{dirname}}/.installed",
-      text: "ok"
-    }
   }],
-  installed: async (kernel, info, ctx) => {
-    return await kernel.exists(ctx.dirname, ".installed")
-  },
   uninstall: [{
     method: "shell.run",
     params: {
@@ -3271,20 +3102,18 @@ module.exports = {
     method: "shell.run",
     params: {
       shell: "bash",
-      message: "opencode {{args.prompt ? '--prompt ' + JSON.stringify(args.prompt) : ''}}",
+      message: { _: ["opencode"], prompt: "{{args.prompt || undefined}}" },
       path: "{{args.cwd}}",
-      input: true,
-      buffer: 1024
+      input: true
     }
   }, {
     when: "{{platform !== 'win32'}}",
     id: "run",
     method: "shell.run",
     params: {
-      message: "opencode {{args.prompt ? '--prompt ' + JSON.stringify(args.prompt) : ''}}",
+      message: { _: ["opencode"], prompt: "{{args.prompt || undefined}}" },
       path: "{{args.cwd}}",
-      input: true,
-      buffer: 1024
+      input: true
     }
   }],
   job: [{
@@ -3306,7 +3135,9 @@ module.exports = {
 }
 ```
 
-#### Tools that come as a binary
+Where you can, have `installed` ask whether the program itself is there, as above, rather than write a marker file to remember that `install` ran: a marker can stay behind after the tool is gone. If there is nothing to check for, a marker file is fine.
+
+### Tools that come as a binary
 
 Some tools are not installed with `npm` or `pip`. They come as a program file, usually through the vendor's own installer. Where the installer allows it, install such a tool into the plugin's own folder instead of onto the user's computer:
 
@@ -3320,9 +3151,15 @@ Some tools are not installed with `npm` or `pip`. They come as a program file, u
 
 When the tool is in the plugin's folder, removing the plugin removes the tool, and nothing else on the computer changes.
 
+A plugin's file is ordinary JavaScript, so it knows its own folder as `__dirname`. That is all the example below needs to find the program it installed.
+
 ```javascript
-const runtime = "{{path.resolve(dirname, 'runtime')}}"
-const agy = "{{path.resolve(dirname, 'runtime', platform === 'win32' ? 'agy.exe' : 'agy')}}"
+const fs = require("fs")
+const path = require("path")
+
+// this file's own folder: the tool is installed into it
+const runtime = path.join(__dirname, "runtime")
+const agy = path.join(runtime, process.platform === "win32" ? "agy.exe" : "agy")
 
 module.exports = {
   version: "8.0.0",
@@ -3330,8 +3167,8 @@ module.exports = {
   title: "Antigravity CLI",
   description: "Antigravity agents in the terminal.",
   link: "https://antigravity.google/product/antigravity-cli",
-  installed: async (kernel, info, ctx) => {
-    return await kernel.exists(ctx.dirname, "runtime", kernel.platform === "win32" ? "agy.exe" : "agy")
+  installed: async () => {
+    return fs.existsSync(agy)
   },
   install: [{
     when: "{{platform !== 'win32'}}",
@@ -3375,133 +3212,82 @@ module.exports = {
       path: "{{args.cwd}}",
       input: true
     }
-  }]
-}
-```
-
-Pinokio also includes built-in plugins that ship with Pinokio itself. They appear in the same plugin UI, but they are not downloaded into `PINOKIO_HOME/plugin`.
-
-## App Plugins
-
-Plugins can also be bundled inside app launchers.
-
-In this case, the plugin file itself is still a normal plugin script using the same syntax described above. The only difference is how it is discovered.
-
-If an app launcher exports a top-level `plugins` array, each entry points to a plugin script relative to the launcher root:
-
-```javascript
-// Parent app launcher: /PINOKIO_HOME/api/hermes-agent/pinokio.js
-module.exports = {
-  title: "Hermes Agent",
-  plugins: [
-    "plugins/no-gateway/pinokio.js"
-  ],
-  menu: [ ... ]
-}
-```
-
-The referenced file is the actual bundled plugin:
-
-```javascript
-// Bundled plugin: /PINOKIO_HOME/api/hermes-agent/plugins/no-gateway/pinokio.js
-module.exports = {
-  title: "Hermes Agent",
-  description: "Start Hermes Agent in any folder",
-  icon: "../../icon.png",
-  launch_type: "terminal",
-  run: [{
+  }],
+  job: [{
     method: "shell.run",
     params: {
-      venv: "{{path.resolve(dirname, '../../app/env')}}",
-      path: "{{args.cwd}}",
-      env: {
-        PYTHONUTF8: "1",
-        PYTHONIOENCODING: "utf-8"
-      },
-      message: { _: ["hermes", "chat"], query: "{{args.prompt || undefined}}" },
-      input: true
+      conda: { skip: true },
+      message: { _: [agy, "--dangerously-skip-permissions"], print: "{{args.prompt}}" },
+      path: "{{args.cwd}}"
     }
   }]
 }
 ```
 
-Example layout:
+## Actions as functions
 
-```text
-/PINOKIO_HOME
-  /api
-    /hermes-agent
-      pinokio.js
-      /plugins
-        /no-gateway
-          pinokio.js
-```
-
-Each plugin path is resolved relative to the launcher root:
-
-- If the launcher is `/PINOKIO_HOME/api/my_app/pinokio.js`, the plugin root is `/PINOKIO_HOME/api/my_app`
-- If the launcher is `/PINOKIO_HOME/api/my_app/pinokio/pinokio.js`, the plugin root is `/PINOKIO_HOME/api/my_app/pinokio`
-
-Bundled app plugins do not need `path: "plugin"` because they are not installed as standalone downloadable plugins.
-
-## Examples
-
-### Terminal plugin
+Any action can be an async function that returns the steps, in place of the array. Pinokio calls it when the action is launched, not when it builds the plugin list, so it can look at the computer first: which platform it is, whether a file exists, whether a local service answers.
 
 ```javascript
 module.exports = {
   path: "plugin",
-  title: "OpenAI Codex",
-  icon: "openai.webp",
-  link: "https://github.com/openai/codex",
-  run: [{
-    when: "{{platform === 'win32'}}",
-    id: "run",
-    method: "shell.run",
-    params: {
-      shell: "bash",
-      conda: {
-        skip: true
-      },
-      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
-      path: "{{args.cwd}}",
-      input: true
-    }
-  }, {
-    when: "{{platform !== 'win32'}}",
-    id: "run",
-    method: "shell.run",
-    params: {
-      message: { _: ["npx", "-y", "@openai/codex@latest", "{{args.prompt || undefined}}"] },
-      path: "{{args.cwd}}",
-      input: true
-    }
-  }],
-  job: [{
-    when: "{{platform === 'win32'}}",
-    method: "shell.run",
-    params: {
-      shell: "bash",
-      conda: {
-        skip: true
-      },
-      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
-      path: "{{args.cwd}}"
-    }
-  }, {
-    when: "{{platform !== 'win32'}}",
-    method: "shell.run",
-    params: {
-      message: { _: ["npx", "-y", "@openai/codex@latest", "exec", "--skip-git-repo-check", "--dangerously-bypass-approvals-and-sandbox", "{{args.prompt}}"] },
-      path: "{{args.cwd}}"
-    }
-  }]
+  title: "My Dynamic Plugin",
+
+  run: async (kernel, info) => {
+    const message = kernel.platform === "win32"
+      ? "echo Running on Windows"
+      : "echo Running on macOS or Linux"
+
+    return [{
+      method: "shell.run",
+      params: {
+        message,
+        path: "{{args.cwd}}",
+        input: true
+      }
+    }]
+  }
 }
 ```
 
-The Windows branch explicitly sets `shell` to `bash`, and Pinokio resolves it to the bundled Bash on Windows so Bash-oriented terminal plugins can run there too.
+The action function receives the same first arguments as dynamic launcher functions:
 
-### Desktop plugin
+```javascript
+run: async (kernel, info, ctx) => {
+  return [
+    // steps
+  ]
+}
+```
+
+- `kernel`: the Pinokio kernel object
+- `info`: runtime/system info when available
+- `ctx`: optional launch context for values specific to the current action
+
+Most plugins only need `kernel`, and can still use normal templates such as `{{args.cwd}}` and `{{platform}}` inside the returned steps.
+
+The optional `ctx` object contains the same runtime context available to normal launcher scripts and templates:
+
+- `ctx.kernel`: the Pinokio kernel object
+- `ctx.info`: runtime/system info when available
+- `ctx.action`: the action name, such as `"run"`, `"job"` or `"install"`
+- `ctx.input`: input passed to the current launch
+- `ctx.args`: launch arguments: `ctx.args.cwd`, and `ctx.args.prompt` when there is a request
+- `ctx.cwd`: the folder the plugin was opened in
+- `ctx.platform`: current platform, such as `"darwin"`, `"win32"`, or `"linux"`
+- `ctx.env` / `ctx.envs`: resolved environment variables
+- `ctx.local`, `ctx.global`, `ctx.key`: Pinokio memory scopes
+- `ctx.exists(...pathParts)`: check for files relative to `ctx.cwd`
+- `ctx.running(...pathParts)`: check whether a script path relative to `ctx.cwd` is running
+- `ctx.ready(...pathParts)`: check whether a script path relative to `ctx.cwd` has reached Pinokio's ready state. See [`ready`](#ready) for what ready means.
+- `ctx.self`: the plugin object itself
+- `ctx.port`: an available Pinokio port
+
+The function must return the same kind of step array you would normally put directly in the action.
+
+## Desktop plugins
+
+A plugin can also open a program outside Pinokio, such as an editor, pointed at the chosen folder:
 
 ```javascript
 module.exports = {
@@ -3530,25 +3316,23 @@ module.exports = {
 }
 ```
 
-A desktop plugin has no `job`: an editor has no way to work once and exit.
+A desktop plugin has no `job`: an editor has no way to work once and exit. If it also has no way to take a first message, it does not use `args.prompt`; say so in its `description`.
 
-## Plugin UI
+## Where plugins appear
 
-Standalone plugins under `/plugin` and bundled plugins declared by app launchers both appear in 3 places:
+Every plugin, built-in or your own, appears in 3 places:
 
-1. `/plugins`
-2. the **Ask AI** drawer
-3. `/p/:name/dev` for every app
-
-On `/plugins`, each plugin gets an **Open in** button so you can run it against a target app or workspace.
+1. **The Plugins page** (`/plugins`). A plugin's own page has **Open in**, which runs it in a folder you choose, and its **Install**, **Update** and **Uninstall** actions when it has them.
+2. **The agent bar** at the top of Pinokio. Its agent menu lists the plugins; what you type is sent to the one you picked. On an app's page it runs in that app's folder.
+3. **An app's Dev page** (`/p/:name/dev`), where it runs in that app's folder.
 
 ![plugins_page.png](plugins_page.png)
 
-Plugins are grouped by how they launch. Terminal plugins run inside Pinokio, while desktop plugins open external tools pointed at the selected app or workspace.
+Plugins are grouped by how they launch. Terminal plugins run inside Pinokio, while desktop plugins open external tools pointed at the chosen folder.
 
 ![Plugins grouped as tools](media/8.0.0/plugins-agent-tools.png)
 
-Current built-in plugins mostly focus on AI tools, but plugins are not limited to agents. A plugin can launch any reusable workflow that should run inside another app, including IDEs, editors, terminal tools, and helper scripts.
+The built-in plugins are mostly AI tools, but plugins are not limited to agents. A plugin can launch any reusable workflow that should run inside another app, including IDEs, editors, terminal tools, and helper scripts.
 
 Plugin descriptions also appear in app Dev mode so users can choose the right terminal or desktop tool from the current app context.
 
@@ -3557,10 +3341,6 @@ Plugin descriptions also appear in app Dev mode so users can choose the right te
 The plugin page refreshes after plugin install, update, uninstall, and other tasks so the visible state matches the completed action.
 
 ![Plugin update flow](media/8.0.0/pluginupdate.gif)
-
-Pinokio also bundles managed tool entries such as OpenAI Codex, Claude Code, Antigravity CLI, VS Code, Cursor, Codex Desktop, and Claude Desktop.
-
-![Antigravity plugin](media/8.0.0/antigravity.png)
 
 ---
 
@@ -8967,12 +8747,11 @@ The `drive` folder stores virtual drives, used for deduplicating redundant files
 
 ### /plugin
 
-The `plugin` folder stores standalone reusable plugins.
+The `plugin` folder stores reusable plugins.
 
 - Every plugin is a single `pinokio.js` file inside its own folder
-- Built-in plugins ship with Pinokio and are listed alongside standalone plugins, but are not stored in this folder
-- Standalone plugins automatically show up in `/plugins`, **Ask AI**, and `/p/:name/dev`
-- Apps may also ship bundled plugins inside `/api/<app>/...` by declaring `plugins` in the app launcher `pinokio.js`
+- Built-in plugins ship with Pinokio and are listed alongside these, but are not stored in this folder
+- Plugins automatically show up in `/plugins`, the agent bar, and `/p/:name/dev`
 
 ### /tasks
 
