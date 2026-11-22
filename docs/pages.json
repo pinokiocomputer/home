@@ -22,6 +22,17 @@
       "ogImageWidth": 1920,
       "ogImageHeight": 1080,
       "ogImageAlt": "Pinokio Remote at pinokio.co, open on a phone, tablet, and laptop"
+    },
+    {
+      "slug": "agent-messenger",
+      "source": "agent-messenger.md",
+      "title": "Agent Messenger — Pinokio Manual",
+      "headline": "Agent Messenger",
+      "description": "Chat with the apps on your computer. Ask an app a question, have it do a job, fix it, or change it, with any AI agent, each chat in its own window inside Pinokio.",
+      "ogImage": "/docs/media/agent-messenger/agent-messenger-poster.png",
+      "ogImageWidth": 1920,
+      "ogImageHeight": 1080,
+      "ogImageAlt": "Three agent chat windows side by side on a music app in Pinokio: Grok, Codex, and Claude Code"
     }
   ]
 }

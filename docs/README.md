@@ -190,9 +190,11 @@ Zero work required. Pinokio **automatically** figures out how your app works, an
 
 ![agent_interpreter.png](agent_interpreter.png)
 
+> To chat with an app from inside Pinokio, use [Agent Messenger](#_18-agent-messenger), the message box at the top of every app.
+
 ### 5.1. What is it?
 
-<video controls playsinline style="width: 100%; max-width: 960px;">
+<video controls playsinline>
   <source src="./agentspeak.mp4" type="video/mp4">
 </video>
 
@@ -219,7 +221,7 @@ Go ahead, try opening any of your favorite AI agent (Codex CLI, Claude Code, Gem
 
 It works with any AI agent. You can use the built-in CLI agents in pinokio:
 
-<video controls playsinline style="width: 100%; max-width: 960px;">
+<video controls playsinline>
   <source src="./ttsss.mp4" type="video/mp4">
 </video>
 
@@ -548,7 +550,7 @@ When you need community help, the report can be posted with the selected session
 
 ### 10.2. Ask AI Agent
 
-When you want a local agent to fix the app, the same report can be opened in Ask AI with the app code, docs, usage context, and selected logs available.
+When you want a local agent to fix the app, choose **Ask AI** in the same report. It opens a chat window, the same as a message sent from [Agent Messenger](#_18-agent-messenger), with the app code, docs, usage context, and selected logs available.
 
 ![Ask AI from Get Help](media/8.0.0/askai_help.gif)
 
@@ -556,18 +558,7 @@ When an app run fails, Pinokio can guide you directly to Get Help from the error
 
 ![Auto help](media/8.0.0/autohelp.gif)
 
-You can also quick-access the agent sidebar by clicking the "Ask AI" button on the nav bar.
-
-It lets you open installed tools against the current app folder without leaving the app page.
-
-Ask AI groups the available tools into 2 categories:
-
-- **Terminal Plugins:** start an interactive session inside Pinokio
-- **Desktop Plugins:** open an external desktop app or IDE pointed at the current app folder
-
-The drawer can search terminal agents, desktop agents, and project shells from the current app context.
-
-![Ask AI drawer](media/8.0.0/app-ask-ai-drawer.png)
+You can also ask an agent about the app at any time from the message box at the top of the app's page. See [Agent Messenger](#_18-agent-messenger).
 
 
 ---
@@ -793,6 +784,36 @@ Start by browsing the [app catalog](https://pinokio.co/apps) and installing apps
   <span class="docs-guide-card-copy">
     <strong class="docs-guide-card-title">Complete Remote guide</strong>
     <span class="docs-guide-card-description">Connect your devices, launch apps, add computers, and understand privacy and troubleshooting.</span>
+  </span>
+  <span class="docs-guide-card-icon" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+</a>
+
+
+---
+
+## 18. Agent Messenger
+
+**Chat with the apps on your computer.** Every app in Pinokio has a message box at the top of its page. Type what you need, and an AI agent of your choice answers in its own window, right inside the app, like a messenger. From the home screen, you can ask Pinokio itself: it works out the task and decides which apps to use.
+
+<video controls playsinline preload="metadata" poster="media/agent-messenger/agent-messenger-poster.png" data-docs-poster="/docs/media/agent-messenger/agent-messenger-poster.png" width="1920" height="1080" aria-label="Pinokio Agent Messenger demonstration">
+  <source src="media/agent-messenger/agent-messenger-demo.mp4" data-docs-src="/docs/media/agent-messenger/agent-messenger-demo.mp4" type="video/mp4">
+  Your browser does not support embedded video. <a href="/docs/media/agent-messenger/agent-messenger-demo.mp4">Open the Agent Messenger demonstration</a>.
+</video>
+
+[![Three chat windows side by side on a music app's page: Grok, Codex, and Claude Code each working on a different request](media/agent-messenger/windows.jpg)](/docs/media/agent-messenger/windows.jpg ":ignore")
+
+- **Ask the app:** how it works, why it is slow, what it has already made.
+- **Have it do a job:** the agent starts the app and uses it for you.
+- **Fix it:** the agent finds the cause and changes the app.
+- **Change it:** add something the app never had.
+- **Ask Pinokio itself:** from home, one message can use several apps, one after another.
+- **Keep several going:** every message opens its own window, side by side, and the windows follow you from page to page.
+- **Use any agent:** Claude Code, Codex, Grok, OpenCode, Antigravity, and any other agent plugin.
+
+<a class="docs-guide-card" data-docs-route="/agent-messenger" href="agent-messenger.md">
+  <span class="docs-guide-card-copy">
+    <strong class="docs-guide-card-title">Complete Agent Messenger guide</strong>
+    <span class="docs-guide-card-description">Send a message, manage several chats, real examples, asking from home, files, and what it remembers.</span>
   </span>
   <span class="docs-guide-card-icon" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
 </a>
@@ -2672,12 +2693,6 @@ Use `{{variables}}` anywhere in the template text to define task inputs.
 
 Pinokio detects the variables automatically, turns them into editable task inputs, and lets you save the task without hand-writing the files yourself.
 
-After saving:
-
-- `workspaces` tasks appear in **Ask Pinokio**
-- `api` tasks appear in **Create App** through **Use template**
-- `plugin` tasks appear in **Create Plugin** through **Use template**
-
 ![task_build_step_3.png](task_build_step_3.png)
 
 ### Publish
@@ -2687,14 +2702,6 @@ After saving a task, open it from the library and publish it from the task page.
 Pinokio can create the GitHub repository, publish the first version, and turn the local task into a shareable task URL.
 
 ![task_publish.png](task_publish.png)
-
-### Download
-
-To install a shared task, open **Ask Pinokio**, switch to **Download**, paste the task's Git URL, and import it.
-
-Pinokio downloads the task package into `PINOKIO_HOME/tasks`.
-
-![ask_pinokio_task_download.png](ask_pinokio_task_download.png)
 
 ## Spec
 
@@ -3320,11 +3327,10 @@ A desktop plugin has no `job`: an editor has no way to work once and exit. If it
 
 ## Where plugins appear
 
-Every plugin, built-in or your own, appears in 3 places:
+Every plugin, built-in or your own, appears in 2 places:
 
 1. **The Plugins page** (`/plugins`). A plugin's own page has **Open in**, which runs it in a folder you choose, and its **Install**, **Update** and **Uninstall** actions when it has them.
-2. **The agent bar** at the top of Pinokio. Its agent menu lists the plugins; what you type is sent to the one you picked. On an app's page it runs in that app's folder.
-3. **An app's Dev page** (`/p/:name/dev`), where it runs in that app's folder.
+2. **The agent bar** at the top of Pinokio ([Agent Messenger](#_18-agent-messenger)). Its agent menu lists the plugins; what you type is sent to the one you picked. On an app's page it runs in that app's folder.
 
 ![plugins_page.png](plugins_page.png)
 
@@ -3333,10 +3339,6 @@ Plugins are grouped by how they launch. Terminal plugins run inside Pinokio, whi
 ![Plugins grouped as tools](media/8.0.0/plugins-agent-tools.png)
 
 The built-in plugins are mostly AI tools, but plugins are not limited to agents. A plugin can launch any reusable workflow that should run inside another app, including IDEs, editors, terminal tools, and helper scripts.
-
-Plugin descriptions also appear in app Dev mode so users can choose the right terminal or desktop tool from the current app context.
-
-![Dev page plugin descriptions](media/8.0.0/dev_detail.png)
 
 The plugin page refreshes after plugin install, update, uninstall, and other tasks so the visible state matches the completed action.
 
@@ -7160,7 +7162,7 @@ Open a URL
 - `<type>`: can be one of the following values:
   - `"web"`: The web URL for the given file path (default)
     - If the `<uri>` is `$PINOKIO_HOME/api/framepack`, the corresponding web URL is `http://localhost:42000/pinokio/browser/framepack`
-  - `"dev"`: The web URL for the given file path, but in dev mode (no autostart)
+  - `"dev"`: The web URL for the given file path, opened without starting the app
     - If the `<uri>` is `$PINOKIO_HOME/api/framepack`, the corresponding web URL is `http://localhost:42000/pinokio/browser/framepack/dev`
   - `"asset"`: The asset path for any given path. Returns the raw file for the given path.
 - `<target>`: the [target](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#target) attribute. May be one of the following values:
@@ -8751,7 +8753,7 @@ The `plugin` folder stores reusable plugins.
 
 - Every plugin is a single `pinokio.js` file inside its own folder
 - Built-in plugins ship with Pinokio and are listed alongside these, but are not stored in this folder
-- Plugins automatically show up in `/plugins`, the agent bar, and `/p/:name/dev`
+- Plugins automatically show up in `/plugins` and the agent bar
 
 ### /tasks
 
